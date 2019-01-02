@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jobAdvreportFilterNew" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cbd73c41-a43c-49b8-9ab2-27fa5bfff1e8">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="dateRange" class="java.lang.String"/>
+	<field name="empName" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="empId" class="java.lang.String"/>
+	<field name="jobNumber" class="java.lang.String"/>
+	<field name="advAmount" class="java.lang.String"/>
+	<field name="jobType" class="java.lang.String"/>
+	<field name="approvedDate" class="java.lang.String"/>
+	<field name="jobPoint" class="java.lang.String"/>
+	<field name="jobPurpose" class="java.lang.String"/>
+	<field name="billableNotBillable" class="java.lang.String"/>
+	<group name="jobpointGroup">
+		<groupExpression><![CDATA[$F{jobPoint}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<staticText>
+					<reportElement x="12" y="21" width="12" height="29" uuid="859fa912-8760-4a7a-923a-4d4d908913db"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[ID]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="24" y="21" width="70" height="29" uuid="b7e09b1d-cf3f-4d8f-8cc8-6c6f1d7de774"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[Job Number]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="535" y="21" width="40" height="29" uuid="81d361e7-9a58-4857-8233-889444e3dd16"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[Adv Amount]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="499" y="21" width="36" height="29" uuid="50b244cc-1298-4821-8b91-7148fa208821"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[Billable Status]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="184" y="21" width="140" height="29" uuid="5a4a0c3f-e365-4e07-a40d-60b9b8919833"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[job Type]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="42" y="0" width="533" height="21" uuid="f98fc91c-9ffe-4544-a7ac-4f6612269e71"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Cambria" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{jobPoint}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="94" y="21" width="65" height="29" uuid="d3cc72a0-1481-421e-83f4-75b5c38342d6"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[Emp Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="454" y="21" width="45" height="29" uuid="035ded21-162b-41e5-832c-a7eebd8ee96d"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[Approved Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="324" y="21" width="130" height="29" uuid="ed710718-dda2-4746-bcdc-855c8f2b3240"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[job Purpose]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="21" width="12" height="29" uuid="e3321256-a6a3-4a79-bdc5-d60519e73eb2"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[SL NO.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="42" height="21" uuid="0bab8620-b204-4568-870d-b848a2863ee4"/>
+					<box leftPadding="1">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font fontName="Cambria" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Job Point:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="159" y="21" width="25" height="29" uuid="fb38eb1d-0f60-4d1c-b676-f3a2278b676a"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Cambria" size="8"/>
+					</textElement>
+					<text><![CDATA[Emp Id]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="false">
+				<reportElement x="125" y="0" width="319" height="81" uuid="7402e320-d852-4d5b-9edc-0992ca7787b5"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="83" width="575" height="20" uuid="7b43b69a-9205-4e51-b98a-71458926ffa7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="68" width="575" height="15" uuid="16faeb6f-6932-4372-8bf3-a21a3ae01bba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateRange}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="12" y="1" width="12" height="40" uuid="2a2844d0-eb3a-4115-ba84-7a15478a5ee0"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="1" width="140" height="40" uuid="801aa781-e1f4-44a4-adc1-deab56c85f81"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jobType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="1" width="70" height="40" uuid="d2f3f0ff-0d9a-46e1-b7b1-da7eba0b8e54"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jobNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="454" y="1" width="45" height="40" uuid="7e21c32e-3735-4edf-abc5-d0a34f1e637c"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approvedDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="324" y="1" width="130" height="40" uuid="89aaa2f1-2ffc-4cc1-a979-99a5e9c7de8e"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jobPurpose}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="159" y="1" width="25" height="40" uuid="7d381b84-d925-4816-ac73-3c5a18fadccc"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{empId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="499" y="1" width="36" height="40" uuid="b0472b45-d013-460d-a1c3-a1fac0158a28"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{billableNotBillable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="535" y="1" width="40" height="40" uuid="b0bdee66-67f8-4491-8e96-404b75b39c7f"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{advAmount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="1" width="65" height="40" uuid="4c477c2e-bf2c-4ce3-b474-9226c3a8f09f"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{empName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="1" width="12" height="40" uuid="3c6d831f-5f2f-4212-baf1-dc54268a2938"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="474" y="2" width="100" height="20" uuid="bc7de9b8-6593-4d0f-94c0-9ce04ea86907"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<text><![CDATA[Synergy Inc.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="497" y="24" width="50" height="20" uuid="833d6065-630e-4397-9a9f-bd95e3373d16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="0" y="24" width="110" height="20" uuid="3577acf0-40cc-409f-8341-2da01128537d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="218" y="22" width="140" height="20" uuid="87bf2895-2d5d-4be6-abe8-bbc5f767b074"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<text><![CDATA[www.syn-ergy.com]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="547" y="24" width="27" height="20" uuid="b3584208-fed7-432c-bd41-24f4b0a42401"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="0" y="2" width="574" height="43" uuid="d7023e5f-d90c-4194-9583-46ce5a8b613f"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+			</frame>
+		</band>
+	</pageFooter>
+</jasperReport>

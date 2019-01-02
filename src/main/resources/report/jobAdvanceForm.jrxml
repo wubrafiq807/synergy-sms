@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jobAdvanceForm" pageWidth="595" pageHeight="842" columnWidth="540" leftMargin="50" rightMargin="5" topMargin="60" bottomMargin="0" uuid="db4d4c72-754b-41fb-a13f-29bc90430ab4">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="amountInword" class="java.lang.String"/>
+	<parameter name="Reason" class="java.lang.String"/>
+	<parameter name="notBillablePre" class="java.lang.String"/>
+	<parameter name="jobType" class="java.lang.String"/>
+	<field name="jobNumber" class="java.lang.String"/>
+	<field name="jobNumInFSYear" class="java.lang.String"/>
+	<field name="submissionDate" class="java.lang.String"/>
+	<field name="dueDate" class="java.lang.String"/>
+	<field name="pointName" class="java.lang.String"/>
+	<field name="employeeName" class="java.lang.String"/>
+	<field name="employeeId" class="java.lang.String"/>
+	<field name="employeeDesignation" class="java.lang.String"/>
+	<field name="approvedAmount" class="java.lang.String"/>
+	<field name="dueAmount" class="java.lang.String"/>
+	<field name="dueAmountDate" class="java.lang.String"/>
+	<field name="purpose" class="java.lang.String"/>
+	<field name="isBillable" class="java.lang.Integer"/>
+	<field name="notBillableReason" class="java.lang.String"/>
+	<field name="fileName" class="java.lang.String"/>
+	<field name="buttontext" class="java.lang.String"/>
+	<field name="amount" class="java.lang.String"/>
+	<field name="amountText" class="java.lang.String"/>
+	<field name="acttionBy" class="java.lang.String"/>
+	<field name="actionedDate" class="java.lang.String"/>
+	<field name="comments" class="java.lang.String"/>
+	<field name="reason" class="java.lang.String"/>
+	<field name="stagename" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="actionedDateText" class="java.lang.String"/>
+	<field name="amountInWord" class="java.lang.String"/>
+	<field name="adjustedWithin" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="242">
+			<image>
+				<reportElement x="174" y="13" width="150" height="50" uuid="f0b8b375-6bb8-4f83-a0b7-44243132d98b"/>
+				<imageExpression><![CDATA["//logo.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="13" width="159" height="16" uuid="57daab68-2068-4d64-a99a-273c22c1492e"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jobNumber}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="407" y="13" width="108" height="16" backcolor="#CCCCCC" uuid="41adb05e-cff0-49af-8a6b-769d93577962"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jobNumInFSYear}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="407" y="28" width="108" height="16" uuid="9ae3bb4f-177d-4034-a074-3ef709714201"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{submissionDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="74" width="36" height="12" uuid="27674e62-d1cc-4046-9bcd-a8830c155820"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POINT:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="36" y="74" width="479" height="12" uuid="e6db67f2-d7e7-43ef-a41d-f434d18fad04"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pointName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="98" width="515" height="12" uuid="d4007d7d-cd41-45a1-9461-3923b8d304dd"/>
+				<box leftPadding="2">
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Applicant Information:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="190" height="12" uuid="1030d222-e523-48c7-a163-4dc523349500"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[Employee  Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="121" width="190" height="12" uuid="e2ebba4f-ca3c-42a6-a006-ea22aef2cbe2"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[Employee ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="133" width="190" height="12" uuid="6068b16a-f7d8-4b17-aa9d-f878d6c0efa8"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="172" width="190" height="12" uuid="928e7c76-f7c5-479e-82ad-97101b654b39"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Outstanding Amout (TK)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="146" width="190" height="12" backcolor="#EDEDED" uuid="d10fba21-4753-457e-af95-cbcbcba62503"/>
+				<box rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="10" isBold="false"/>
+					<paragraph firstLineIndent="2"/>
+				</textElement>
+				<text><![CDATA[Approved Amout (TK)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="159" width="190" height="12" uuid="58887d0d-05a7-417c-9868-a9511d5a2268"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Approved TK in word]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="198" width="190" height="12" uuid="9cdc80fa-f474-4093-beaa-ebcc0be31ce6"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Purpose]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="110" width="317" height="12" uuid="60071508-e408-4c04-852a-26dc1251cae1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+					<paragraph firstLineIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeeName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="121" width="317" height="12" uuid="41b5f1c9-6fb6-46e9-b50b-d5f23be9d4b5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+					<paragraph firstLineIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeeId}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="133" width="317" height="12" uuid="ae1fb55b-d715-447e-aea0-84088ffb38d1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+					<paragraph firstLineIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeeDesignation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="198" y="172" width="317" height="12" uuid="40716d45-9653-4cbd-bcd0-549e02d782d9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+					<paragraph firstLineIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dueAmount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="198" y="146" width="317" height="12" backcolor="#EDEDED" uuid="e96d5c76-7151-4f9f-83d6-9268d6ec9cd3"/>
+				<box rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="10" isBold="true"/>
+					<paragraph firstLineIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approvedAmount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="159" width="317" height="12" uuid="608b3ba3-7ccc-4ee1-baac-98db57b737e4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+					<paragraph firstLineIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{amountInword}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="190" y="110" width="8" height="12" uuid="b1b572db-5b22-4fca-a507-93818fa80d82"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="121" width="8" height="12" uuid="d1345ac1-5d00-42eb-a221-8c356ea1938d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="133" width="8" height="12" uuid="fa9499fe-93a5-414f-ba2c-1572492faddd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="190" y="146" width="8" height="12" backcolor="#EDEDED" uuid="8508dbd5-276b-485f-8f84-fdc25a4ddddb"/>
+				<box rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="159" width="8" height="12" uuid="8c4948ae-5ee1-40cc-acec-d143734c0ecd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="172" width="8" height="12" uuid="8ff3ddc8-2601-460c-a00e-e7cde6abe759"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="198" width="8" height="12" uuid="3a312dd2-91cb-4d85-a18f-71f139bd3a44"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="198" width="317" height="12" uuid="8f8ee7c4-18ec-4b01-867c-39b8d6811c0b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+					<paragraph firstLineIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{purpose}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="1" y="210" width="20" height="20" uuid="8539b1d9-5c98-46c8-a2f5-9e71527397eb"/>
+				<imageExpression><![CDATA[$F{isBillable}.intValue()==1 ? "checked.png" : "unchecked.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="22" y="214" width="49" height="20" uuid="ad6b5344-e1fa-466b-b6cc-4fa479ffaffa"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[Billable]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="214" width="60" height="20" uuid="d3898cd4-de93-4ed3-a407-bdea6e6c6011"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[Not Billable]]></text>
+			</staticText>
+			<image>
+				<reportElement x="63" y="210" width="20" height="20" uuid="242feb2c-d5f3-4564-ade9-7055da144061"/>
+				<imageExpression><![CDATA[$F{isBillable}.intValue()==0 ? "checked.png" : "unchecked.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="197" y="214" width="317" height="28" uuid="40fba37d-a2eb-4881-8bd4-7f3382f25c1c"/>
+				<textElement markup="none">
+					<font fontName="Cambria" size="9"/>
+					<paragraph firstLineIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Reason}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="36" width="72" height="20" uuid="eb302a63-23b7-4141-a994-fc70f5a80913"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TRADING]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="83" y="54" width="368" height="16" uuid="e08bc9ae-e247-4dbf-80a6-a9c0edface6a"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Cambria" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST FOR EMPLOYEE JOB ADVANCE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="147" y="214" width="45" height="28" uuid="3f7da007-21aa-4768-a233-3aea3abfbabb"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{notBillablePre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="185" width="190" height="12" uuid="74276c4f-bdae-4b41-8c1e-3526f82d5b24"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Adjusted Within]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="198" y="185" width="316" height="12" uuid="cb0b6468-b406-44c3-9e7a-9840495ee03f"/>
+				<textElement>
+					<font fontName="Cambria" size="9" isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adjustedWithin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="190" y="185" width="8" height="12" uuid="353ae88b-6db3-4cbf-868f-319339fa46c8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9"/>
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="86" width="42" height="12" uuid="e58988b8-9963-4255-a473-1224bd97ca34"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Job Type:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="42" y="86" width="473" height="12" uuid="6d5968e4-3b3c-489c-b48a-414451f4a5ee"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{jobType}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="74" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="1" width="390" height="13" backcolor="#CCCCCC" uuid="82b672e5-4e04-44bd-8861-e76c410c52e6"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stagename}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="14" width="190" height="12" uuid="6b3fd79e-835a-4a76-98b6-b80de348506b"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountText}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="198" y="14" width="92" height="12" uuid="3f8cf7a1-674e-441d-981c-83ff6793121a"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="38" width="190" height="12" uuid="202470aa-0442-4a14-9c5e-6895b1673b47"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{buttontext}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="38" width="317" height="12" uuid="c43de105-6a23-446c-85fb-6a4418920bff"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acttionBy}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="49" width="317" height="12" uuid="e2bec621-b7a3-4bae-a9ef-f94fe38bff13"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{actionedDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="61" width="190" height="12" uuid="feefbecf-7772-4980-ba8e-74bd0a94252c"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[Comments]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="61" width="317" height="12" uuid="0b4f076d-1895-4c68-8587-d1ccd0aa3256"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{comments}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="190" y="14" width="8" height="12" uuid="4704cf36-9c19-4134-a6b8-579a3f611c36"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="38" width="8" height="12" uuid="c1afe75f-1886-42a9-816b-985a6538da8f"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="49" width="8" height="12" uuid="7cb9a7c4-7502-4ffc-a150-d30f7845561b"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="61" width="8" height="12" uuid="59204211-5d07-4fcc-acb7-31e0341043e1"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="390" y="1" width="125" height="13" backcolor="#CCCCCC" uuid="09638bdc-e333-482c-8e62-4a901cd5005c"/>
+				<box topPadding="1" rightPadding="2">
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Cambria" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="49" width="190" height="12" uuid="7c06ec4e-a59a-4ced-918d-6f0808fbdbac"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{actionedDateText}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="26" width="190" height="12" uuid="f0cb6d90-fe06-4599-abc7-54dae2eb5d32"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[In Word Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="26" width="8" height="12" uuid="c1ad750d-ed82-45e4-8174-cc6cbeefba68"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="26" width="317" height="12" uuid="c58ab9d9-9881-4305-8ca8-ecc83065f5fa"/>
+				<textElement>
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountInWord}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="290" y="14" width="225" height="12" uuid="888ab9c5-3c9d-4fbd-9efe-c06a54e762fc"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right">
+					<font fontName="Cambria" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dueDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="12">
+			<textField>
+				<reportElement x="170" y="0" width="80" height="12" uuid="81a0bedc-88d1-4690-9133-3388485ed5b3"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="250" y="0" width="40" height="12" uuid="a97d4e18-5dde-49f2-88e8-14158c718d9c"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

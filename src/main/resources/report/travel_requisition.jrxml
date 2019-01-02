@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="travel_requisition" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a05915f0-770d-49bd-94f7-15272622994d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="approvedDate" class="java.lang.String"/>
+	<field name="empName" class="java.lang.String"/>
+	<field name="deptName" class="java.lang.String"/>
+	<field name="departureDate" class="java.lang.String"/>
+	<field name="destination" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="reqUniqueNumber" class="java.lang.String"/>
+	<field name="lxnId" class="java.lang.String"/>
+	<field name="tripPurpose" class="java.lang.String"/>
+	<field name="returnDate" class="java.lang.String"/>
+	<field name="meansOfTransport" class="java.lang.String"/>
+	<field name="approveByManager" class="java.lang.String"/>
+	<field name="approveByLineManager" class="java.lang.String"/>
+	<field name="appManDate" class="java.sql.Timestamp"/>
+	<field name="appLineManDate" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="false">
+				<reportElement x="115" y="2" width="319" height="81" uuid="b6695036-fb18-4bc2-9565-1a6686f06e96"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="81" splitType="Stretch">
+			<staticText>
+				<reportElement x="119" y="2" width="344" height="25" uuid="4d8fd7a2-ff82-4873-8f8c-02b83cebcaf0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[TRAVEL REQUISITION FORM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="27" width="397" height="20" uuid="8b204060-a974-452a-8072-b36b5709b2d6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[This form is used to authorize travel and request a travel advance.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="219" y="52" width="101" height="20" uuid="12aa04c8-ec5e-4979-8acd-cf292798a690"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Requisition No : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="334" y="52" width="129" height="20" uuid="42496a47-ee14-4705-b397-b56565a086bd"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reqUniqueNumber}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="270" splitType="Stretch">
+			<staticText>
+				<reportElement x="42" y="2" width="102" height="20" uuid="e9c50ea5-0216-4319-9dd1-71e47e7c328b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Employee Name: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="2" width="80" height="20" uuid="aa7d6992-8348-4b58-98c7-187720d323a3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Employee ID: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="26" width="77" height="20" uuid="c47a1218-6c80-4e2b-9cdf-6426c6f5f970"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Department :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="26" width="102" height="20" uuid="fc198787-81b1-481e-8aa2-b78d54b41bf6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Purpose of Trip :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="49" width="92" height="20" uuid="5ad067c5-2dfa-4e9f-8455-12be1908f30f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Departure Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="50" width="83" height="20" uuid="a5b55a99-5e7d-4f28-a9f3-50a7507199ea"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Return Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="74" width="77" height="20" uuid="02b4df55-ddd1-4a3f-9e7e-303b683ac762"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Destination :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="74" width="117" height="20" uuid="2ff14099-8400-4379-9f74-c079bc46a27e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Means of Transport :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="213" width="115" height="20" uuid="16dadd56-3ebd-428f-b208-a5bd28ddc84a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Supervisor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="213" width="77" height="20" uuid="1a288d41-21e4-4ad9-9fab-2836e3c53c0f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[COA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="213" width="77" height="20" uuid="786a8033-aecd-41a1-b8c0-6979fbd4c96c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[CEO/COO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="193" width="83" height="20" uuid="34257888-e3ba-4222-a1f9-3a9bd1f900d5"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[_________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="193" width="83" height="20" uuid="6f3bf8f4-9ed1-4990-958a-285700d09a23"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[_________________]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="161" y="2" width="141" height="20" uuid="07e369c5-3d2d-4528-8f41-c5d58f968a36"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{empName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="161" y="26" width="141" height="20" uuid="2e4ecc7c-2a33-4c40-8fe8-591994f7dfdd"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deptName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="161" y="50" width="141" height="20" uuid="77ebdd7b-27a7-495e-9b29-602378a781a1"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{departureDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="161" y="74" width="141" height="20" uuid="0cbd1eeb-34d1-4276-ad95-fd9a5578fdaa"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{destination}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="2" width="100" height="20" uuid="10de5534-84e8-4968-b6b3-157e2647ec82"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lxnId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="29" width="100" height="20" uuid="e5ab2ef7-4846-4cd2-b80a-ff4f4cfe62bc"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tripPurpose}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="54" width="100" height="20" uuid="be297c5c-4206-435f-b834-312f7d5abe76"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{returnDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="76" width="116" height="20" uuid="a6be9c7f-4e31-4f37-9619-7436ff41c551"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{meansOfTransport}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="180" width="116" height="20" uuid="42da7206-0bf1-4880-bf7f-15985a4d7962"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approveByManager}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="41" y="198" width="113" height="15" uuid="8a4c8b28-6385-4699-bd49-7b4b881e4375"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{approvedDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="47">
+			<staticText>
+				<reportElement x="6" y="2" width="144" height="20" uuid="ae939781-c6dd-4e0d-a34f-415ea076d3f2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Travel Management System]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="474" y="24" width="50" height="20" uuid="61de2046-3859-4667-9429-005169e39f5e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="524" y="24" width="27" height="20" uuid="3416d2b6-6104-4ddc-bd69-d9c1267f8fd0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="451" y="2" width="100" height="20" uuid="5283db7a-ff60-4420-849a-a6a2c8c309b9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Synergy Inc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="207" y="16" width="140" height="20" uuid="678bc3b9-6729-4e73-b2f7-140e151c436c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[www.syn-ergy.com]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="6" y="24" width="110" height="20" uuid="c9d28088-66b2-44c3-9095-772dc1647149"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="0" y="2" width="555" height="45" uuid="ac2d6213-0ff9-4d5f-a995-55d8fb28d5ab"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

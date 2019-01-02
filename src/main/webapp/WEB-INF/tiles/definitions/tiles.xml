@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<!-- Base Definition -->
+	<definition name="base-definition" template="/WEB-INF/tiles/template/template.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/tiles/template/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/tiles/template/menu.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/template/footer.jsp" />
+	</definition>
+
+	<definition name="base.definition2" template="/WEB-INF/views/login.jsp">
+		<put-attribute name="body" value=""></put-attribute>
+	</definition>
+
+	<!-- Login Page -->
+	<definition name="login" extends="base.definition2">
+		<put-attribute name="title" value="Login Form"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/views/login.jsp"></put-attribute>
+	</definition>
+
+	<!-- Home Page Start -->
+	<definition name="index" extends="base-definition">
+		<put-attribute name="title" value="Dashboard | SMS" />
+		<put-attribute name="body" value="/WEB-INF/views/index.jsp" />
+	</definition>
+
+	<definition name="selectCompany" extends="base-definition">
+		<put-attribute name="title" value="Dashboard | SMS" />
+		<put-attribute name="body" value="/WEB-INF/views/selectCompany.jsp" />
+	</definition>
+
+	<definition name="changePassword" extends="base-definition">
+		<put-attribute name="title" value="Change Password"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/views/changePassword.jsp"></put-attribute>
+	</definition>
+
+	<definition name="home" extends="base-definition">
+		<put-attribute name="title" value="Dashboard | PAF" />
+		<put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+	</definition>
+
+	<definition name="myProfile" extends="base-definition">
+		<put-attribute name="title" value="My Profile" />
+		<put-attribute name="body" value="/WEB-INF/views/myProfile.jsp" />
+	</definition>
+	<!-- Home Page End -->
+
+	<!-- Company Start -->
+	<definition name="addCompany" extends="base-definition">
+		<put-attribute name="title" value="Add New Company" />
+		<put-attribute name="body" value="/WEB-INF/views/company/create.jsp" />
+	</definition>
+
+	<definition name="editCompany" extends="base-definition">
+		<put-attribute name="title" value="Edit Company" />
+		<put-attribute name="body" value="/WEB-INF/views/company/edit.jsp" />
+	</definition>
+
+	<definition name="companyList" extends="base-definition">
+		<put-attribute name="title" value="Company List" />
+		<put-attribute name="body" value="/WEB-INF/views/company/list.jsp" />
+	</definition>
+
+	<definition name="showCompany" extends="base-definition">
+		<put-attribute name="title" value="Show Company" />
+		<put-attribute name="body" value="/WEB-INF/views/company/show.jsp" />
+	</definition>
+	<!-- Company End -->
+
+	<!-- Fiscal Year Start -->
+	<definition name="addFiscalYear" extends="base-definition">
+		<put-attribute name="title" value="Add New Fiscal Year" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/fiscalYear/create.jsp" />
+	</definition>
+
+	<definition name="editFiscalYear" extends="base-definition">
+		<put-attribute name="title" value="Edit Fiscal Year" />
+		<put-attribute name="body" value="/WEB-INF/views/fiscalYear/edit.jsp" />
+	</definition>
+
+	<definition name="fiscalYearList" extends="base-definition">
+		<put-attribute name="title" value="Fiscal Year List" />
+		<put-attribute name="body" value="/WEB-INF/views/fiscalYear/list.jsp" />
+	</definition>
+
+	<definition name="showFiscalYear" extends="base-definition">
+		<put-attribute name="title" value="Show Fiscal Year" />
+		<put-attribute name="body" value="/WEB-INF/views/fiscalYear/show.jsp" />
+	</definition>
+	<!-- PAF Year End -->
+
+	<!-- Job Settings Start -->
+	<definition name="addJobSettings" extends="base-definition">
+		<put-attribute name="title" value="Add New Job Settings" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobSettings/create.jsp" />
+	</definition>
+
+	<definition name="editJobSettings" extends="base-definition">
+		<put-attribute name="title" value="Edit Job Settings" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobSettings/edit.jsp" />
+	</definition>
+
+	<definition name="jobSettingsList" extends="base-definition">
+		<put-attribute name="title" value="Job Settings List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobSettings/list.jsp" />
+	</definition>
+
+	<definition name="showJobSettings" extends="base-definition">
+		<put-attribute name="title" value="Show Job Settings" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobSettings/show.jsp" />
+	</definition>
+	<!-- Job Settings End -->
+
+	<!-- Job Advance Start -->
+	<definition name="addJobAdvance" extends="base-definition">
+		<put-attribute name="title" value="Add New Job Advance" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobAdvance/create.jsp" />
+	</definition>
+
+	<definition name="editJobAdvance" extends="base-definition">
+		<put-attribute name="title" value="Edit Job Advance" />
+		<put-attribute name="body" value="/WEB-INF/views/jobAdvance/edit.jsp" />
+	</definition>
+
+	<definition name="jobAdvanceList" extends="base-definition">
+		<put-attribute name="title" value="Job Advance List" />
+		<put-attribute name="body" value="/WEB-INF/views/jobAdvance/list.jsp" />
+	</definition>
+
+	<definition name="allJobList" extends="base-definition">
+		<put-attribute name="title" value="All Job Request List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobAdvance/allJobList.jsp" />
+	</definition>
+
+	<definition name="pendingJobList" extends="base-definition">
+		<put-attribute name="title" value="Pending Job Request List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobAdvance/pendingJobList.jsp" />
+	</definition>
+
+	<definition name="rejectedJobList" extends="base-definition">
+		<put-attribute name="title" value="Rejected Job Request List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobAdvance/rejectedJobList.jsp" />
+	</definition>
+
+	<definition name="approvedJobList" extends="base-definition">
+		<put-attribute name="title" value="Approved Job Request List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobAdvance/approvedJobList.jsp" />
+	</definition>
+
+	<definition name="showJobAdvance" extends="base-definition">
+		<put-attribute name="title" value="Show Job Advance" />
+		<put-attribute name="body" value="/WEB-INF/views/jobAdvance/show.jsp" />
+	</definition>
+
+	<definition name="myJobsList" extends="base-definition">
+		<put-attribute name="title" value="My Job List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/jobAdvance/myJobsList.jsp" />
+	</definition>
+	<!-- Job Advance End -->
+
+	<!-- Job Advance Dashboard Start -->
+	<definition name="userDashboard" extends="base-definition">
+		<put-attribute name="title" value="User Dashboard" />
+		<put-attribute name="body" value="/WEB-INF/views/userDashboard.jsp" />
+	</definition>
+
+	<definition name="concernDashboard" extends="base-definition">
+		<put-attribute name="title" value="Concern Dashboard" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/concernDashboard.jsp" />
+	</definition>
+
+	<definition name="adminDashboard" extends="base-definition">
+		<put-attribute name="title" value="Administrator Dashboard" />
+		<put-attribute name="body" value="/WEB-INF/views/adminDashboard.jsp" />
+	</definition>
+
+	<definition name="jobAdvanceReportForm" extends="base-definition">
+		<put-attribute name="title" value="JobAdvance Report Form" />
+		<put-attribute name="body" value="/WEB-INF/views/report/create.jsp" />
+	</definition>
+	<definition name="addPoint" extends="base-definition">
+		<put-attribute name="title" value="JobAdvance Point" />
+		<put-attribute name="body" value="/WEB-INF/views/point/create.jsp" />
+	</definition>
+	<definition name="editPoint" extends="base-definition">
+		<put-attribute name="title" value="JobAdvance Point" />
+		<put-attribute name="body" value="/WEB-INF/views/point/edit.jsp" />
+	</definition>
+	<definition name="pointList" extends="base-definition">
+		<put-attribute name="title" value="JobAdvance Point List" />
+		<put-attribute name="body" value="/WEB-INF/views/point/list.jsp" />
+	</definition>
+
+	<!-- Job Advance Dashboard End -->
+
+	<!-- Store Supervision Product Category Start -->
+
+	<definition name="productCategoryAdd" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Category Form" />
+		<put-attribute name="body" value="/WEB-INF/views/category/create.jsp" />
+	</definition>
+
+
+	<definition name="productCategoryList" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Category List" />
+		<put-attribute name="body" value="/WEB-INF/views/category/list.jsp" />
+	</definition>
+
+	<definition name="productCategoryEdit" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Model Edit" />
+		<put-attribute name="body" value="/WEB-INF/views/category/edit.jsp" />
+	</definition>
+	<definition name="showReq" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Requisition Show List" />
+		<put-attribute name="body" value="/WEB-INF/views/requisition/show.jsp" />
+	</definition>
+
+	<!-- Store Supervision Product Category End -->
+
+
+
+	<!-- Store Supervision Product Model Start -->
+
+
+	<definition name="productModelAdd" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Model Form" />
+		<put-attribute name="body" value="/WEB-INF/views/model/create.jsp" />
+	</definition>
+
+	<definition name="productModelList" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Model List" />
+		<put-attribute name="body" value="/WEB-INF/views/model/list.jsp" />
+	</definition>
+
+	<definition name="productModelEdit" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Model Edit" />
+		<put-attribute name="body" value="/WEB-INF/views/model/edit.jsp" />
+	</definition>
+
+	<!-- Store Supervision Product Model End -->
+
+
+
+	<!-- Store Supervision Product Start -->
+
+	<definition name="productAdd" extends="base-definition">
+		<put-attribute name="title" value="Store Supervision Product Form" />
+		<put-attribute name="body" value="/WEB-INF/views/product/create.jsp" />
+	</definition>
+
+	<definition name="productList" extends="base-definition">
+		<put-attribute name="title" value="Store Supervision Product List" />
+		<put-attribute name="body" value="/WEB-INF/views/product/list.jsp" />
+	</definition>
+
+	<definition name="productEdit" extends="base-definition">
+		<put-attribute name="title" value="Store Supervision Product Edit" />
+		<put-attribute name="body" value="/WEB-INF/views/product/edit.jsp" />
+	</definition>
+
+	<!-- Store Supervision Product Model End -->
+
+	<!-- Store Supervision Product Stock Model Start -->
+
+	<definition name="productStockList" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Stock List" />
+		<put-attribute name="body" value="/WEB-INF/views/stock/list.jsp" />
+	</definition>
+
+	<!-- Store Supervision Product Stock Model End -->
+
+
+	<!-- Store Supervision Product Receive Model Start -->
+
+	<definition name="reciveProductAdd" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Recive Product Add" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/product-recive/create.jsp" />
+	</definition>
+
+	<definition name="productReceiveList" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Receive List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/product-recive/list.jsp" />
+	</definition>
+
+	<definition name="productReceiveEdit" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Receive Edit" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/product-recive/edit.jsp" />
+	</definition>
+
+	<!-- Store Supervision Product Receive Model End -->
+
+
+
+	<!-- Store Supervision Product Delivery Model Start -->
+
+	<definition name="deliveryProductAdd" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Delivery Product Add" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/product-delivery/create.jsp" />
+	</definition>
+
+	<definition name="productDeliveryList" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Delivery List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/product-delivery/list.jsp" />
+	</definition>
+
+	<definition name="productDeliveryEdit" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Delivery Edit" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/product-delivery/edit.jsp" />
+	</definition>
+
+	<!-- Store Supervision Product Delivery Model End -->
+
+
+	<!-- Store Supervision Configuration Start -->
+
+	<definition name="configurationAdd" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Configuration Add" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/configuration/create.jsp" />
+	</definition>
+
+	<definition name="configurationList" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Configuration List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/configuration/list.jsp" />
+	</definition>
+
+	<definition name="configurationEdit" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Configuration Edit" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/configuration/edit.jsp" />
+	</definition>
+	<!-- Store Supervision Configuration End -->
+
+
+	<!-- Store Supervision Requisition Start -->
+	
+	<definition name="productRequestionAdd" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Requisition Add" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/requisition/create.jsp" />
+	</definition>
+	
+	<definition name="editReq" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Requisition Edit" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/requisition/edit.jsp" />
+	</definition>
+
+	<!-- Store Supervision Requisition End -->
+</tiles-definitions>
