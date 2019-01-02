@@ -68,8 +68,14 @@ public class DashboardController implements Constants {
 		model.put("myreqList", myreqList);
 		model.put("subordinateReqList", subordinateReqList);
 		List<RequisitionHistory> reqCreadtedByConcenrlist=commonService.getObjectListByAnyColumn("RequisitionHistory", "created_by", loginEmployee.getId().toString()).stream().map(x->(RequisitionHistory)x).collect(Collectors.toList());
-		List<RequisitionHistory> reqCreadtedByConcenRejectedList=reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()==1).collect(Collectors.toList());
-		List<RequisitionHistory> reqCreadtedByConcenApprovvedList=reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()!=1).collect(Collectors.toList());
+		List<RequisitionHistory> reqCreadtedByConcenRejectedList=null;
+		
+		List<RequisitionHistory> reqCreadtedByConcenApprovvedList=null;
+		if(!reqCreadtedByConcenrlist.isEmpty()) {
+			reqCreadtedByConcenRejectedList=reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()!=1).collect(Collectors.toList());
+			reqCreadtedByConcenApprovvedList=	reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()==1).collect(Collectors.toList());
+		}
+		
 		
 		model.put("reqConcenRejectedList", reqCreadtedByConcenRejectedList);
 		model.put("reqConcenApprovvedList", reqCreadtedByConcenApprovvedList);
