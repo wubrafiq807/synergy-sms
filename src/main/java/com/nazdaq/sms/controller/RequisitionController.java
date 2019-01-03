@@ -110,11 +110,41 @@ public class RequisitionController implements Constants {
 
 			Requisition requisitionDB = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id",
 					requisition.getId().toString());
-			requisitionDB.setModifiedBy(loginEmployee);
-			requisitionDB.setModifiedDate(new Date());
-			requisitionDB.setPurpose(requisition.getPurpose());
-			requisitionDB.setRemarks(requisition.getRemarks());
-			commonService.saveOrUpdateModelObjectToDB(requisitionDB);
+			
+			//final stage section 
+			if(requisitionDB.getSettings().getAuthRole().trim().equals(AUTH_STORE_MANAGER)) {
+				
+				//CREATE HISTORY
+				RequisitionHistory requisitionHistory=new RequisitionHistory();
+				requisitionHistory.setCreatedBy(loginEmployee);
+				requisitionHistory.setCreatedDate(new Date());
+				requisitionHistory.setRequisition(requisitionDB);
+				requisitionHistory.setSettings(requisitionDB.getSettings());
+				requisitionHistory.setRemarks(requisition.getRemarks());
+				
+				commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
+				
+				
+				requisitionDB.setStatus(Integer.parseInt(STATUS_CLOSE));
+				List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings where stage>"+requisitionDB.getSettings().getStage()+" order by stage ASC ")
+						.stream().map(x -> (Settings) x).collect(Collectors.toList());
+				if(!settingsList.isEmpty()) {
+					requisitionDB.setSettings(settingsList.get(0));
+				}
+				requisitionDB.setModifiedBy(loginEmployee);
+				requisitionDB.setModifiedDate(new Date());
+				
+				commonService.saveOrUpdateModelObjectToDB(requisitionDB);
+				
+			}else {
+				requisitionDB.setModifiedBy(loginEmployee);
+				requisitionDB.setModifiedDate(new Date());
+				requisitionDB.setPurpose(requisition.getPurpose());
+				requisitionDB.setRemarks(requisition.getRemarks());
+				commonService.saveOrUpdateModelObjectToDB(requisitionDB);
+			}
+			
+			
 
 			List<RequisitionItem> requisitionItems = commonService
 					.getObjectListByAnyColumn("RequisitionItem", "requisition_id", requisitionDB.getId().toString())
@@ -272,13 +302,18 @@ public class RequisitionController implements Constants {
 		List<Product> theProducts = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
 				.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
 		theProducts.forEach(x -> x.setWeightedAvgPrice(this.getWeighttedAvgPrice(x.getId())));
-
+		boolean showStoreManSection=false;
+		
+		if(requisition.getSettings().getAuthRole().trim().equals(AUTH_STORE_MANAGER)) {
+			showStoreManSection=true;
+		}
 		model.put("productList", theProducts);
 
 		model.put("requisition", requisition);
 		model.put("totalPriceMain", NumberWordConverter.round(totalPriceMain, 2));
 		model.put("ItemList", ItemList);
 		model.put("count", ItemList.size() - 1);
+		model.put("showStoreManSection", showStoreManSection);
 
 		return new ModelAndView("editReq", model);
 	}
@@ -292,7 +327,7 @@ public class RequisitionController implements Constants {
 			return new ModelAndView("redirect:/login");
 		}
 
-		boolean showAppRjctBtn = false, showInitiatorSection = false;
+		boolean showAppRjctBtn = false, showInitiatorSection = false,showStoreManSection = false;
 
 		String roleName = commonService.getAuthRoleName();
 
@@ -331,6 +366,9 @@ public class RequisitionController implements Constants {
 		if (requisition.getStatus().toString().equals("3")) {
 			showAppRjctBtn = false;
 		}
+		if(requisition.getSettings().getAuthRole().trim().equals(AUTH_STORE_MANAGER)) {
+			showStoreManSection=true;
+		}
 
 		List<RequisitionHistory> reqHistoryList = commonService
 				.getObjectListByAnyColumn("RequisitionHistory", "requisition_id", requisition.getId().toString())
@@ -355,6 +393,7 @@ public class RequisitionController implements Constants {
 		model.put("showAppRjctBtn", showAppRjctBtn);
 		model.put("reqHistoryList", reqHistoryList);
 		model.put("showInitiatorSection", showInitiatorSection);
+		model.put("showStoreManSection", showStoreManSection);
 
 		return new ModelAndView("showReq", model);
 	}

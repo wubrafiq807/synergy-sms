@@ -4,8 +4,8 @@
 		<h1>Edit Requisition</h1>
 		<ul class="top-links">
 			<li><a class="btn btn-primary btn-xs"
-				href="${pageContext.request.contextPath}/listProductRequisition"> <i
-					class="fa fa-reorder"></i>Requisition List
+				href="${pageContext.request.contextPath}/listProductRequisition">
+					<i class="fa fa-reorder"></i>Requisition List
 			</a></li>
 
 			<li><a class="btn btn-block btn-primary btn-xs"
@@ -38,14 +38,27 @@
 						</div>
 						<!-- /.box-body -->
 						<div class="box-footer">
-							<a href="${pageContext.request.contextPath}/reqList"
-								class="btn btn-danger"> <i class="fa fa-times"></i>Cancel
-							</a>
-							<button type="submit"
-								class="btn btn-primary pull-right req-save-update-btn"
-								name="submit_btn" value="save" id="submitBtn">
-								<i class="fa fa-save"></i>update
-							</button>
+
+							<c:if test="${!showStoreManSection}">
+								<a href="${pageContext.request.contextPath}/"
+									class="btn btn-danger"> <i class="fa fa-times"></i>Cancel
+								</a>
+								<button type="submit"
+									class="btn btn-primary pull-right req-save-update-btn"
+									name="submit_btn" value="save" id="submitBtn">
+									<i class="fa fa-save"></i>update
+								</button>
+							</c:if>
+							<c:if test="${showStoreManSection}">
+
+								<button type="submit"
+									class="${requisition.settings.btnClass} pull-right req-save-update-btn"
+									name="submit_btn" value="save" id="submitBtn">
+									<i class="fa fa-save"></i>${requisition.settings.btnText}
+								</button>
+								
+							</c:if>
+
 						</div>
 						<!-- /.box-footer -->
 					</form>

@@ -6,6 +6,26 @@
 	width: 128px;
 }
 </style>
+<c:if test="${showStoreManSection}">
+<div class="form-group">
+	<label for="purpose" class="col-sm-2 control-label"> <strong>Purpose
+			: </strong>
+	</label>
+	<div class="col-sm-8">
+		<textarea class="form-control" id="purpose" name="purpose" readonly="readonly">${requisition.purpose}</textarea>
+	</div>
+</div>
+<div class="form-group">
+	<label for="remarks" class="col-sm-2 control-label"> <strong>Remarks
+			: </strong>
+	</label>
+	<div class="col-sm-8">
+		<textarea class="form-control" id="remarks" name="remarks"></textarea>
+	</div>
+</div>
+</c:if>
+<c:if test="${!showStoreManSection}">
+
 <div class="form-group">
 	<label for="purpose" class="col-sm-2 control-label"> <strong>Purpose
 			: </strong>
@@ -24,6 +44,10 @@
 		<textarea class="form-control" id="remarks" name="remarks">${requisition.remarks}</textarea>
 	</div>
 </div>
+
+</c:if>
+
+
 
 <div class="form-group" id="boxContainer">
 	<div class="col-sm-8 col-sm-offset-2">
@@ -109,7 +133,7 @@
 			rules : {
 
 				purpose : "required",
-				remarks : "required",
+				
 
 			},
 			submitHandler : function(form) {

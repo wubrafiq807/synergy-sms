@@ -14,7 +14,9 @@
 		<ul class="top-links">
 
 			<c:if test="${showAppRjctBtn}">
-				<li>
+			
+			<c:if test="${!showStoreManSection}">
+			<li>
 					<button title="${requisition.settings.btnText}"
 						class="${requisition.settings.btnClass}" data-toggle="modal"
 						data-target="#myModalApp">
@@ -22,6 +24,16 @@
 						${requisition.settings.btnText}
 					</button>
 				</li>
+			</c:if>
+			
+			<c:if test="${showStoreManSection}">
+			<li>
+			<a class="${requisition.settings.btnClass}"
+					href="${pageContext.request.contextPath}/editReq/${requisition.id}"><i
+						class="fa fa-fw fa-edit"></i>${requisition.settings.btnText}</a>
+				</li>
+			</c:if>
+				
 
 				<c:if test="${requisition.settings.canReject eq '1' }">
 					<li>

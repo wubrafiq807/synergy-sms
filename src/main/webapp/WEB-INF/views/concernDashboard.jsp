@@ -29,9 +29,9 @@
 
 				<div id="tabs">
 					<ul>
-						<li><a href="#tabs-pending-jobs">Pending Jobs Request</a></li>
-						<li><a href="#tabs-approved-jobs">Approved/Forwarded/Submitted Jobs by Me</a></li>
-						<li><a href="#tabs-rejected-jobs">Rejected Jobs by Me</a></li>
+						<li><a href="#tabs-pending-jobs">Pending Requisitions Request</a></li>
+						<li><a href="#tabs-approved-jobs">Approved/Forwarded/Submitted Requisitions by Me</a></li>
+						<li><a href="#tabs-rejected-jobs">Rejected Requisitions by Me</a></li>
 					</ul>
 
 
@@ -42,73 +42,47 @@
 								<table class="table table-striped display" id="table_id_1">
 									<thead>
 										<tr style="background-color: #428bca;">
-											<th class="text-center">Sl NO.</th>
-											<th class="text-center">Job Number</th>
-												<th class="text-center">Job Point</th>
-											<th class="text-center">Job Type</th>
-											<th class="text-center">Amount</th>
+											<th class="text-center">Sl NO.</th>											
+											<th class="text-center">Employee</th>
 											<th class="text-center">Purpose</th>
 											<th class="text-center">Status</th>
-											<th class="text-center">Work Flow</th>
-											<th class="text-center">Reject Reason</th>
-											<th class="text-center">Date</th>
-
+											<th class="text-center" style="width: 270px;">Work Flow</th>
+											<th class="text-center">Created Date</th>
 											<th class="text-center">Action</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${pendingJobList}" var="pendingJob"
-											varStatus="tr">
+										<c:forEach items="${pendingReqList}" var="myReq" varStatus="tr">
 											<tr class="row_no_${tr.count}">
 												<td class="text-center" title="Show Job Advance"><a
-													href="${pageContext.request.contextPath}/showJobAdvance/${pendingJob.id}">${tr.count}</a>
+													href="${pageContext.request.contextPath}/showReq/${myReq.id}">${tr.count}</a>
 												</td>
-												<td class="text-center">${pendingJob.jobNumberInFiscalYear}</td>
-												<td class="text-center">${pendingJob.jobPoint.name}</td>
-												<c:set var="localVarivable" value="Local Travel No:-${pendingJob.localTravel.reqUniqueNumber}-${pendingJob.localTravel.tripPurpose}" />
-												<c:set var="outSiderVarivable" value="OutSider Travel No:-${pendingJob.travel.reqUniqueNumber}-${pendingJob.travel.tripPurpose}" />
-												<td class="text-center">${pendingJob.jobType eq '1'?'General Job':pendingJob.jobType eq '2'?localVarivable:outSiderVarivable}</td>
-												<td class="text-center">${pendingJob.amount}</td>
-												<td class="text-center">${pendingJob.jobPurpose}</td>
+												
+												<td class="text-center">${myReq.employee.name}</td>
+												<td class="text-center">${myReq.purpose}</td>
 												<td class="text-center"><c:if
-														test="${pendingJob.status == '1'}">
+														test="${myReq.status == '1'}">
 														<span class="btn btn-success btn-xs com_status">
 															Active </span>
-													</c:if> <c:if test="${pendingJob.status == '2'}">
+													</c:if> <c:if test="${myReq.status == '2'}">
 														<span class="btn btn-warning btn-xs com_status">
 															Rejected</span>
-													</c:if> <c:if test="${pendingJob.status == '3'}">
+													</c:if> <c:if test="${myReq.status == '3'}">
 														<span class="btn btn-info btn-xs com_status">
 															Approved </span>
 													</c:if></td>
-												<td class="text-left"><span style="width: 241px"
-													class="${pendingJob.jobSetting.btnColor} ">
-														${pendingJob.jobSetting.viewText} </span></td>
-												<td class="text-center">${pendingJob.rejectionReason}</td>
-
-												<td class="text-center">${pendingJob.createdDate}</td>
-
-												<td class="text-center"><a class="btn btn-info btn-xs"
-													title="Show Job Advance"
-													href="${pageContext.request.contextPath}/showJobAdvance/${pendingJob.id}"><i
-														class="fa fa-eye" aria-hidden="true"> </i>Show</a> 
-														<%-- <a class="btn btn-info btn-xs" title="Show Job Advance" href="${pageContext.request.contextPath}/jobAdvanceReport/${pendingJob.id}">
-														<i class="fa fa-eye" aria-hidden="true"> </i>Job Advance History </a> --%> 
-														<c:if test="${pendingJob.status == 3 && pendingJob.isDocsDeleted == 0}">
-														 | <a class="btn btn-warning btn-xs custom-width"
-															title="Download Job Advance Docs"
-															href='${pageContext.request.contextPath}/downloadZipFile?id=${pendingJob.id}'
-															style="color: white;"><i class="fa fa-download"
-															aria-hidden="true"></i>&nbsp;&nbsp; Download Docs</a>
-															|
-															<a href="${pageContext.request.contextPath}/jobAdvanceReport/${pendingJob.id}" title="Job Advance History"><i class="fa fa-file-pdf-o red" aria-hidden="true"> </i></a>
-														    |
-														<c:if test="${pendingJob.jobType eq '3'}">
-														<a href="${pageContext.request.contextPath}/downloadRequisition?id=${pendingJob.travel.id}" title="Travel Doc"><i class="fa fa-file-pdf-o green" aria-hidden="true"> </i></a>
-														
-														</c:if>
-															
-													</c:if></td>
+												<td class="text-center"><span style="width: 241px"
+													class="${myReq.settings.btnClass} ">
+														${myReq.settings.viewText} </span></td>
+																
+												<td class="text-center"> <fmt:formatDate pattern="dd-MM-yyyy hh:mm:ss a" value="${myReq.createdDate}" /></td>
+		
+												<td class="text-center">
+												<a class="btn btn-info btn-xs" title="Show Job Advance"
+													href="${pageContext.request.contextPath}/showReq/${myReq.id}"><i class="fa fa-eye" aria-hidden="true"> </i>Show</a>
+													<%-- <a class="btn btn-success btn-xs" title="Show Job Advance History"
+													href="${pageContext.request.contextPath}/jobAdvanceReport/${pendingJob.id}"><i class="fa fa-eye" aria-hidden="true"> </i>History</a> --%>
+												</td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -126,35 +100,40 @@
 								<table class="table table-striped display" id="table_id_1">
 									<thead>
 										<tr style="background-color: #428bca;">
-											<th class="text-center">Sl NO.</th>
-											<th class="text-center">Job ID</th>
-											<th class="text-center">Requester Info</th>
-											<th class="text-center">Job Point</th>
-											<th class="text-center">Amount</th>
-											<th class="text-center">Purpose</th>											
-											<th class="text-center">Work Flow</th>
-											
-											<th class="text-center">Date</th>
-
+											<th class="text-center">Sl NO.</th>											
+											<th class="text-center">Employee</th>
+											<th class="text-center">Purpose</th>
+											<th class="text-center">Status</th>
+											<th class="text-center" style="width: 270px;">Work Flow</th>
+											<th class="text-center">Created Date</th>
 											
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${concenApprovvedList}" var="approvedJob"
-											varStatus="tr">
+										<c:forEach items="${reqConcenApprovvedList}" var="myReq" varStatus="tr">
 											<tr class="row_no_${tr.count}">
-											   <td>${tr.count}</td>
-												<td class="text-center" title="Show Job Advance"><a
-													href="${pageContext.request.contextPath}/showJobAdvance/${approvedJob.jobAdvance.id}">${tr.count}</a>
+												<td class="text-center" title="Show Job Advance">
 												</td>
-												<td class="text-center">${approvedJob.jobAdvance.employee.name}(${approvedJob.jobAdvance.employee.lxnId})</td>
-											<td class="text-center">${approvedJob.jobAdvance.jobPoint.name}</td>
-												<td class="text-center">${approvedJob.amount}</td>
-												<td class="text-center">${approvedJob.jobAdvance.jobPurpose}</td>
-												<td class="text-center">${approvedJob.jobSettings.btnText}${approvedJob.jobSettings.btnText=='Submit'?'ted':approvedJob.jobSettings.btnText=='Approve'?'d':'ed'}</td>
 												
-												<td class="text-center">${approvedJob.createdDate}</td>
-
+												<td class="text-center">${myReq.requisition.employee.name}</td>
+												<td class="text-center">${myReq.requisition.purpose}</td>
+												<td class="text-center"><c:if
+														test="${myReq.requisition.status == '1'}">
+														<span class="btn btn-success btn-xs com_status">
+															Active </span>
+													</c:if> <c:if test="${myReq.requisition.status == '2'}">
+														<span class="btn btn-warning btn-xs com_status">
+															Rejected</span>
+													</c:if> <c:if test="${myReq.requisition.status == '3'}">
+														<span class="btn btn-info btn-xs com_status">
+															Approved </span>
+													</c:if></td>
+												<td class="text-center"><span style="width: 241px"
+													class="${myReq.settings.btnClass} ">
+														${myReq.settings.viewText} </span></td>
+																
+												<td class="text-center"> <fmt:formatDate pattern="dd-MM-yyyy hh:mm:ss a" value="${myReq.createdDate}" /></td>
+		
 												
 											</tr>
 										</c:forEach>
@@ -173,35 +152,41 @@
 								<table class="table table-striped display" id="table_id_1">
 									<thead>
 										<tr style="background-color: #428bca;">
-											<th class="text-center">Sl NO.</th>
-											<th class="text-center">Job ID</th>
-											<th class="text-center">Requester Info</th>
-											<th class="text-center">Job Point</th>
-											<th class="text-center">Amount</th>
-											<th class="text-center">Purpose</th>											
-											<th class="text-center">Rejection Reason</th>
-											
-											<th class="text-center">Date</th>
-
+											<th class="text-center">Sl NO.</th>											
+											<th class="text-center">Employee</th>
+											<th class="text-center">Purpose</th>
+											<th class="text-center">Status</th>
+											<th class="text-center" style="width: 270px;">Work Flow</th>
+											<th class="text-center">Created Date</th>
 											
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${concenRejectedList}" var="approvedJob"
-											varStatus="tr">
+										<c:forEach items="${reqConcenRejectedList}" var="myReq" varStatus="tr">
 											<tr class="row_no_${tr.count}">
-											   <td>${tr.count}</td>
-												<td class="text-center" title="Show Job Advance"><a
-													href="${pageContext.request.contextPath}/showJobAdvance/${approvedJob.jobAdvance.id}">${tr.count}</a>
+												<td class="text-center" title="Show Job Advance">
 												</td>
-												<td class="text-center">${approvedJob.jobAdvance.employee.name}(${approvedJob.jobAdvance.employee.lxnId})</td>
-												<td class="text-center">${approvedJob.jobAdvance.jobPoint.name}</td>
-												<td class="text-center">${approvedJob.amount}</td>
-												<td class="text-center">${approvedJob.jobAdvance.jobPurpose}</td>
-												<td class="text-center">${approvedJob.rejectionReason}</td>
 												
-												<td class="text-center">${approvedJob.createdDate}</td>
-
+												<td class="text-center">${myReq.requisition.employee.name}</td>
+												<td class="text-center">${myReq.requisition.purpose}</td>
+												<td class="text-center"><c:if
+														test="${myReq.requisition.status == '1'}">
+														<span class="btn btn-success btn-xs com_status">
+															Active </span>
+													</c:if> <c:if test="${myReq.requisition.status == '2'}">
+														<span class="btn btn-warning btn-xs com_status">
+															Rejected</span>
+													</c:if> <c:if test="${myReq.requisition.status == '3'}">
+														<span class="btn btn-info btn-xs com_status">
+															Approved </span>
+													</c:if></td>
+												<td class="text-center"><span style="width: 241px"
+													class="${myReq.settings.btnClass} ">
+														${myReq.settings.viewText} </span></td>
+																
+												<td class="text-center"> <fmt:formatDate pattern="dd-MM-yyyy hh:mm:ss a" value="${myReq.createdDate}" /></td>
+		
+												<td class="text-center">
 												
 											</tr>
 										</c:forEach>
