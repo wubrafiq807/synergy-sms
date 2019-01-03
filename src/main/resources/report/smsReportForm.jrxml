@@ -5,9 +5,9 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="amountInword" class="java.lang.String"/>
 	<parameter name="Reason" class="java.lang.String"/>
-	<field name="reqNumber" class="java.lang.String"/>
+
+    <field name="reqNumber" class="java.lang.String"/>
 	<field name="submissionDate" class="java.lang.String"/>
-	<field name="dueDate" class="java.lang.String"/>
 	<field name="employeeName" class="java.lang.String"/>
 	<field name="employeeId" class="java.lang.String"/>
 	<field name="employeeDesignation" class="java.lang.String"/>
@@ -26,6 +26,8 @@
 	<field name="status" class="java.lang.String"/>
 	<field name="actionedDateText" class="java.lang.String"/>
 	<field name="amountInWord" class="java.lang.String"/>
+
+
 	<background>
 		<band splitType="Stretch"/>
 	</background>
