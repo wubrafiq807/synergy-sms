@@ -196,17 +196,20 @@
 												
 												<td class="text-center">${approvedReq.employee.name}</td>
 												<td class="text-center">${approvedReq.purpose}</td>
-												<td class="text-center"><c:if
+												<td class="text-center">
+												<c:if
 														test="${pendingReq.status == '1'}">
 														<span class="btn btn-success btn-xs com_status">
 															Active </span>
-													</c:if> <c:if test="${pendingReq.status == '2'}">
+													</c:if>
+													 <c:if test="${pendingReq.status == '2'}">
 														<span class="btn btn-warning btn-xs com_status">
 															Rejected</span>
 													</c:if> <c:if test="${pendingReq.status == '3'}">
 														<span class="btn btn-info btn-xs com_status">
 															Approved </span>
-													</c:if></td>
+													</c:if>
+													</td>
 												<td class="text-center"><span style="width: 241px"
 													class="${approvedReq.settings.btnClass} ">
 														${approvedReq.settings.viewText} </span></td>
@@ -215,7 +218,9 @@
 		
 												<td class="text-center">
 												<a class="btn btn-info btn-xs" title="Show Requisition"
-													href="${pageContext.request.contextPath}/showReq/${modifiedDate.id}"><i class="fa fa-eye" aria-hidden="true"> </i>Show</a>
+													href="${pageContext.request.contextPath}/showReq/${approvedReq.id}"><i class="fa fa-eye" aria-hidden="true"> </i>Show</a>
+													<a class="btn btn-primary 	 btn-xs" title="Download Requisition"
+													href="${pageContext.request.contextPath}/reqReport/${approvedReq.id}"><i class="fa fa-file-pdf-o red" aria-hidden="true"> </i>Download</a>
 													<%-- <a class="btn btn-success btn-xs" title="Show Job Advance History"
 													href="${pageContext.request.contextPath}/jobAdvanceReport/${pendingJob.id}"><i class="fa fa-eye" aria-hidden="true"> </i>History</a> --%>
 												</td>
