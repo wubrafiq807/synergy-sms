@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nazdaq.sms.beans.SmsAdvanceBean;
+import com.nazdaq.sms.beans.SubReportBean;
 import com.nazdaq.sms.model.ProductPriceHistory;
 import com.nazdaq.sms.model.Requisition;
 import com.nazdaq.sms.model.RequisitionHistory;
@@ -58,7 +59,7 @@ public class ReportController implements Constants {
 	String ccEmailAddresss;
 
 	// methods to company show
-	@RequestMapping(value = "/jobAdvanceReport/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/reqReport/{id}", method = RequestMethod.GET)
 	public void jobAdvanceReport(@PathVariable("id") String id, ModelMap model, RedirectAttributes redirectAttributes,
 			Principal principal, HttpSession session, HttpServletResponse response)
 			throws JRException, IOException, ParseException {
@@ -80,14 +81,23 @@ public class ReportController implements Constants {
 				.stream().map(x -> (RequisitionItem) x).collect(Collectors.toList());
 
 		Double totalApproveAmount = 0.0;
+		List<SubReportBean> subReportBeans = new ArrayList<>();
 
 		for (RequisitionItem requisitionItem : requisitionItems) {
+			SubReportBean subReportBean = new SubReportBean();
 
 			Integer pId = requisitionItem.getProduct().getId();
 
 			Double wAvg = getWeighttedAvgPrice(pId);
+			Double totalAmount = wAvg * requisitionItem.getQuantity();
+			totalApproveAmount += totalAmount;
 
-			totalApproveAmount += wAvg * requisitionItem.getQuantity();
+			subReportBean.setProductName(requisitionItem.getProduct().getName());
+			subReportBean.setQuantity(requisitionItem.getQuantity());
+			subReportBean.setPrice(NumberWordConverter.convertDoubleToCurrency(totalAmount));
+			subReportBean.setSinglePrice(NumberWordConverter.convertDoubleToCurrency(wAvg));
+			
+			subReportBeans.add(subReportBean);
 
 		}
 
@@ -102,10 +112,8 @@ public class ReportController implements Constants {
 
 				smsAdvanceBean.setApprovedAmount(NumberWordConverter.convertDoubleToCurrency(totalApproveAmount));
 
-				
-				
 				smsAdvanceBean.setReqPurpose(requisition.getPurpose());
-				smsAdvanceBean.setReqNumber("REQ:" + requisition.getEmployee().getId());
+				smsAdvanceBean.setReqNumber("REQ NO:-" + requisition.getId());
 
 				smsAdvanceBean.setSubmissionDate(
 						NumberWordConverter.getCustomDateFromDateFormate(requisition.getCreatedDate().toString()));
@@ -116,7 +124,7 @@ public class ReportController implements Constants {
 
 				smsAdvanceBean.setStatus("Status : " + this.getamounText(requisitionHistory));
 
-				smsAdvanceBean.setButtontext(requisition.getSettings().getBtnText());
+				smsAdvanceBean.setButtontext(this.getamounText(requisitionHistory) + " By");
 				smsAdvanceBean.setActtionBy(requisitionHistory.getCreatedBy().getName());
 
 				smsAdvanceBean.setActionedDateText(this.getamounText(requisitionHistory) + " Date");
@@ -129,33 +137,33 @@ public class ReportController implements Constants {
 				smsAdvanceBeans.add(smsAdvanceBean);
 
 			}
-
-			// @formatter:on
-
-			InputStream jasperStream = null;
-
-			jasperStream = this.getClass().getResourceAsStream("/report/smsReportForm.jasper");
-			SmsAdvanceBean smsAdvanceBean = new SmsAdvanceBean();
-			Map<String, Object> params = new HashMap<>();
-			Map<String, Object> datasourcemap = new HashMap<>();
-			datasourcemap.put("SmsAdvanceBean", smsAdvanceBean);
-			jRdataSource = new JRBeanCollectionDataSource(smsAdvanceBeans, false);
-
-			params.put("datasource", jRdataSource);
-			params.put("amountInword",EnglishNumberToWords.convert(Math.round(totalApproveAmount)));
-
-			// prepare report first for one
-			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, jRdataSource);
-
-			response.setContentType("application/x-pdf");
-			response.setHeader("Content-disposition",
-					"inline; filename=job_advance_" + requisition.getId() + "_"
-							+ requisition.getEmployee().getName().trim().replaceAll("\\.", "_").replace(" ", "_") + ""
-							+ ".pdf");
-			final OutputStream outStream = response.getOutputStream();
-			JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
 		}
+		// @formatter:on
+
+		InputStream jasperStream = null;
+
+		jasperStream = this.getClass().getResourceAsStream("/report/smsReportForm.jasper");
+		SmsAdvanceBean smsAdvanceBean = new SmsAdvanceBean();
+		Map<String, Object> params = new HashMap<>();
+		Map<String, Object> datasourcemap = new HashMap<>();
+		datasourcemap.put("SmsAdvanceBean", smsAdvanceBean);
+		jRdataSource = new JRBeanCollectionDataSource(smsAdvanceBeans, false);
+
+		params.put("datasource", jRdataSource);
+		params.put("TOTAL_PRICE_WORD", EnglishNumberToWords.convert(Math.round(totalApproveAmount)).toUpperCase());
+		params.put("TOTAL_PRICE", NumberWordConverter.convertDoubleToCurrency(totalApproveAmount));
+		params.put("SUBREPORT_DATA", subReportBeans);
+
+		// prepare report first for one
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, jRdataSource);
+
+		response.setContentType("application/x-pdf");
+		response.setHeader("Content-disposition", "inline; filename=req_" + requisition.getId() + "_"
+				+ requisition.getEmployee().getName().trim().replaceAll("\\.", "_").replace(" ", "_") + "" + ".pdf");
+		final OutputStream outStream = response.getOutputStream();
+		JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+
 	}
 
 	private String getamounText(RequisitionHistory requisitionHistory) {

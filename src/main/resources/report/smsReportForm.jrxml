@@ -3,7 +3,9 @@
 	<property name="ireport.zoom" value="1.6105100000000008"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="amountInword" class="java.lang.String"/>
+	<parameter name="TOTAL_PRICE" class="java.lang.String"/>
+	<parameter name="TOTAL_PRICE_WORD" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DATA" class="java.util.List"/>
 	<field name="reqNumber" class="java.lang.String"/>
 	<field name="submissionDate" class="java.lang.String"/>
 	<field name="employeeName" class="java.lang.String"/>
@@ -12,8 +14,6 @@
 	<field name="approvedAmount" class="java.lang.String"/>
 	<field name="reqPurpose" class="java.lang.String"/>
 	<field name="buttontext" class="java.lang.String"/>
-	
-	
 	<field name="acttionBy" class="java.lang.String"/>
 	<field name="actionedDate" class="java.lang.String"/>
 	<field name="comments" class="java.lang.String"/>
@@ -24,7 +24,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="164">
+		<band height="202">
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="13" width="159" height="16" uuid="57daab68-2068-4d64-a99a-273c22c1492e"/>
 				<box leftPadding="2"/>
@@ -76,29 +76,7 @@
 				<text><![CDATA[Designation]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="112" width="190" height="12" backcolor="#EDEDED" uuid="d10fba21-4753-457e-af95-cbcbcba62503"/>
-				<box rightPadding="0">
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Cambria" size="8" isBold="false"/>
-					<paragraph firstLineIndent="2"/>
-				</textElement>
-				<text><![CDATA[Approved Amout (TK)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="124" width="190" height="12" uuid="58887d0d-05a7-417c-9868-a9511d5a2268"/>
-				<box leftPadding="2"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Cambria" size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Approved TK in word]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="136" width="190" height="12" uuid="9cdc80fa-f474-4093-beaa-ebcc0be31ce6"/>
+				<reportElement x="0" y="112" width="190" height="12" uuid="9cdc80fa-f474-4093-beaa-ebcc0be31ce6"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Cambria" size="8" isBold="false"/>
@@ -129,28 +107,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{employeeDesignation}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="198" y="112" width="317" height="12" backcolor="#EDEDED" uuid="e96d5c76-7151-4f9f-83d6-9268d6ec9cd3"/>
-				<box rightPadding="0">
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Cambria" size="8" isBold="true"/>
-					<paragraph firstLineIndent="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{approvedAmount}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="198" y="124" width="317" height="12" uuid="608b3ba3-7ccc-4ee1-baac-98db57b737e4"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Cambria" size="8" isBold="true"/>
-					<paragraph firstLineIndent="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{amountInword}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="190" y="76" width="8" height="12" uuid="b1b572db-5b22-4fca-a507-93818fa80d82"/>
 				<textElement verticalAlignment="Middle">
@@ -175,36 +131,8 @@
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="190" y="112" width="8" height="12" backcolor="#EDEDED" uuid="8508dbd5-276b-485f-8f84-fdc25a4ddddb"/>
-				<box rightPadding="0">
-					<topPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Cambria" size="8"/>
-					<paragraph firstLineIndent="1"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="190" y="124" width="8" height="12" uuid="8c4948ae-5ee1-40cc-acec-d143734c0ecd"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Cambria" size="8"/>
-					<paragraph firstLineIndent="1"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="190" y="136" width="8" height="12" uuid="3a312dd2-91cb-4d85-a18f-71f139bd3a44"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Cambria" size="8"/>
-					<paragraph firstLineIndent="1"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="198" y="136" width="317" height="28" uuid="8f8ee7c4-18ec-4b01-867c-39b8d6811c0b"/>
+				<reportElement x="198" y="112" width="317" height="28" uuid="8f8ee7c4-18ec-4b01-867c-39b8d6811c0b"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Cambria" size="8" isBold="false"/>
 					<paragraph firstLineIndent="2"/>
@@ -230,12 +158,41 @@
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="Cambria" size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[REQUEST FOR EMPLOYEE STATIONARY PRODUCTS]]></text>
+				<text><![CDATA[REQUEST FOR EMPLOYEE STATIONARY ]]></text>
 			</staticText>
 			<image>
 				<reportElement x="175" y="13" width="148" height="37" uuid="8cd7f7bd-becb-4fe7-8573-04dbd36bfb25"/>
-				<imageExpression><![CDATA["C:\\Users\\mahadi\\Desktop\\logo.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="190" y="112" width="8" height="12" uuid="2190fea5-a044-4b16-b8b6-b7c70eadcb5c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="8"/>
+					<paragraph firstLineIndent="1"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="156" width="515" height="44" uuid="3c7bc15d-9f1f-442f-a807-012210fd40a1"/>
+				<subreportParameter name="totalPrice">
+					<subreportParameterExpression><![CDATA[$P{TOTAL_PRICE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="TotalPriceInword">
+					<subreportParameterExpression><![CDATA[$P{TOTAL_PRICE_WORD}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{SUBREPORT_DATA})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["report/reqSubReport.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="1" y="142" width="515" height="12" uuid="d77ce4a1-55a0-42fe-bb7e-6e2035d98ef5"/>
+				<box leftPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Requisition Items Information:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>
@@ -254,7 +211,7 @@
 			</textField>
 			<textField>
 				<reportElement x="0" y="14" width="190" height="12" uuid="202470aa-0442-4a14-9c5e-6895b1673b47"/>
-				<box leftPadding="2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="0"/>
 				<textElement>
 					<font fontName="Cambria" size="8"/>
 				</textElement>
@@ -262,7 +219,7 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="198" y="14" width="317" height="12" uuid="c43de105-6a23-446c-85fb-6a4418920bff"/>
-				<box leftPadding="2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="0"/>
 				<textElement>
 					<font fontName="Cambria" size="8"/>
 				</textElement>
@@ -270,7 +227,7 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="198" y="25" width="317" height="12" uuid="e2bec621-b7a3-4bae-a9ef-f94fe38bff13"/>
-				<box leftPadding="2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="0"/>
 				<textElement>
 					<font fontName="Cambria" size="8"/>
 				</textElement>
@@ -278,7 +235,7 @@
 			</textField>
 			<staticText>
 				<reportElement x="0" y="37" width="190" height="12" uuid="feefbecf-7772-4980-ba8e-74bd0a94252c"/>
-				<box leftPadding="2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="0"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Cambria" size="8"/>
 				</textElement>
@@ -286,7 +243,7 @@
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="198" y="37" width="317" height="35" uuid="0b4f076d-1895-4c68-8587-d1ccd0aa3256"/>
-				<box leftPadding="2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="0"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Cambria" size="8"/>
 				</textElement>
@@ -294,7 +251,7 @@
 			</textField>
 			<staticText>
 				<reportElement x="190" y="14" width="8" height="12" uuid="c1afe75f-1886-42a9-816b-985a6538da8f"/>
-				<box leftPadding="2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="0"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Cambria" size="8"/>
 				</textElement>
@@ -302,7 +259,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="190" y="25" width="8" height="12" uuid="7cb9a7c4-7502-4ffc-a150-d30f7845561b"/>
-				<box leftPadding="2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="0"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Cambria" size="8"/>
 				</textElement>
@@ -310,7 +267,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="190" y="37" width="8" height="12" uuid="59204211-5d07-4fcc-acb7-31e0341043e1"/>
-				<box leftPadding="2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="0"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Cambria" size="8"/>
 				</textElement>
@@ -330,7 +287,7 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="25" width="190" height="12" uuid="7c06ec4e-a59a-4ced-918d-6f0808fbdbac"/>
-				<box leftPadding="2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="0"/>
 				<textElement>
 					<font fontName="Cambria" size="8"/>
 				</textElement>
