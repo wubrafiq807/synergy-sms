@@ -216,6 +216,8 @@
 												<td class="text-center">
 												<a class="btn btn-info btn-xs" title="Show Requisition"
 													href="${pageContext.request.contextPath}/showReq/${approvedReq.id}"><i class="fa fa-eye" aria-hidden="true"> </i>Show</a>
+													<a class="btn btn-primary 	 btn-xs" title="Download Requisition"
+													href="${pageContext.request.contextPath}/reqReport/${approvedReq.id}"><i class="fa fa-file-pdf-o red" aria-hidden="true"> </i>Download</a>
 													<%-- <a class="btn btn-success btn-xs" title="Show Job Advance History"
 													href="${pageContext.request.contextPath}/jobAdvanceReport/${pendingJob.id}"><i class="fa fa-eye" aria-hidden="true"> </i>History</a> --%>
 												</td>
