@@ -30,7 +30,7 @@
 									<th class="text-center">Last Purchase Quantity</th>
 									<th class="text-center">Description</th>
 									<th class="text-center">Status</th>
-									<th class="text-center">Model</th>
+									<!-- <th class="text-center">Model</th> -->
 									<th class="text-center">Category</th>
 									<th class="text-center">Remarks</th>
 									<th class="text-center">Created By</th>
@@ -54,7 +54,7 @@
 										<td class="text-center">${product.purchaseQuantity}</td>
 										<td class="text-center">${product.description}</td>
 										<td class="text-center">${product.status=='1'?'Active':'Inactive'}</td>
-										<td class="text-center">${product.model.name}</td>
+										<%-- <td class="text-center">${product.model.name}</td> --%>
 										<td class="text-center">${product.category.name}</td>
 										<td class="text-center">${product.remarks}</td>
 										<td class="text-center">${product.createdBy.name}</td>

@@ -151,28 +151,28 @@
 						Dashboard </span>
 			</a> <b class="arrow"></b></li>
 
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<li class=""><a href="javascript:void(0)"
-					class="dropdown-toggle"> <i class="menu-icon fa fa-life-ring"></i>
-						<span class="menu-text"> Model </span> <b
-						class="arrow fa fa-angle-down"></b>
-				</a> <b class="arrow"></b>
+<%-- 			<sec:authorize access="hasRole('ROLE_ADMIN')"> --%>
+<!-- 				<li class=""><a href="javascript:void(0)" -->
+<!-- 					class="dropdown-toggle"> <i class="menu-icon fa fa-life-ring"></i> -->
+<!-- 						<span class="menu-text"> Model </span> <b -->
+<!-- 						class="arrow fa fa-angle-down"></b> -->
+<!-- 				</a> <b class="arrow"></b> -->
 
-					<ul class="submenu">
+<!-- 					<ul class="submenu"> -->
 
 
-						<li class=""><a
-							href="${pageContext.request.contextPath}/addProductModel"> <i
-								class="menu-icon fa fa-plus purple"></i> Add MOdel
-						</a> <b class="arrow"></b></li>
+<!-- 						<li class=""><a -->
+<%-- 							href="${pageContext.request.contextPath}/addProductModel"> <i --%>
+<!-- 								class="menu-icon fa fa-plus purple"></i> Add MOdel -->
+<!-- 						</a> <b class="arrow"></b></li> -->
 
-						<li class=""><a
-							href="${pageContext.request.contextPath}/listProductModel"> <i
-								class="menu-icon fa fa-list"></i> Model List
-						</a> <b class="arrow"></b></li>
-					</ul></li>
+<!-- 						<li class=""><a -->
+<%-- 							href="${pageContext.request.contextPath}/listProductModel"> <i --%>
+<!-- 								class="menu-icon fa fa-list"></i> Model List -->
+<!-- 						</a> <b class="arrow"></b></li> -->
+<!-- 					</ul></li> -->
 
-			</sec:authorize>
+<%-- 			</sec:authorize> --%>
 
 
 			<sec:authorize access="hasRole('ROLE_ADMIN')">

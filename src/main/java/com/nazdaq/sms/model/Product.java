@@ -54,15 +54,15 @@ public class Product extends CommonModel implements Serializable{
 	private Category category;
 	
 	
-	@ManyToOne
-	@JoinColumn(name = "model_id", nullable = false)
-	private Model model;
+//	@ManyToOne
+//	@JoinColumn(name = "model_id", nullable = false)
+//	private Model model;
 	
 	@Transient
 	private Integer categoryId;
 	
-	@Transient
-	private Integer modelId;
+//	@Transient
+//	private Integer modelId;
 	
 	@Transient
 	private Double weightedAvgPrice;
@@ -73,10 +73,6 @@ public class Product extends CommonModel implements Serializable{
 	
 	@Transient
 	private String totalPriceCurrency;
-	
-	
-
-	
 	
 	
 	public Integer getId() {
@@ -119,13 +115,13 @@ public class Product extends CommonModel implements Serializable{
 		this.category = category;
 	}
 
-	public Model getModel() {
-		return model;
-	}
-
-	public void setModel(Model model) {
-		this.model = model;
-	}
+//	public Model getModel() {
+//		return model;
+//	}
+//
+//	public void setModel(Model model) {
+//		this.model = model;
+//	}
 
 	public Integer getCategoryId() {
 		return categoryId;
@@ -135,13 +131,13 @@ public class Product extends CommonModel implements Serializable{
 		this.categoryId = categoryId;
 	}
 
-	public Integer getModelId() {
-		return modelId;
-	}
-
-	public void setModelId(Integer modelId) {
-		this.modelId = modelId;
-	}
+//	public Integer getModelId() {
+//		return modelId;
+//	}
+//
+//	public void setModelId(Integer modelId) {
+//		this.modelId = modelId;
+//	}
 
 	public Double getWeightedAvgPrice() {
 		return weightedAvgPrice;
@@ -174,8 +170,4 @@ public class Product extends CommonModel implements Serializable{
 	public void setTotalPriceCurrency(String totalPriceCurrency) {
 		this.totalPriceCurrency = totalPriceCurrency;
 	}
-	
-	
-	
-
 }

@@ -19,7 +19,8 @@
 	<div class="col-sm-6">
 		<input id="purchaseQuantity" name="purchaseQuantity"
 			value="${product.purchaseQuantity}" type="number"
-			class="form-control" />
+			class="form-control" onblur="checkQuantityValue()" /> <span
+			id="resQuantity" style="color: red;"></span>
 	</div>
 </div>
 <div class="form-group">
@@ -41,22 +42,6 @@
 	</div>
 </div>
 
-
-<div class="form-group">
-	<label class="col-sm-2 control-label"> <strong>Select
-			Model : </strong>
-	</label>
-	<div class="col-sm-6">
-		<select name="modelId" class="form-control" onchange="runModel()"
-			id="selectedModel">
-			<option value="">Select</option>
-			<c:forEach var="model" items="${modelList}">
-				<option value="${model.id}"
-					${product.model.id == model.id?'selected':''}>${model.name}</option>
-			</c:forEach>
-		</select> <span id="resPMname" style="color: red;"></span>
-	</div>
-</div>
 
 <div class="form-group">
 	<label class="col-sm-2 control-label"> <strong>Select
@@ -144,12 +129,7 @@
 		});
 	});
 
-	//     document.forms['editProductForm'].elements['categoryId'].value = '${product.category.id}';
-	// 	document.forms['editProductForm'].elements['modelId'].value = '${product.model.id}'  
-
-	/* 	
-	 $('form').find('input[name="categoryId"]').val('${product.category.id}');
-	 $('form').find('input[name="modelId"]').val('${product.model.id}'); */
+	
 
 	var productName;
 	var modelId;
@@ -157,34 +137,46 @@
 
 	document.getElementById('name').onblur = function() {
 		productName = document.getElementById('name').value;
+		categoryId = document.getElementById("selectedCategory").value;
+		
+		if ((productName !== null && productName !== undefined && productName.length > 0)
+				&& (categoryId !== null && categoryId !== undefined && categoryId.length > 0)) {
+
+			cehckDuplicateProductCategoryModel(productName, categoryId);
+
+		}
 
 	}
 
-	function runModel() {
-		modelId = document.getElementById("selectedModel").value;
+	// 	function runModel() {
+	// 		modelId = document.getElementById("selectedModel").value;
 
-	}
+	// 	}
 
 	function runCategory() {
 		categoryId = document.getElementById("selectedCategory").value;
 
+		// 		if ((productName !== null && productName !== undefined && productName.length > 0)
+		// 				&& (modelId !== null && modelId !== undefined && modelId.length > 0)
+		// 				&& (categoryId !== null && categoryId !== undefined && categoryId.length > 0)) {
+
+		// 			cehckDuplicateProductCategoryModel(productName, modelId, categoryId);
+
+		// 		} 
+
 		if ((productName !== null && productName !== undefined && productName.length > 0)
-				&& (modelId !== null && modelId !== undefined && modelId.length > 0)
 				&& (categoryId !== null && categoryId !== undefined && categoryId.length > 0)) {
 
-			cehckDuplicateProductCategoryModel(productName, modelId, categoryId);
-
-		} else {
+			cehckDuplicateProductCategoryModel(productName, categoryId);
 
 		}
 
-		console.log(modelId);
+		//console.log(modelId);
 		console.log(productName);
 		console.log(categoryId);
 	}
 
-	function cehckDuplicateProductCategoryModel(productName, modelId,
-			categoryId) {
+	function cehckDuplicateProductCategoryModel(productName, categoryId) {
 		$
 				.ajax({
 					url : "${pageContext.request.contextPath}"
@@ -192,7 +184,6 @@
 					method : 'POST',
 					data : {
 						productName : productName,
-						modelId : modelId,
 						categoryId : categoryId,
 					},
 					dataType : 'json',
@@ -201,17 +192,38 @@
 						if (data) {
 							document.getElementById('submitBtn').disabled = false;
 							document.getElementById('resPname').innerHTML = "";
-							document.getElementById('resPMname').innerHTML = "";
+							// 							document.getElementById('resPMname').innerHTML = "";
 							document.getElementById('resPCname').innerHTML = "";
 						} else {
 							document.getElementById('submitBtn').disabled = true;
 							document.getElementById('resPname').innerHTML = "Same product already exist";
-							document.getElementById('resPMname').innerHTML = "Same product with same model already exist";
+							// 							document.getElementById('resPMname').innerHTML = "Same product with same model already exist";
 							document.getElementById('resPCname').innerHTML = "Same product with same model and category already exist";
 						}
 
 					}
 				})
+
+	}
+
+	function checkQuantityValue() {
+		var quantity = Number(document.getElementById("purchaseQuantity").value);
+
+		if (quantity === parseInt(quantity, 10)) {
+
+			document.getElementById('submitBtn').disabled = false;
+			document.getElementById('resQuantity').innerHTML = "";
+		}
+
+		else {
+			console.log("data is not an integer")
+
+			document.getElementById('submitBtn').disabled = true;
+			document.getElementById('resQuantity').innerHTML = "choose a proper quantiy number";
+
+		}
+
+		//console.log(Number.isInteger(quantity));
 
 	}
 </script>

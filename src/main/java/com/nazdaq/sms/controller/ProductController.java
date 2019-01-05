@@ -81,8 +81,8 @@ public class ProductController {
 			Category category = (Category) commonService.getAnObjectByAnyUniqueColumn("Category", "id",
 					product.getCategoryId().toString());
 
-			Model model = (Model) commonService.getAnObjectByAnyUniqueColumn("Model", "id",
-					product.getModelId().toString());
+//			Model model = (Model) commonService.getAnObjectByAnyUniqueColumn("Model", "id",
+//					product.getModelId().toString());
 			Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
 					product.getId().toString());
 
@@ -105,7 +105,7 @@ public class ProductController {
 			}
 
 			productDb.setCategory(category);
-			productDb.setModel(model);
+			//productDb.setModel(model);
 			productDb.setName(product.getName());
 			productDb.setRemarks(product.getRemarks());
 			productDb.setStatus(product.getStatus());
@@ -139,11 +139,11 @@ public class ProductController {
 
 			Category category = (Category) commonService.getAnObjectByAnyUniqueColumn("Category", "id",
 					product.getCategoryId().toString());
-			Model model = (Model) commonService.getAnObjectByAnyUniqueColumn("Model", "id",
-					product.getModelId().toString());
+//			Model model = (Model) commonService.getAnObjectByAnyUniqueColumn("Model", "id",
+//					product.getModelId().toString());
 
 			product.setCategory(category);
-			product.setModel(model);
+			//product.setModel(model);
 			product.setCreatedBy(loginEmployee);
 			product.setCreatedDate(new Date());
 			commonService.saveOrUpdateModelObjectToDB(product);
@@ -221,11 +221,11 @@ public class ProductController {
 
 		List<Category> theCategories = commonService.getAllObjectList("Category").stream().map(x -> (Category) x)
 				.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
-		List<Model> themodels = commonService.getAllObjectList("Model").stream().map(x -> (Model) x)
-				.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
+//		List<Model> themodels = commonService.getAllObjectList("Model").stream().map(x -> (Model) x)
+//				.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
 
 		theModel.addAttribute("categoryList", theCategories);
-		theModel.addAttribute("modelList", themodels);
+		//theModel.addAttribute("modelList", themodels);
 		theModel.addAttribute("product", product);
 
 		return new ModelAndView("productEdit");
@@ -480,11 +480,13 @@ public class ProductController {
 	public Boolean ajaxDuplicateProductCategoryModelCheck(Principal principal, HttpServletRequest request) {
 
 		String productName = request.getParameter("productName");
-		String modelId = request.getParameter("modelId");
+		//String modelId = request.getParameter("modelId");
 		String categoryId = request.getParameter("categoryId");
 
-		String queryString = "from Product where name = '" + productName + "'" + " and model_id = " + modelId
-				+ " and category_id = " + categoryId;
+//		String queryString = "from Product where name = '" + productName + "'" + " and model_id = " + modelId
+//				+ " and category_id = " + categoryId;
+		
+		String queryString = "from Product where name = '" + productName + "'" + " and category_id = " + categoryId;
 
 		List<Product> productDeliveryLists = (List<Product>) (Object) commonService
 				.getObjectListByHqlQuery(queryString);

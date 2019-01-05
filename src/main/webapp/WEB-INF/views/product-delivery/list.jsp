@@ -26,7 +26,7 @@
 									<th class="text-center">Product Name</th>
 									<th class="text-center">Delivery Quantity</th>
 
-									<th class="text-center">Product Model</th>
+<!-- 									<th class="text-center">Product Model</th> -->
 									<th class="text-center">Product Category</th>
 									<th class="text-center">Action</th>
 								</tr>
@@ -41,7 +41,7 @@
 										<td class="text-center">${productDeliveryList.id}</td>
 										<td class="text-center">${productDeliveryList.product.name}</td>
 										<td class="text-center">${productDeliveryList.quantity}</td>
-										<td class="text-center">${productDeliveryList.product.model.name}</td>
+<%-- 										<td class="text-center">${productDeliveryList.product.model.name}</td> --%>
 										<td class="text-center">${productDeliveryList.product.category.name}</td>
 										<td class="text-center"><a
 											href="updateDeliveryProduct?id=${productDeliveryList.id}"><i
