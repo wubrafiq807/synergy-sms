@@ -24,7 +24,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="202">
+		<band height="200">
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="13" width="159" height="16" uuid="57daab68-2068-4d64-a99a-273c22c1492e"/>
 				<box leftPadding="2"/>
@@ -132,7 +132,7 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="198" y="112" width="317" height="28" uuid="8f8ee7c4-18ec-4b01-867c-39b8d6811c0b"/>
+				<reportElement x="198" y="112" width="317" height="35" uuid="8f8ee7c4-18ec-4b01-867c-39b8d6811c0b"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Cambria" size="8" isBold="false"/>
 					<paragraph firstLineIndent="2"/>
@@ -173,7 +173,7 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<subreport>
-				<reportElement x="0" y="156" width="515" height="44" uuid="3c7bc15d-9f1f-442f-a807-012210fd40a1"/>
+				<reportElement x="0" y="155" width="515" height="44" uuid="3c7bc15d-9f1f-442f-a807-012210fd40a1"/>
 				<subreportParameter name="totalPrice">
 					<subreportParameterExpression><![CDATA[$P{TOTAL_PRICE}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -184,7 +184,7 @@
 				<subreportExpression><![CDATA["report/reqSubReport.jasper"]]></subreportExpression>
 			</subreport>
 			<staticText>
-				<reportElement x="1" y="142" width="515" height="12" uuid="d77ce4a1-55a0-42fe-bb7e-6e2035d98ef5"/>
+				<reportElement x="1" y="141" width="515" height="12" uuid="d77ce4a1-55a0-42fe-bb7e-6e2035d98ef5"/>
 				<box leftPadding="2">
 					<bottomPen lineWidth="0.0"/>
 				</box>

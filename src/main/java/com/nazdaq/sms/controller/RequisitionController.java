@@ -110,41 +110,39 @@ public class RequisitionController implements Constants {
 
 			Requisition requisitionDB = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id",
 					requisition.getId().toString());
-			
-			//final stage section 
-			if(requisitionDB.getSettings().getAuthRole().trim().equals(AUTH_STORE_MANAGER)) {
-				
-				//CREATE HISTORY
-				RequisitionHistory requisitionHistory=new RequisitionHistory();
+
+			// final stage section
+			if (requisitionDB.getSettings().getAuthRole().trim().equals(AUTH_STORE_MANAGER)) {
+
+				// CREATE HISTORY
+				RequisitionHistory requisitionHistory = new RequisitionHistory();
 				requisitionHistory.setCreatedBy(loginEmployee);
 				requisitionHistory.setCreatedDate(new Date());
 				requisitionHistory.setRequisition(requisitionDB);
 				requisitionHistory.setSettings(requisitionDB.getSettings());
 				requisitionHistory.setRemarks(requisition.getRemarks());
-				
+
 				commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
-				
-				
+
 				requisitionDB.setStatus(Integer.parseInt(STATUS_CLOSE));
-				List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings where stage>"+requisitionDB.getSettings().getStage()+" order by stage ASC ")
+				List<Settings> settingsList = commonService.getObjectListByHqlQuery(
+						"from Settings where stage>" + requisitionDB.getSettings().getStage() + " order by stage ASC ")
 						.stream().map(x -> (Settings) x).collect(Collectors.toList());
-				if(!settingsList.isEmpty()) {
+				if (!settingsList.isEmpty()) {
 					requisitionDB.setSettings(settingsList.get(0));
 				}
 				requisitionDB.setModifiedBy(loginEmployee);
 				requisitionDB.setModifiedDate(new Date());
-				
+
 				commonService.saveOrUpdateModelObjectToDB(requisitionDB);
-				
-			}else {
+
+			} else {
 				requisitionDB.setModifiedBy(loginEmployee);
 				requisitionDB.setModifiedDate(new Date());
 				requisitionDB.setPurpose(requisition.getPurpose());
 				requisitionDB.setRemarks(requisition.getRemarks());
 				commonService.saveOrUpdateModelObjectToDB(requisitionDB);
 			}
-			
-			
 
 			List<RequisitionItem> requisitionItems = commonService
 					.getObjectListByAnyColumn("RequisitionItem", "requisition_id", requisitionDB.getId().toString())
@@ -173,7 +171,7 @@ public class RequisitionController implements Constants {
 
 		return new ModelAndView("redirect:/");
 	}
-	
+
 	@RequestMapping(value = "/deleteReq/{id}", method = RequestMethod.GET)
 	public @ResponseBody ModelAndView deleteReq(@ModelAttribute("command") Requisition command, BindingResult result,
 			@PathVariable("id") String id, ModelMap model, RedirectAttributes redirectAttributes, Principal principal,
@@ -181,100 +179,96 @@ public class RequisitionController implements Constants {
 		if (principal == null) {
 			return new ModelAndView("redirect:/login");
 		}
-		Requisition requisitionDB=(Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id", id);
+		Requisition requisitionDB = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id", id);
 		requisitionDB.setStatus(Integer.parseInt(STATUS_DELETE));
 		commonService.saveOrUpdateModelObjectToDB(requisitionDB);
-		List<RequisitionItem> ItemList = commonService
-				.getObjectListByAnyColumn("RequisitionItem", "requisition_id", id).stream()
-				.map(x -> (RequisitionItem) x).collect(Collectors.toList());
+		List<RequisitionItem> ItemList = commonService.getObjectListByAnyColumn("RequisitionItem", "requisition_id", id)
+				.stream().map(x -> (RequisitionItem) x).collect(Collectors.toList());
 		for (RequisitionItem requisitionItem : ItemList) {
 			commonService.deleteAnObjectById("RequisitionItem", requisitionItem.getId());
-			
+
 		}
 
 		return new ModelAndView("redirect:/");
 	}
-	
+
 	@RequestMapping(value = "/approveReq", method = RequestMethod.POST)
-	public @ResponseBody ModelAndView approveReq(HttpServletRequest request, ModelMap model, RedirectAttributes redirectAttributes, Principal principal,
-			HttpSession session) {
+	public @ResponseBody ModelAndView approveReq(HttpServletRequest request, ModelMap model,
+			RedirectAttributes redirectAttributes, Principal principal, HttpSession session) {
 		if (principal == null) {
 			return new ModelAndView("redirect:/login");
 		}
-		Requisition requisitionDB=(Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id", request.getParameter("req_id"));
+		Requisition requisitionDB = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id",
+				request.getParameter("req_id"));
 		Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
-		
-		List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings where stage>"+requisitionDB.getSettings().getStage()+" order by stage ASC ")
+
+		List<Settings> settingsList = commonService
+				.getObjectListByHqlQuery(
+						"from Settings where stage>" + requisitionDB.getSettings().getStage() + " order by stage ASC ")
 				.stream().map(x -> (Settings) x).collect(Collectors.toList());
-		if(!settingsList.isEmpty()) {
-			
-			//CREATE HISTORY
-			RequisitionHistory requisitionHistory=new RequisitionHistory();
+		if (!settingsList.isEmpty()) {
+
+			// CREATE HISTORY
+			RequisitionHistory requisitionHistory = new RequisitionHistory();
 			requisitionHistory.setCreatedBy(loginEmployee);
 			requisitionHistory.setCreatedDate(new Date());
 			requisitionHistory.setRequisition(requisitionDB);
 			requisitionHistory.setSettings(requisitionDB.getSettings());
 			requisitionHistory.setRemarks(request.getParameter("remarks"));
-			
-			//send to next starge
-			if(settingsList.size()==1) {
+
+			// send to next starge
+			if (settingsList.size() == 1) {
 				requisitionDB.setStatus(Integer.parseInt(STATUS_CLOSE));
 			}
 			requisitionDB.setSettings(settingsList.get(0));
 			requisitionDB.setModifiedBy(loginEmployee);
 			requisitionDB.setModifiedDate(new Date());
 			requisitionDB.setRemarks(request.getParameter("remarks"));
-			if(requisitionDB.getStatus().toString().equals(STATUS_REJECT)) {
+			if (requisitionDB.getStatus().toString().equals(STATUS_REJECT)) {
 				requisitionDB.setStatus(Integer.parseInt(STATUS_ACTIVE));
 			}
-			
+
 			commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
 			commonService.saveOrUpdateModelObjectToDB(requisitionDB);
-			
+
 		}
 		return new ModelAndView("redirect:/");
 	}
-		
-		@RequestMapping(value = "/rejectReq", method = RequestMethod.POST)
-		public @ResponseBody ModelAndView rejectReq(HttpServletRequest request, ModelMap model, RedirectAttributes redirectAttributes, Principal principal,
-				HttpSession session) {
-			if (principal == null) {
-				return new ModelAndView("redirect:/login");
-			}
-			Requisition requisitionDB=(Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id", request.getParameter("req_id"));
-			Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
-			
-			List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings  order by stage ASC")
-					.stream().map(x -> (Settings) x).collect(Collectors.toList());
-			
-				
-				//CREATE HISTORY
-				RequisitionHistory requisitionHistory=new RequisitionHistory();
-				requisitionHistory.setCreatedBy(loginEmployee);
-				requisitionHistory.setCreatedDate(new Date());
-				requisitionHistory.setRequisition(requisitionDB);
-				requisitionHistory.setSettings(requisitionDB.getSettings());
-				requisitionHistory.setRemarks(request.getParameter("rejectionReason"));
-				requisitionHistory.setIsRejected(1);
 
+	@RequestMapping(value = "/rejectReq", method = RequestMethod.POST)
+	public @ResponseBody ModelAndView rejectReq(HttpServletRequest request, ModelMap model,
+			RedirectAttributes redirectAttributes, Principal principal, HttpSession session) {
+		if (principal == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		Requisition requisitionDB = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id",
+				request.getParameter("req_id"));
+		Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
 
-				requisitionDB.setSettings(settingsList.get(0));
-				requisitionDB.setModifiedBy(loginEmployee);
-				requisitionDB.setModifiedDate(new Date());
-				requisitionDB.setRejectionReason(request.getParameter("rejectionReason"));
-				requisitionDB.setStatus(Integer.parseInt(STATUS_REJECT));
-				
-				commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
-				commonService.saveOrUpdateModelObjectToDB(requisitionDB);
-				
-		
+		List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings  order by stage ASC")
+				.stream().map(x -> (Settings) x).collect(Collectors.toList());
 
+		// CREATE HISTORY
+		RequisitionHistory requisitionHistory = new RequisitionHistory();
+		requisitionHistory.setCreatedBy(loginEmployee);
+		requisitionHistory.setCreatedDate(new Date());
+		requisitionHistory.setRequisition(requisitionDB);
+		requisitionHistory.setSettings(requisitionDB.getSettings());
+		requisitionHistory.setRemarks(request.getParameter("rejectionReason"));
+		requisitionHistory.setIsRejected(1);
 
+		requisitionDB.setSettings(settingsList.get(0));
+		requisitionDB.setModifiedBy(loginEmployee);
+		requisitionDB.setModifiedDate(new Date());
+		requisitionDB.setRejectionReason(request.getParameter("rejectionReason"));
+		requisitionDB.setStatus(Integer.parseInt(STATUS_REJECT));
+
+		commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
+		commonService.saveOrUpdateModelObjectToDB(requisitionDB);
 
 		return new ModelAndView("redirect:/");
 	}
-	
-	
+
 	@RequestMapping(value = "/editReq/{id}", method = RequestMethod.GET)
 	public @ResponseBody ModelAndView editReq(@ModelAttribute("command") Requisition command, BindingResult result,
 			@PathVariable("id") String id, ModelMap model, RedirectAttributes redirectAttributes, Principal principal,
@@ -302,10 +296,10 @@ public class RequisitionController implements Constants {
 		List<Product> theProducts = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
 				.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
 		theProducts.forEach(x -> x.setWeightedAvgPrice(this.getWeighttedAvgPrice(x.getId())));
-		boolean showStoreManSection=false;
-		
-		if(requisition.getSettings().getAuthRole().trim().equals(AUTH_STORE_MANAGER)) {
-			showStoreManSection=true;
+		boolean showStoreManSection = false;
+
+		if (requisition.getSettings().getAuthRole().trim().equals(AUTH_STORE_MANAGER)) {
+			showStoreManSection = true;
 		}
 		model.put("productList", theProducts);
 
@@ -327,18 +321,21 @@ public class RequisitionController implements Constants {
 			return new ModelAndView("redirect:/login");
 		}
 
-		boolean showAppRjctBtn = false, showInitiatorSection = false,showStoreManSection = false;
+		boolean showAppRjctBtn = false, showInitiatorSection = false, showStoreManSection = false;
 
 		String roleName = commonService.getAuthRoleName();
 
 		Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
 
-		
 		Requisition requisition = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id", id);
+		if (requisition.getId().toString().length() > 1)
+			requisition.setReqNo("0" + requisition.getId());
+		else
+			requisition.setReqNo("00" + requisition.getId());
 
 		if (requisition.getEmployee().getId().toString().equals(loginEmployee.getId().toString())
 				&& requisition.getSettings().getStage().toString().trim().equals("10")) {
-			showInitiatorSection=true;
+			showInitiatorSection = true;
 		}
 
 		List<RequisitionItem> ItemList = commonService
@@ -366,8 +363,8 @@ public class RequisitionController implements Constants {
 		if (requisition.getStatus().toString().equals("3")) {
 			showAppRjctBtn = false;
 		}
-		if(requisition.getSettings().getAuthRole().trim().equals(AUTH_STORE_MANAGER)) {
-			showStoreManSection=true;
+		if (requisition.getSettings().getAuthRole().trim().equals(AUTH_STORE_MANAGER)) {
+			showStoreManSection = true;
 		}
 
 		List<RequisitionHistory> reqHistoryList = commonService

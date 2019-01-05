@@ -348,7 +348,7 @@
 							<c:if test="${!empty requisition.id}">
 								<tr>
 									<th>Req No</th>
-									<td>${requisition.id}</td>
+									<td>${requisition.reqNo}</td>
 								</tr>
 							</c:if>
 

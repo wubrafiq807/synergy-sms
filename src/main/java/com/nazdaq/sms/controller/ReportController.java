@@ -92,7 +92,7 @@ public class ReportController implements Constants {
 			Double totalAmount = wAvg * requisitionItem.getQuantity();
 			totalApproveAmount += totalAmount;
 
-			subReportBean.setProductName(requisitionItem.getProduct().getName());
+			subReportBean.setProductName(requisitionItem.getProduct().getName()+"-"+requisitionItem.getProduct().getCategory().getName());
 			subReportBean.setQuantity(requisitionItem.getQuantity());
 			subReportBean.setPrice(NumberWordConverter.convertDoubleToCurrency(totalAmount));
 			subReportBean.setSinglePrice(NumberWordConverter.convertDoubleToCurrency(wAvg));
@@ -113,7 +113,10 @@ public class ReportController implements Constants {
 				smsAdvanceBean.setApprovedAmount(NumberWordConverter.convertDoubleToCurrency(totalApproveAmount));
 
 				smsAdvanceBean.setReqPurpose(requisition.getPurpose());
-				smsAdvanceBean.setReqNumber("REQ NO:-" + requisition.getId());
+				if(requisition.getId().toString().length()>1)
+				smsAdvanceBean.setReqNumber("REQ NO:-0" + requisition.getId());
+				else
+				smsAdvanceBean.setReqNumber("REQ NO:-00" + requisition.getId());
 
 				smsAdvanceBean.setSubmissionDate(
 						NumberWordConverter.getCustomDateFromDateFormate(requisition.getCreatedDate().toString()));

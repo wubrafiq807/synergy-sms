@@ -49,7 +49,8 @@ public class Requisition extends CommonModel implements Serializable {
 	@Column(name = "rejection_reason")
 	private String rejectionReason;
 	
-	
+	@Transient
+	private String reqNo;
 	
 	@Transient
 	private Integer employee_id;
@@ -100,6 +101,14 @@ public class Requisition extends CommonModel implements Serializable {
 
 	public void setEmployee_id(Integer employee_id) {
 		this.employee_id = employee_id;
+	}
+
+	public String getReqNo() {
+		return reqNo;
+	}
+
+	public void setReqNo(String reqNo) {
+		this.reqNo = reqNo;
 	}
 	
 	

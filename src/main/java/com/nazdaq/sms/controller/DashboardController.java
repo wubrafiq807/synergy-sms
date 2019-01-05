@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import com.nazdaq.sms.model.Employee;
 import com.nazdaq.sms.model.Requisition;
 import com.nazdaq.sms.model.RequisitionHistory;
@@ -61,22 +60,25 @@ public class DashboardController implements Constants {
 						loginEmployee.getId().toString())
 				.stream().map(e -> (Requisition) e).collect(Collectors.toList());
 		List<Requisition> subordinateReqList = commonService
-				.getObjectListByAnyColumnValueListAndOneColumn("Requisition", "status", statusList, "employee.supervisorId",
-						loginEmployee.getPunchId().toString())
+				.getObjectListByAnyColumnValueListAndOneColumn("Requisition", "status", statusList,
+						"employee.supervisorId", loginEmployee.getPunchId().toString())
 				.stream().map(e -> (Requisition) e).collect(Collectors.toList());
-		
+
 		model.put("myreqList", myreqList);
 		model.put("subordinateReqList", subordinateReqList);
-		List<RequisitionHistory> reqCreadtedByConcenrlist=commonService.getObjectListByAnyColumn("RequisitionHistory", "created_by", loginEmployee.getId().toString()).stream().map(x->(RequisitionHistory)x).collect(Collectors.toList());
-		List<RequisitionHistory> reqCreadtedByConcenRejectedList=null;
-		
-		List<RequisitionHistory> reqCreadtedByConcenApprovvedList=null;
-		if(!reqCreadtedByConcenrlist.isEmpty()) {
-			reqCreadtedByConcenRejectedList=reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()==1).collect(Collectors.toList());
-			reqCreadtedByConcenApprovvedList=	reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()!=1).collect(Collectors.toList());
+		List<RequisitionHistory> reqCreadtedByConcenrlist = commonService
+				.getObjectListByAnyColumn("RequisitionHistory", "created_by", loginEmployee.getId().toString()).stream()
+				.map(x -> (RequisitionHistory) x).collect(Collectors.toList());
+		List<RequisitionHistory> reqCreadtedByConcenRejectedList = null;
+
+		List<RequisitionHistory> reqCreadtedByConcenApprovvedList = null;
+		if (!reqCreadtedByConcenrlist.isEmpty()) {
+			reqCreadtedByConcenRejectedList = reqCreadtedByConcenrlist.stream().filter(x -> x.getIsRejected() == 1)
+					.collect(Collectors.toList());
+			reqCreadtedByConcenApprovvedList = reqCreadtedByConcenrlist.stream().filter(x -> x.getIsRejected() != 1)
+					.collect(Collectors.toList());
 		}
-		
-		
+
 		model.put("reqConcenRejectedList", reqCreadtedByConcenRejectedList);
 		model.put("reqConcenApprovvedList", reqCreadtedByConcenApprovvedList);
 		return new ModelAndView("userDashboard", model);
@@ -98,21 +100,30 @@ public class DashboardController implements Constants {
 
 		// Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
 
-		List<Requisition> pendingReqList = commonService.getObjectListByAnyColumn("Requisition", "status", STATUS_ACTIVE)
-				.stream().map(e -> (Requisition) e).collect(Collectors.toList());
-
-		List<Requisition> rejectedReqList = commonService.getObjectListByAnyColumn("Requisition", "status", STATUS_REJECT)
-				.stream().map(e -> (Requisition) e).collect(Collectors.toList());
-
-		approvedReqList = commonService.getObjectListByAnyColumn("Requisition", "status", STATUS_CLOSE).stream().map(e -> (Requisition) e)
+		List<Requisition> pendingReqList = commonService
+				.getObjectListByAnyColumn("Requisition", "status", STATUS_ACTIVE).stream().map(e -> (Requisition) e)
 				.collect(Collectors.toList());
+
+		List<Requisition> rejectedReqList = commonService
+				.getObjectListByAnyColumn("Requisition", "status", STATUS_REJECT).stream().map(e -> (Requisition) e)
+				.collect(Collectors.toList());
+
+		approvedReqList = commonService.getObjectListByAnyColumn("Requisition", "status", STATUS_CLOSE).stream()
+				.map(e -> (Requisition) e).collect(Collectors.toList());
+		approvedReqList.forEach(i -> {
+			if (i.getId().toString().length() > 0)
+				i.setReqNo("0" + i.getId());
+			else
+				i.setReqNo("00" + i.getId());
+
+		});
 		model.put("fiscalYearName", this.getFiscalYearName());
 
 		if (!request.isUserInRole("ROLE_ADMIN") || !request.isUserInRole("ROLE_JOB_ADMIN")) {
 			Collections.reverse(pendingReqList);
 			Collections.reverse(approvedReqList);
 			Collections.reverse(rejectedReqList);
-			
+
 			model.put("pendingReqList", pendingReqList);
 			model.put("approvedReqList", approvedReqList);
 			model.put("rejectedJobList", rejectedReqList);
@@ -134,12 +145,12 @@ public class DashboardController implements Constants {
 
 		String roleName = commonService.getAuthRoleName();
 
-		 Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
+		Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
 
 		// JobSettings js =
 		// (JobSettings)commonService.getAnObjectByAnyUniqueColumn("JobSettings",
 		// "authRole", roleName);
-	String jobSetId = "";
+		String jobSetId = "";
 		List<Settings> jsList = commonService.getObjectListByAnyColumn("Settings", "authRole", roleName).stream()
 				.map(e -> (Settings) e).collect(Collectors.toList());
 		for (Settings jobSettings : jsList) {
@@ -159,19 +170,23 @@ public class DashboardController implements Constants {
 		 * statusList, "jobSetting.id", js.getId().toString()) .stream().map(e ->
 		 * (JobAdvance) e).collect(Collectors.toList());
 		 */
-		
+
 		String hqlQuery = "From Requisition WHERE status in ('" + STATUS_ACTIVE + "', '" + STATUS_CLOSE
 				+ "') AND settings_id in (" + jobSetId + ")";
 		List<Requisition> pendingReqList = commonService.getObjectListByHqlQuery(hqlQuery).stream()
 				.map(e -> (Requisition) e).collect(Collectors.toList());
-		
+
 		Collections.reverse(pendingReqList);
-		
+
 		model.put("pendingReqList", pendingReqList);
-		List<RequisitionHistory> reqCreadtedByConcenrlist=commonService.getObjectListByAnyColumn("RequisitionHistory", "created_by", loginEmployee.getId().toString()).stream().map(x->(RequisitionHistory)x).collect(Collectors.toList());
-		List<RequisitionHistory> reqConcenRejectedList=reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()==1).collect(Collectors.toList());
-		List<RequisitionHistory> reqConcenApprovvedList=reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()!=1).collect(Collectors.toList());
-		
+		List<RequisitionHistory> reqCreadtedByConcenrlist = commonService
+				.getObjectListByAnyColumn("RequisitionHistory", "created_by", loginEmployee.getId().toString()).stream()
+				.map(x -> (RequisitionHistory) x).collect(Collectors.toList());
+		List<RequisitionHistory> reqConcenRejectedList = reqCreadtedByConcenrlist.stream()
+				.filter(x -> x.getIsRejected() == 1).collect(Collectors.toList());
+		List<RequisitionHistory> reqConcenApprovvedList = reqCreadtedByConcenrlist.stream()
+				.filter(x -> x.getIsRejected() != 1).collect(Collectors.toList());
+
 		model.put("reqConcenRejectedList", reqConcenRejectedList);
 		model.put("reqConcenApprovvedList", reqConcenApprovvedList);
 		return new ModelAndView("concernDashboard", model);
