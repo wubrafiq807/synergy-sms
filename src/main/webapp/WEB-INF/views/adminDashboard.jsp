@@ -196,17 +196,20 @@
 												
 												<td class="text-center">${approvedReq.employee.name}</td>
 												<td class="text-center">${approvedReq.purpose}</td>
-												<td class="text-center"><c:if
+												<td class="text-center">
+												<c:if
 														test="${pendingReq.status == '1'}">
 														<span class="btn btn-success btn-xs com_status">
 															Active </span>
-													</c:if> <c:if test="${pendingReq.status == '2'}">
+													</c:if>
+													 <c:if test="${pendingReq.status == '2'}">
 														<span class="btn btn-warning btn-xs com_status">
 															Rejected</span>
 													</c:if> <c:if test="${pendingReq.status == '3'}">
 														<span class="btn btn-info btn-xs com_status">
 															Approved </span>
-													</c:if></td>
+													</c:if>
+													</td>
 												<td class="text-center"><span style="width: 241px"
 													class="${approvedReq.settings.btnClass} ">
 														${approvedReq.settings.viewText} </span></td>
