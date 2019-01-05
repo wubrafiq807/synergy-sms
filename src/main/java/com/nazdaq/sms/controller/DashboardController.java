@@ -72,8 +72,8 @@ public class DashboardController implements Constants {
 		
 		List<RequisitionHistory> reqCreadtedByConcenApprovvedList=null;
 		if(!reqCreadtedByConcenrlist.isEmpty()) {
-			reqCreadtedByConcenRejectedList=reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()!=1).collect(Collectors.toList());
-			reqCreadtedByConcenApprovvedList=	reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()==1).collect(Collectors.toList());
+			reqCreadtedByConcenRejectedList=reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()==1).collect(Collectors.toList());
+			reqCreadtedByConcenApprovvedList=	reqCreadtedByConcenrlist.stream().filter(x->x.getIsRejected()!=1).collect(Collectors.toList());
 		}
 		
 		

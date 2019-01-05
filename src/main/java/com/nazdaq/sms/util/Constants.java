@@ -9,7 +9,7 @@ public interface Constants {
 	public static final String STATUS_CLOSE = "3";	
 	//Auth Role 
 	
-	public static final String AUTH_COO = "ROLE_COO";	
+	public static final String AUTH_STORE_MANAGER = "ROLE_STORE_MANAGER";	
 	public static final String AUTH_COO_PA = "ROLE_COO_PA";	
 	public static final String AUTH_COA = "ROLE_ACC_COA";	
 	public static final String AUTH_ACC_FIN = "ROLE_ACC_FIN";	
