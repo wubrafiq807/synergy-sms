@@ -4,30 +4,22 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="amountInword" class="java.lang.String"/>
-	<parameter name="Reason" class="java.lang.String"/>
-
-    <field name="reqNumber" class="java.lang.String"/>
+	<field name="reqNumber" class="java.lang.String"/>
 	<field name="submissionDate" class="java.lang.String"/>
 	<field name="employeeName" class="java.lang.String"/>
 	<field name="employeeId" class="java.lang.String"/>
 	<field name="employeeDesignation" class="java.lang.String"/>
 	<field name="approvedAmount" class="java.lang.String"/>
-	<field name="dueAmountDate" class="java.lang.String"/>
 	<field name="reqPurpose" class="java.lang.String"/>
-	<field name="fileName" class="java.lang.String"/>
 	<field name="buttontext" class="java.lang.String"/>
-	<field name="amount" class="java.lang.String"/>
-	<field name="amountText" class="java.lang.String"/>
+	
+	
 	<field name="acttionBy" class="java.lang.String"/>
 	<field name="actionedDate" class="java.lang.String"/>
 	<field name="comments" class="java.lang.String"/>
-	<field name="reqReason" class="java.lang.String"/>
 	<field name="stagename" class="java.lang.String"/>
 	<field name="status" class="java.lang.String"/>
 	<field name="actionedDateText" class="java.lang.String"/>
-	<field name="amountInWord" class="java.lang.String"/>
-
-
 	<background>
 		<band splitType="Stretch"/>
 	</background>

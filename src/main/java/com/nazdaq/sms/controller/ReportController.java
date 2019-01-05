@@ -102,7 +102,8 @@ public class ReportController implements Constants {
 
 				smsAdvanceBean.setApprovedAmount(NumberWordConverter.convertDoubleToCurrency(totalApproveAmount));
 
-				smsAdvanceBean.setAmountInWord(EnglishNumberToWords.convert(Math.round(totalApproveAmount)));
+				
+				
 				smsAdvanceBean.setReqPurpose(requisition.getPurpose());
 				smsAdvanceBean.setReqNumber("REQ:" + requisition.getEmployee().getId());
 
@@ -141,6 +142,7 @@ public class ReportController implements Constants {
 			jRdataSource = new JRBeanCollectionDataSource(smsAdvanceBeans, false);
 
 			params.put("datasource", jRdataSource);
+			params.put("amountInword",EnglishNumberToWords.convert(Math.round(totalApproveAmount)));
 
 			// prepare report first for one
 			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
