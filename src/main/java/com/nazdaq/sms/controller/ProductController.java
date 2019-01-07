@@ -85,19 +85,22 @@ public class ProductController {
 //					product.getModelId().toString());
 			Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
 					product.getId().toString());
+			Integer totalQuantity=product.getPurchaseQuantity()+product.getVipPurchaseQuantity();
+			Integer totalQuantityDB=productDb.getPurchaseQuantity()+productDb.getVipPurchaseQuantity();
 
-			if (product.getPurchaseQuantity() != productDb.getPurchaseQuantity()) {
+			if (totalQuantity != totalQuantityDB) {
 
 				// UPDATING THE PRODUCT QUANTITY TABLE
 
-				stock.setQuantity(stock.getQuantity() + product.getPurchaseQuantity());
+				stock.setQuantity(product.getPurchaseQuantity());
+				stock.setVipQuantity(product.getVipPurchaseQuantity());
 				commonService.saveOrUpdateModelObjectToDB(stock);
 
 				// SAVING NEW DATA TO PRODUCT RECIVE TABLE
 
 				ProductRecive productRecive = new ProductRecive();
 				productRecive.setProduct(product);
-				productRecive.setQuantity(product.getPurchaseQuantity());
+				productRecive.setQuantity(totalQuantity);
 				productRecive.setModifiedBy(loginEmployee);
 				productRecive.setModifiedDate(new Date());
 				commonService.saveOrUpdateModelObjectToDB(productRecive);
@@ -112,6 +115,7 @@ public class ProductController {
 			productDb.setPrice(product.getPrice());
 			productDb.setDescription(product.getDescription());
 			productDb.setPurchaseQuantity(product.getPurchaseQuantity());
+			productDb.setVipPurchaseQuantity(product.getVipPurchaseQuantity());
 			productDb.setModifiedDate(new Date());
 			productDb.setModifiedBy(loginEmployee);
 			commonService.saveOrUpdateModelObjectToDB(productDb);
@@ -122,13 +126,13 @@ public class ProductController {
 					.stream().map(x -> (ProductPriceHistory) x).collect(Collectors.toList());
 			if (!priceHistories.isEmpty()) {
 				if (product.getPrice() != priceHistories.get(0).getPrice()
-						|| product.getPurchaseQuantity() != priceHistories.get(0).getPurchaseQuantity()) {
+						|| totalQuantity != priceHistories.get(0).getPurchaseQuantity()) {
 					ProductPriceHistory productPriceHistory = new ProductPriceHistory();
 					productPriceHistory.setProduct(product);
 					productPriceHistory.setPrice(product.getPrice());
 					productPriceHistory.setCreatedBy(loginEmployee);
 					productPriceHistory.setCreatedDate(new Date());
-					productPriceHistory.setPurchaseQuantity(product.getPurchaseQuantity());
+					productPriceHistory.setPurchaseQuantity(product.getPurchaseQuantity()+product.getVipPurchaseQuantity());
 					commonService.saveOrUpdateModelObjectToDB(productPriceHistory);
 				}
 			}
@@ -153,7 +157,8 @@ public class ProductController {
 			ProductPriceHistory productPriceHistory = new ProductPriceHistory();
 			productPriceHistory.setProduct(product);
 			productPriceHistory.setPrice(product.getPrice());
-			productPriceHistory.setPurchaseQuantity(product.getPurchaseQuantity());
+			
+			productPriceHistory.setPurchaseQuantity(product.getPurchaseQuantity()+product.getVipPurchaseQuantity());
 			productPriceHistory.setCreatedBy(loginEmployee);
 			productPriceHistory.setCreatedDate(new Date());
 			commonService.saveOrUpdateModelObjectToDB(productPriceHistory);
@@ -163,6 +168,7 @@ public class ProductController {
 			Stock stock = new Stock();
 			stock.setProduct(product);
 			stock.setQuantity(product.getPurchaseQuantity());
+			stock.setVipQuantity(product.getVipPurchaseQuantity());
 			stock.setCreatedBy(loginEmployee);
 			stock.setCreatedDate(new Date());
 			commonService.saveOrUpdateModelObjectToDB(stock);
@@ -171,7 +177,7 @@ public class ProductController {
 
 			ProductRecive productRecive = new ProductRecive();
 			productRecive.setProduct(product);
-			productRecive.setQuantity(product.getPurchaseQuantity());
+			productRecive.setQuantity(product.getPurchaseQuantity()+product.getVipPurchaseQuantity());
 			productRecive.setCreatedBy(loginEmployee);
 			productRecive.setCreatedDate(new Date());
 			commonService.saveOrUpdateModelObjectToDB(productRecive);
@@ -203,8 +209,12 @@ public class ProductController {
 
 		List<Product> products = (List<Product>) (Object) commonService.getAllObjectList("Product").stream()
 				.map(x -> (Product) x).filter(x -> x.getStatus() != 2).collect(Collectors.toList());
-		products.forEach(x -> x.setWeightedAvgPriceCurrency(
-				NumberWordConverter.convertDoubleToCurrency(this.getWeighttedAvgPrice(x.getId()))));
+		products.forEach(x ->{
+			x.setWeightedAvgPriceCurrency(
+					NumberWordConverter.convertDoubleToCurrency(this.getWeighttedAvgPrice(x.getId())));
+			if(x.getVipPurchaseQuantity()!=null)
+			x.setPurchaseQuantity(x.getPurchaseQuantity()+x.getVipPurchaseQuantity());
+		});
 
 		theModel.addAttribute("products", products);
 

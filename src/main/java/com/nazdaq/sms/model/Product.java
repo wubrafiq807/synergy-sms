@@ -48,6 +48,9 @@ public class Product extends CommonModel implements Serializable{
 	@Column(name = "purchase_quantity")
 	private Integer purchaseQuantity;
 	
+	@Column(name = "purchase_quantity_vip")
+	private Integer vipPurchaseQuantity;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "category_id", nullable = false)
@@ -170,4 +173,14 @@ public class Product extends CommonModel implements Serializable{
 	public void setTotalPriceCurrency(String totalPriceCurrency) {
 		this.totalPriceCurrency = totalPriceCurrency;
 	}
+
+	public Integer getVipPurchaseQuantity() {
+		return vipPurchaseQuantity;
+	}
+
+	public void setVipPurchaseQuantity(Integer vipPurchaseQuantity) {
+		this.vipPurchaseQuantity = vipPurchaseQuantity;
+	}
+	
+	
 }

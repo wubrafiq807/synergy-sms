@@ -23,6 +23,19 @@
 			id="resQuantity" style="color: red;"></span>
 	</div>
 </div>
+
+<div class="form-group">
+	<label for="purchaseQuantity" class="col-sm-2 control-label"> <strong>VIP Purchase
+			Quantity : </strong>
+	</label>
+	<div class="col-sm-6">
+		<input id="vipPurchaseQuantity" name="vipPurchaseQuantity"
+			value="${product.vipPurchaseQuantity}" type="number"
+			class="form-control" onblur="checkVIPQuantityValue()" /> <span
+			id="resVIPQuantity" style="color: red;"></span>
+	</div>
+</div>
+
 <div class="form-group">
 	<label for="price" class="col-sm-2 control-label"> <strong>Price
 			: </strong>
@@ -118,6 +131,7 @@
 				price : "required",
 				categoryId : "required",
 				modelId : "required",
+				purchaseQuantity:"required"
 
 			},
 
@@ -226,6 +240,28 @@
 		//console.log(Number.isInteger(quantity));
 
 	}
+	
+	function checkVIPQuantityValue() {
+		var quantity = Number(document.getElementById("vipPurchaseQuantity").value);
+
+		if (quantity === parseInt(quantity, 10)) {
+
+			document.getElementById('submitBtn').disabled = false;
+			document.getElementById('resVIPQuantity').innerHTML = "";
+		}
+
+		else {
+			console.log("data is not an integer")
+
+			document.getElementById('submitBtn').disabled = true;
+			document.getElementById('resVIPQuantity').innerHTML = "choose a proper quantiy number";
+
+		}
+
+		//console.log(Number.isInteger(quantity));
+
+	}
+	
 </script>
 
 

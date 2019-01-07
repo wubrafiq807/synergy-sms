@@ -39,6 +39,9 @@ public class Stock extends CommonModel implements Serializable {
 	@Column(name = "quantity")
 	private Integer quantity;
 	
+	@Column(name = "vip_quantity")
+	private Integer vipQuantity;
+	
 	@Transient
 	private Integer productId;
 
@@ -73,7 +76,15 @@ public class Stock extends CommonModel implements Serializable {
 	public void setProductId(Integer productId) {
 		this.productId = productId;
 	}
-	
+
+	public Integer getVipQuantity() {
+		return vipQuantity;
+	}
+
+	public void setVipQuantity(Integer vipQuantity) {
+		this.vipQuantity = vipQuantity;
+	}
+	 
 	
 
 }

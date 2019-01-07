@@ -20,6 +20,7 @@
 									<th class="text-center">ID</th>
 									<th class="text-center">Product Name</th>
 									<th class="text-center">Stock Quantity</th>
+									<th class="text-center">VIP Stock Quantity</th>
 
 <!-- 									<th class="text-center">Product Model</th> -->
 									<th class="text-center">Product Category</th>
@@ -34,6 +35,7 @@
 										<td class="text-center">${stock.id}</td>
 										<td class="text-center">${stock.product.name}</td>
 										<td class="text-center">${stock.quantity}</td>
+										<td class="text-center">${stock.vipQuantity}</td>
 <%-- 										<td class="text-center">${stock.product.model.name}</td> --%>
 										<td class="text-center">${stock.product.category.name}</td>
 									</tr>
