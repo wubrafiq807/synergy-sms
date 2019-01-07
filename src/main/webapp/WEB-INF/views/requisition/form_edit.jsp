@@ -1,49 +1,54 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <input id="id" name="id" value="${requisition.id}" type="hidden"
 	class="form-control" />
+
+<input id="listSize" name="list_size" value="${fn:length(productList)}"
+	 class="form-control" type="hidden" />
 <style>
 .price_width, .price_com {
 	width: 128px;
 }
 </style>
 <c:if test="${showStoreManSection}">
-<div class="form-group">
-	<label for="purpose" class="col-sm-2 control-label"> <strong>Purpose
-			: </strong>
-	</label>
-	<div class="col-sm-8">
-		<textarea class="form-control" id="purpose" name="purpose" readonly="readonly">${requisition.purpose}</textarea>
+	<div class="form-group">
+		<label for="purpose" class="col-sm-2 control-label"> <strong>Purpose
+				: </strong>
+		</label>
+		<div class="col-sm-8">
+			<textarea class="form-control" id="purpose" name="purpose"
+				readonly="readonly">${requisition.purpose}</textarea>
+		</div>
 	</div>
-</div>
-<div class="form-group">
-	<label for="remarks" class="col-sm-2 control-label"> <strong>Remarks
-			: </strong>
-	</label>
-	<div class="col-sm-8">
-		<textarea class="form-control" id="remarks" name="remarks"></textarea>
+	<div class="form-group">
+		<label for="remarks" class="col-sm-2 control-label"> <strong>Remarks
+				: </strong>
+		</label>
+		<div class="col-sm-8">
+			<textarea class="form-control" id="remarks" name="remarks"></textarea>
+		</div>
 	</div>
-</div>
 </c:if>
 <c:if test="${!showStoreManSection}">
 
-<div class="form-group">
-	<label for="purpose" class="col-sm-2 control-label"> <strong>Purpose
-			: </strong>
-	</label>
-	<div class="col-sm-8">
-		<textarea class="form-control" id="purpose" name="purpose">${requisition.purpose}</textarea>
+	<div class="form-group">
+		<label for="purpose" class="col-sm-2 control-label"> <strong>Purpose
+				: </strong>
+		</label>
+		<div class="col-sm-8">
+			<textarea class="form-control" id="purpose" name="purpose">${requisition.purpose}</textarea>
+		</div>
 	</div>
-</div>
 
 
-<div class="form-group">
-	<label for="remarks" class="col-sm-2 control-label"> <strong>Remarks
-			: </strong>
-	</label>
-	<div class="col-sm-8">
-		<textarea class="form-control" id="remarks" name="remarks">${requisition.remarks}</textarea>
+	<div class="form-group">
+		<label for="remarks" class="col-sm-2 control-label"> <strong>Remarks
+				: </strong>
+		</label>
+		<div class="col-sm-8">
+			<textarea class="form-control" id="remarks" name="remarks">${requisition.remarks}</textarea>
+		</div>
 	</div>
-</div>
 
 </c:if>
 
@@ -51,39 +56,42 @@
 
 <div class="form-group" id="boxContainer">
 	<div class="col-sm-8 col-sm-offset-2">
-<c:forEach var="product" items="${productList}">
+		<c:forEach var="product" items="${productList}">
 
-						<input type="hidden" id="product_${product.id}"
-							value="${product.weightedAvgPrice}" />
-					</c:forEach>
+			<input type="hidden" id="product_${product.id}"
+				value="${product.weightedAvgPrice}" />
+		</c:forEach>
 		<table class="table table-bordered" id="boxTable">
 			<c:forEach var="item" items="${ItemList}" varStatus="loop">
 
-
-
 				<tr id="boxRequistion${loop.index+1}">
 					<th><label for="tempProductId">Product:</label> <select
-						id="tempProductId${loop.index+1}" name="tempProductId_${loop.index+1}" onchange="run('${loop.index+1}')">
+						id="tempProductId${loop.index+1}"
+						name="tempProductId_${loop.index+1}"
+						onchange="run('${loop.index+1}')">
 							<option value="">Select One</option>
 							<c:forEach var="product" items="${productList}">
-								<option value="${product.id}" ${item.product.id eq product.id?'selected':'' }>${product.name}</option>
+								<option value="${product.id}"
+									${item.product.id eq product.id?'selected':'' }>${product.name}</option>
 
 							</c:forEach>
 					</select></th>
-					
+
 					<th><label for="quantity">Quantity:</label> <input required
-						id="quantity1" name="quantity_${loop.index+1}" value="${item.quantity}" type="number"
-						onchange="totalPrice('1')"></th>
+						id="quantity${loop.index+1}" name="quantity_${loop.index+1}"
+						value="${item.quantity}" type="number"
+						onchange="totalPrice('${loop.index+1}')"> <br> <span
+						id="res${loop.index+1}" style="color: red;"></span></th>
 
 					<th><label for="price" style="margin-left: 36px;">Price:</label>
-						<input id="price${loop.index+1}" class="price_com" name="price" value="${item.totalPrice}"
-						type="number"  readonly></th>
-					<th>
-					<c:if test="${loop.index ne '0'}">
-					<button id="btnDelete-${loop.index+1}" class="btn btn-danger" onclick="myFunction(this)"><i class="fa fa-times" aria-hidden="true"></i></button>
-					</c:if>
-					
-					</th>
+						<input id="price${loop.index+1}" class="price_com" name="price"
+						value="${item.totalPrice}" type="number" readonly></th>
+					<th><c:if test="${loop.index ne '0'}">
+							<button id="btnDelete-${loop.index+1}" class="btn btn-danger"
+								onclick="myFunction(this)">
+								<i class="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</c:if></th>
 				</tr>
 			</c:forEach>
 			<tfoot>
@@ -91,8 +99,8 @@
 					<td></td>
 					<td></td>
 					<td><label for="total">Total Price:</label> <input
-						id="priceTotal" class="price_width" value="${totalPriceMain}" type="number"
-						 readonly></td>
+						id="priceTotal" class="price_width" value="${totalPriceMain}"
+						type="number" readonly></td>
 					<td><a href="" class="btn btn-primary" id="addRow"> <i
 							class="fa fa-plus" aria-hidden="true"></i>
 					</a></td>
@@ -133,7 +141,6 @@
 			rules : {
 
 				purpose : "required",
-				
 
 			},
 			submitHandler : function(form) {
@@ -144,7 +151,13 @@
 
 	$(function() {
 
-		var count = ${count+1};
+		// 		var count = $
+		// 		{
+		// 			count + 1
+		// 		}
+		// 		;
+
+		var count = document.getElementById('listSize').value;
 
 		document
 				.getElementById("addRow")
@@ -166,7 +179,9 @@
 									+ count
 									+ '" value="" type="number" onblur="totalPrice('
 									+ count
-									+ ')"></th><th><label style="margin-left: 36px;" for="price">Price:</label> <input  id="price' + count + '" name="price" class="price_com" value="" type="number" step=0.01 readonly></th><th><button id="btnDelete-'
+									+ ')"><br><span id="res'
+									+ count
+									+ '" style="color: red;"></span></th><th><label style="margin-left: 36px;" for="price">Price:</label> <input  id="price' + count + '" name="price" class="price_com" value="" type="number" step=0.01 readonly></th><th><button id="btnDelete-'
 									+ count
 									+ '" class="btn btn-danger" onclick="myFunction(this)"><i class="fa fa-times" aria-hidden="true"></i></button></th></tr>'
 
@@ -184,6 +199,21 @@
 
 	function totalPrice(z) {
 
+		var domProduct = document.getElementById("tempProductId" + z);
+		var domQuantity = document.getElementById("quantity" + z);
+		var productValue = domProduct.options[domProduct.selectedIndex].value;
+		var quantityValue = domQuantity.value;
+
+		if ((productValue !== null && productValue !== undefined && productValue.length > 0)
+				&& (quantityValue !== null && quantityValue !== undefined && quantityValue.length > 0)) {
+
+			console.log("product value : " + productValue + ' quantity : '
+					+ quantityValue);
+
+			cehckProductQuantity(productValue, quantityValue, z);
+
+		}
+
 		var productQuantity = $('#quantity' + z).val();
 		var productID = $('#tempProductId' + z).val();
 		var price = $('#product_' + productID).val() * productQuantity;
@@ -199,6 +229,55 @@
 
 		document.getElementById("priceTotal").value = total;
 		console.log(total);
+	}
+
+	var statusCheckArray = [];
+
+	function cehckProductQuantity(productValue, quantityValue, id) {
+		$
+				.ajax({
+					url : "${pageContext.request.contextPath}"
+							+ "/ajaxProductQuantityCheckForRequisition",
+					method : 'POST',
+					data : {
+						productValue : productValue,
+						quantityValue : quantityValue
+					},
+					dataType : 'json',
+					success : function(data) {
+
+						if (data) {
+							if (statusCheckArray.indexOf(data.toString() + id) === -1) {
+								statusCheckArray.push(data.toString() + id);
+							}
+							console.log(statusCheckArray);
+
+							document.getElementById('res' + id).innerHTML = "Quantity out of stock";
+							document.getElementById('submitBtn').disabled = true;
+						}
+
+						else {
+
+							var index = statusCheckArray.indexOf("true" + id);
+							if (index > -1) {
+								statusCheckArray.splice(index, 1);
+							}
+
+							console.log(statusCheckArray);
+
+							if (statusCheckArray.length === 0) {
+								document.getElementById('res' + id).innerHTML = "";
+								document.getElementById('submitBtn').disabled = false;
+							} else {
+								document.getElementById('res' + id).innerHTML = "";
+								document.getElementById('submitBtn').disabled = true;
+							}
+
+						}
+
+					}
+				})
+
 	}
 
 	function numberformate(str) {

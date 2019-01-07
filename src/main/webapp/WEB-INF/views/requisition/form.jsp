@@ -46,7 +46,8 @@
 				</c:forEach>
 				<th><label for="quantity">Quantity:</label> <input required
 					id="quantity1" name="quantity_1" value="" type="number"
-					onchange="totalPrice('1')"></th>
+					onchange="totalPrice('1')"> <br> <span id="res1"
+					style="color: red;"></span></th>
 
 				<th><label for="price" style="margin-left: 36px;">Price:</label>
 					<input id="price1" class="price_com" name="price" value=""
@@ -75,6 +76,7 @@
 
 
 <script>
+
 	$(function() {
 		var month = (new Date()).getMonth() + 1;
 		var year = (new Date()).getFullYear();
@@ -134,7 +136,9 @@
 									+ count
 									+ '" value="" type="number" onblur="totalPrice('
 									+ count
-									+ ')"></th><th><label style="margin-left: 36px;" for="price">Price:</label> <input  id="price' + count + '" name="price" class="price_com" value="" type="number" step=0.01 readonly></th><th><button id="btnDelete-'
+									+ ')"><br><span id="res'
+									+ count
+									+ '" style="color: red;"></span></th><th><label style="margin-left: 36px;" for="price">Price:</label> <input  id="price' + count + '" name="price" class="price_com" value="" type="number" step=0.01 readonly></th><th><button id="btnDelete-'
 									+ count
 									+ '" class="btn btn-danger" onclick="myFunction(this)"><i class="fa fa-times" aria-hidden="true"></i></button></th></tr>'
 
@@ -147,10 +151,27 @@
 	});
 
 	function run(i) {
+		//console.log(i);
+
 		totalPrice(i);
 	}
 
 	function totalPrice(z) {
+
+		var domProduct = document.getElementById("tempProductId" + z);
+		var domQuantity = document.getElementById("quantity" + z);
+		var productValue = domProduct.options[domProduct.selectedIndex].value;
+		var quantityValue = domQuantity.value;
+
+		if ((productValue !== null && productValue !== undefined && productValue.length > 0)
+				&& (quantityValue !== null && quantityValue !== undefined && quantityValue.length > 0)) {
+
+			console.log("product value : " + productValue + ' quantity : '
+					+ quantityValue);
+
+			cehckProductQuantity(productValue, quantityValue, z);
+
+		}
 
 		var productQuantity = $('#quantity' + z).val();
 		var productID = $('#tempProductId' + z).val();
@@ -166,7 +187,58 @@
 		});
 
 		document.getElementById("priceTotal").value = total;
-		console.log(total);
+		//console.log(total);
+	}
+	
+	var statusCheckArray = [];
+
+	function cehckProductQuantity(productValue, quantityValue, id) {
+		$
+				.ajax({
+					url : "${pageContext.request.contextPath}"
+							+ "/ajaxProductQuantityCheckForRequisition",
+					method : 'POST',
+					data : {
+						productValue : productValue,
+						quantityValue : quantityValue
+					},
+					dataType : 'json',
+					success : function(data) {
+
+						if (data) {
+							if(statusCheckArray.indexOf(data.toString() + id) === -1){
+								statusCheckArray.push(data.toString() + id);
+							}							
+							console.log(statusCheckArray);
+							
+							document.getElementById('res' + id).innerHTML = "Quantity out of stock";
+							document.getElementById('submitBtn').disabled = true;
+						}
+
+						else {
+							
+							
+							var index = statusCheckArray.indexOf("true" + id);
+							if (index > -1) {
+								statusCheckArray.splice(index, 1);
+							}
+							
+							console.log(statusCheckArray);
+						
+							if(statusCheckArray.length === 0){
+								document.getElementById('res' + id).innerHTML = "";
+								document.getElementById('submitBtn').disabled = false;
+							}else{
+								document.getElementById('res' + id).innerHTML = "";
+								document.getElementById('submitBtn').disabled = true;
+							}
+							
+							
+						}
+
+					}
+				})
+
 	}
 
 	function numberformate(str) {
@@ -194,5 +266,4 @@
 		var i = r.parentNode.parentNode.rowIndex;
 		document.getElementById("boxTable").deleteRow(i);
 	}
-
 </script>

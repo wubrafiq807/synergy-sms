@@ -395,4 +395,20 @@ public class RequisitionController implements Constants {
 		return new ModelAndView("showReq", model);
 	}
 
+	@RequestMapping(value = "/ajaxProductQuantityCheckForRequisition", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean ajaxProductQuantityCheckForRequisition(Principal principal, HttpServletRequest request) {
+
+		String productValue = request.getParameter("productValue");
+		int quantityValue = Integer.parseInt(request.getParameter("quantityValue"));
+		Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id", productValue);
+
+		if (quantityValue > stock.getQuantity()) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
 }

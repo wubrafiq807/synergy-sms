@@ -106,9 +106,7 @@
 
 			cehckProductData(productId, deliveryQuantity);
 
-		} else {
-
-		}
+		} 
 
 	};
 
