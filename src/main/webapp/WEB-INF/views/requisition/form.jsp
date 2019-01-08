@@ -35,10 +35,9 @@
 					id="tempProductId1" name="tempProductId_1" onchange="run('1')">
 						<option value="">Select One</option>
 						<c:forEach var="product" items="${productList}">
-							<option value="${product.id}">${product.name}</option>
-
+							<option class="option_${product.id}" value="${product.id}">${product.name}</option>
 						</c:forEach>
-				</select></th>
+				</select> <br> <span id="selectRes1" style="color: red;"></span></th>
 				<c:forEach var="product" items="${productList}">
 
 					<input type="hidden" id="product_${product.id}"
@@ -76,7 +75,6 @@
 
 
 <script>
-
 	$(function() {
 		var month = (new Date()).getMonth() + 1;
 		var year = (new Date()).getFullYear();
@@ -130,7 +128,9 @@
 									+ count
 									+ '" onchange="run('
 									+ count
-									+ ')"><option value="">Select One</option><c:forEach var="product" items="${productList}"><option value="${product.id}">${product.name}</option></c:forEach></select></th><th><label for="quantity">Quantity:</label> <input required id="quantity'
+									+ ')"><option value="">Select One</option><c:forEach var="product" items="${productList}"><option class="option_${product.id}" value="${product.id}">${product.name}</option></c:forEach></select><br> <span id="selectRes'
+									+ count
+									+ '" style="color: red;"></span></th><th><label for="quantity">Quantity:</label> <input required id="quantity'
 									+ count
 									+ '" name="quantity_'
 									+ count
@@ -150,10 +150,55 @@
 
 	});
 
+	var selectedProductId = [];
+
 	function run(i) {
-		//console.log(i);
+
+		selectedProductId[i - 1] = Number(document
+				.getElementById("tempProductId" + i).value);
+
+		var count1 = count2 = 0;
+		for (var t = 0; t < selectedProductId.length; t++) {
+
+			var x = selectedProductId[t];
+			if (Number(document.getElementById("tempProductId" + i).value) == x) {
+				count1++;
+			}
+
+		}
+
+		if (count1 >= 2) {
+			document.getElementById('selectRes' + i).innerHTML = "Product already selected";
+			document.getElementById('submitBtn').disabled = true;
+
+		} else {
+			document.getElementById('selectRes' + i).innerHTML = "";
+			document.getElementById('submitBtn').disabled = false;
+		}
+
+		console.log(selectedProductId);
+		console.log("count1 : " + count1);
+
+		var checkResult = calculateDuplication(selectedProductId);
+
+		if (checkResult) {
+			document.getElementById('submitBtn').disabled = true;
+		}else{
+			document.getElementById('submitBtn').disabled = false;
+		}
 
 		totalPrice(i);
+	}
+
+	var calculateDuplication = function(a) {
+		for (var i = 0; i <= a.length; i++) {
+			for (var j = i; j <= a.length; j++) {
+				if (i != j && a[i] == a[j]) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	function totalPrice(z) {
@@ -189,7 +234,7 @@
 		document.getElementById("priceTotal").value = total;
 		//console.log(total);
 	}
-	
+
 	var statusCheckArray = [];
 
 	function cehckProductQuantity(productValue, quantityValue, id) {
@@ -206,39 +251,34 @@
 					success : function(data) {
 
 						if (data) {
-							if(statusCheckArray.indexOf(data.toString() + id) === -1){
+							if (statusCheckArray.indexOf(data.toString() + id) === -1) {
 								statusCheckArray.push(data.toString() + id);
-							}							
+							}
 							console.log(statusCheckArray);
-							
+
 							document.getElementById('res' + id).innerHTML = "Quantity out of stock";
 							document.getElementById('submitBtn').disabled = true;
 						}
 
 						else {
-							
-							
+
 							var index = statusCheckArray.indexOf("true" + id);
 							if (index > -1) {
 								statusCheckArray.splice(index, 1);
 							}
-							
+
 							console.log(statusCheckArray);
-						
-							if(statusCheckArray.length === 0){
+
+							if (statusCheckArray.length === 0) {
 								document.getElementById('res' + id).innerHTML = "";
 								document.getElementById('submitBtn').disabled = false;
-							}else{
+							} else {
 								document.getElementById('res' + id).innerHTML = "";
 								document.getElementById('submitBtn').disabled = true;
 							}
-							
-							
 						}
-
 					}
 				})
-
 	}
 
 	function numberformate(str) {
@@ -257,6 +297,7 @@
 	}
 
 	function myFunction(r) {
+
 		var data = r.id.split("-");
 		var id = data[1];
 		var deletedPrice = document.getElementById("price" + id).value;
@@ -265,5 +306,31 @@
 		document.getElementById("priceTotal").value = numberformate(updatedTotalPrice);
 		var i = r.parentNode.parentNode.rowIndex;
 		document.getElementById("boxTable").deleteRow(i);
+
+		var index = statusCheckArray.indexOf("true" + id);
+		if (index > -1) {
+			statusCheckArray.splice(index, 1);
+		}
+		console.log(statusCheckArray);
+
+		if (statusCheckArray.length === 0) {
+
+			document.getElementById('submitBtn').disabled = false;
+		} else {
+
+			document.getElementById('submitBtn').disabled = true;
+		}
+
 	}
+
+	// A $( document ).ready() block.
+	$(document).ready(function() {
+		$("#saveRequisitionForm").on("submit", function(e) {
+			alert("test");
+			e.preventDefault();
+			return false;
+		})
+
+	});
 </script>
+

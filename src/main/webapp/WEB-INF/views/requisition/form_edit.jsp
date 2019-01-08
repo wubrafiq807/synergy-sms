@@ -304,5 +304,21 @@
 		document.getElementById("priceTotal").value = numberformate(updatedTotalPrice);
 		var i = r.parentNode.parentNode.rowIndex;
 		document.getElementById("boxTable").deleteRow(i);
+		
+		var index = statusCheckArray.indexOf("true" + id);
+		if (index > -1) {
+			statusCheckArray.splice(index, 1);
+		}
+		console.log(statusCheckArray);
+
+		if (statusCheckArray.length === 0) {
+		
+			document.getElementById('submitBtn').disabled = false;
+		} else {
+			
+			document.getElementById('submitBtn').disabled = true;
+		}
+		
+		
 	}
 </script>

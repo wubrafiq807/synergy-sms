@@ -23,7 +23,8 @@
 					</div>
 					<!-- /.box-header -->
 					<!-- form start -->
-					<form action="${pageContext.request.contextPath}/saveRequisition"
+					<form id="saveRequisitionForm"
+						action="${pageContext.request.contextPath}/saveRequisition"
 						name="form" method="post" class="formValMenu form-horizontal"
 						enctype="multipart/form-data" modelAttribute="command">
 						<div class="box-body">
