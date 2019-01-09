@@ -12,6 +12,8 @@
 	</label>
 	<div class="col-sm-8">
 		<textarea class="form-control" id="purpose" name="purpose">${requisition.purpose}</textarea>
+		
+		<span id="purpose_error" style="color: red;font-size: 18px"></span>
 	</div>
 </div>
 
@@ -69,6 +71,7 @@
 
 		</table>
 		<input type="hidden" name="size" value="1" id="size">
+		<input type="hidden" id="product_selected" value="0" id="size">
 	</div>
 
 </div>
@@ -95,19 +98,34 @@
 	});
 
 	$(function() {
-
-		$("form[name='form']").validate({
-
-			rules : {
-
-				purpose : "required",
-				remarks : "required",
-
-			},
-			submitHandler : function(form) {
-				form.submit();
+		
+		$("form[name='form']").on('submit', function(e) {
+			if($('#purpose').val()==''){
+				$('#purpose_error').text('Please Enter Your Requsition Purpose.');
+				 return false;
+			}else{
+				$('#purpose_error').text('');
 			}
+			
+			if($('#product_selected').val()=='1'){
+				w2alert('<span style="color:red;font-size:16px">You can not choose same item multiple times.</span>');
+				 return false;
+			}
+			
 		});
+
+// 		$("form[name='form']").validate({
+
+// 			rules : {
+
+// 				purpose : "required",
+// 				remarks : "required",
+
+// 			},
+// 			submitHandler : function(form) {
+// 				form.submit();
+// 			}
+// 		});
 	});
 
 	$(function() {
@@ -169,11 +187,11 @@
 
 		if (count1 >= 2) {
 			document.getElementById('selectRes' + i).innerHTML = "Product already selected";
-			document.getElementById('submitBtn').disabled = true;
+			$('#product_selected').val('1');
 
 		} else {
 			document.getElementById('selectRes' + i).innerHTML = "";
-			document.getElementById('submitBtn').disabled = false;
+			$('#product_selected').val('0');
 		}
 
 		console.log(selectedProductId);
@@ -323,14 +341,6 @@
 
 	}
 
-	// A $( document ).ready() block.
-	$(document).ready(function() {
-		$("#saveRequisitionForm").on("submit", function(e) {
-			alert("test");
-			e.preventDefault();
-			return false;
-		})
-
-	});
+	
 </script>
 
