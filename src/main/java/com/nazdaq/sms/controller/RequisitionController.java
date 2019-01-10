@@ -28,7 +28,9 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.nazdaq.sms.model.Category;
 import com.nazdaq.sms.model.Employee;
 import com.nazdaq.sms.model.Product;
+import com.nazdaq.sms.model.ProductDelivery;
 import com.nazdaq.sms.model.ProductPriceHistory;
+import com.nazdaq.sms.model.ProductRecive;
 import com.nazdaq.sms.model.Requisition;
 import com.nazdaq.sms.model.RequisitionHistory;
 import com.nazdaq.sms.model.RequisitionItem;
@@ -124,9 +126,9 @@ public class RequisitionController implements Constants {
 
 				commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
 
-				requisitionDB.setStatus(Integer.parseInt(STATUS_CLOSE));
-				List<Settings> settingsList = commonService.getObjectListByHqlQuery(
-						"from Settings where status=1 and stage>" + requisitionDB.getSettings().getStage() + " order by stage ASC ")
+				List<Settings> settingsList = commonService
+						.getObjectListByHqlQuery("from Settings where status=1 and stage>"
+								+ requisitionDB.getSettings().getStage() + " order by stage ASC ")
 						.stream().map(x -> (Settings) x).collect(Collectors.toList());
 				if (!settingsList.isEmpty()) {
 					requisitionDB.setSettings(settingsList.get(0));
@@ -155,8 +157,9 @@ public class RequisitionController implements Constants {
 
 		} else {
 
-			List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings where status=1 order by stage ASC")
-					.stream().map(x -> (Settings) x).collect(Collectors.toList());
+			List<Settings> settingsList = commonService
+					.getObjectListByHqlQuery("from Settings where status=1 order by stage ASC").stream()
+					.map(x -> (Settings) x).collect(Collectors.toList());
 			requisition.setCreatedBy(loginEmployee);
 			requisition.setCreatedDate(new Date());
 			requisition.setSettings(settingsList.get(0));
@@ -203,8 +206,8 @@ public class RequisitionController implements Constants {
 		Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
 
 		List<Settings> settingsList = commonService
-				.getObjectListByHqlQuery(
-						"from Settings where status=1 and  stage>" + requisitionDB.getSettings().getStage() + " order by stage ASC ")
+				.getObjectListByHqlQuery("from Settings where status=1 and  stage>"
+						+ requisitionDB.getSettings().getStage() + " order by stage ASC ")
 				.stream().map(x -> (Settings) x).collect(Collectors.toList());
 		if (!settingsList.isEmpty()) {
 
@@ -219,11 +222,67 @@ public class RequisitionController implements Constants {
 			// send to next starge
 			if (settingsList.size() == 1) {
 				requisitionDB.setStatus(Integer.parseInt(STATUS_CLOSE));
+				List<RequisitionItem> requisitionItems = commonService
+						.getObjectListByAnyColumn("RequisitionItem", "requisition_id", requisitionDB.getId().toString())
+						.stream().map(x -> (RequisitionItem) x).collect(Collectors.toList());
+				;
+				// deliver validation start
+				boolean flag = false;
+				
+				String errorMessage="";
+				for (RequisitionItem requisitionItem : requisitionItems) {
+					Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
+							requisitionItem.getProduct().getId().toString());
+					if (stock != null) {
+						if (requisitionDB.getIsVip() == 1) {
+							if (stock.getVipQuantity() < requisitionItem.getQuantity()) {
+								flag = true;
+								
+							errorMessage+=","+requisitionItem.getProduct().getName()+"-"+requisitionItem.getProduct().getId();
+							}
+						} else {
+							if (stock.getQuantity() < requisitionItem.getQuantity()) {
+								flag = true;
+								errorMessage+=","+requisitionItem.getProduct().getName()+"-"+requisitionItem.getProduct().getId();
+							}
+						}
+					} else {
+						flag = true;
+						errorMessage+=","+requisitionItem.getProduct().getName()+"-"+requisitionItem.getProduct().getId();
+					}
+				}
+				//delivery validation end
+				if(flag) {
+					redirectAttributes.addFlashAttribute("errorMessage", errorMessage.trim().substring(1));
+					return new ModelAndView("redirect:/showReq/"+requisitionDB.getId());
+				}else {
+					// generate delivery
+					for (RequisitionItem requisitionItem : requisitionItems) {
+						Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
+								requisitionItem.getProduct().getId().toString());
+						stock.setModifiedBy(loginEmployee);
+						stock.setModifiedDate(new Date());
+						if (requisitionDB.getIsVip() == 1) {
+							stock.setVipQuantity(stock.getVipQuantity()-requisitionItem.getQuantity());
+						} else {
+							stock.setQuantity(stock.getQuantity()-requisitionItem.getQuantity());
+						}
+						commonService.saveOrUpdateModelObjectToDB(stock);
+						ProductDelivery productDelivery=new ProductDelivery();
+						productDelivery.setProduct(requisitionItem.getProduct());
+						productDelivery.setCreatedBy(loginEmployee);
+						productDelivery.setCreatedDate(new Date());
+						productDelivery.setStatus(1);
+						productDelivery.setQuantity(requisitionItem.getQuantity());
+						commonService.saveOrUpdateModelObjectToDB(productDelivery);
+					}
+				}
 			}
 			requisitionDB.setSettings(settingsList.get(0));
 			requisitionDB.setModifiedBy(loginEmployee);
 			requisitionDB.setModifiedDate(new Date());
 			requisitionDB.setRemarks(request.getParameter("remarks"));
+
 			if (requisitionDB.getStatus().toString().equals(STATUS_REJECT)) {
 				requisitionDB.setStatus(Integer.parseInt(STATUS_ACTIVE));
 			}
@@ -245,8 +304,9 @@ public class RequisitionController implements Constants {
 				request.getParameter("req_id"));
 		Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
 
-		List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings where status=1  order by stage ASC")
-				.stream().map(x -> (Settings) x).collect(Collectors.toList());
+		List<Settings> settingsList = commonService
+				.getObjectListByHqlQuery("from Settings where status=1  order by stage ASC").stream()
+				.map(x -> (Settings) x).collect(Collectors.toList());
 
 		// CREATE HISTORY
 		RequisitionHistory requisitionHistory = new RequisitionHistory();

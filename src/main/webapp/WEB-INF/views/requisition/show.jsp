@@ -305,6 +305,15 @@
 
 
 						<table class="table table-striped">
+						
+						<c:if test="${not empty errorMessage}">
+						
+						<tr>
+								<th colspan="2"><div class="alert alert-warning">
+  <strong>Warning product out of stock!</strong> ${errorMessage}.
+</div></th>
+							</tr>
+						</c:if>
 							<tr>
 								<th colspan="2"><h4>Employee Information</h4></th>
 							</tr>

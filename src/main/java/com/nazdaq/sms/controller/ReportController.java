@@ -171,6 +171,7 @@ public class ReportController implements Constants {
 
 	private String getamounText(RequisitionHistory requisitionHistory) {
 		String text = "";
+		
 		if (requisitionHistory.getSettings().getBtnText().equals("Approve")) {
 			text = "d";
 		} else if (requisitionHistory.getSettings().getBtnText().equals("Submit")) {
@@ -178,7 +179,14 @@ public class ReportController implements Constants {
 		} else {
 			text = "ed";
 		}
-		return new String((requisitionHistory.getSettings().getBtnText() + text));
+		
+		if(requisitionHistory.getSettings().getBtnText().equals("Delivery")) {
+			return new String("Delivered");
+		}else {
+			return new String((requisitionHistory.getSettings().getBtnText() + text));
+		}
+		
+		
 	}
 
 	private Double getWeighttedAvgPrice(Integer productID) {
