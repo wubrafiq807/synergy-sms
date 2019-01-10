@@ -3,8 +3,8 @@
 <input id="id" name="id" value="${requisition.id}" type="hidden"
 	class="form-control" />
 
-<input id="listSize" name="list_size" value="${fn:length(productList)}"
-	 class="form-control" type="hidden" />
+<input id="listSize" name="list_size" value="${fn:length(ItemList)}"
+	class="form-control" type="hidden" />
 <style>
 .price_width, .price_com {
 	width: 128px;
@@ -18,6 +18,8 @@
 		<div class="col-sm-8">
 			<textarea class="form-control" id="purpose" name="purpose"
 				readonly="readonly">${requisition.purpose}</textarea>
+
+			<span id="purpose_error" style="color: red; font-size: 18px"></span>
 		</div>
 	</div>
 	<div class="form-group">
@@ -75,7 +77,7 @@
 									${item.product.id eq product.id?'selected':'' }>${product.name}</option>
 
 							</c:forEach>
-					</select></th>
+					</select><br> <span id="selectRes${loop.index+1}" style="color: red;"></span></th>
 
 					<th><label for="quantity">Quantity:</label> <input required
 						id="quantity${loop.index+1}" name="quantity_${loop.index+1}"
@@ -109,6 +111,7 @@
 
 		</table>
 		<input type="hidden" name="size" value="${count+1}" id="size">
+		<input type="hidden" id="product_selected" value="0" id="size">
 	</div>
 
 </div>
@@ -136,18 +139,41 @@
 
 	$(function() {
 
-		$("form[name='form']").validate({
+		$("form[name='form']")
+				.on(
+						'submit',
+						function(e) {
+							if ($('#purpose').val() == '') {
+								$('#purpose_error')
+										.text(
+												'Please Enter Your Requsition Purpose.');
+								return false;
+							} else {
+								$('#purpose_error').text('');
+							}
 
-			rules : {
+							if ($('#product_selected').val() == '1') {
+								w2alert('<span style="color:red;font-size:16px">You can not choose same item multiple times.</span>');
+								return false;
+							}
 
-				purpose : "required",
+						});
 
-			},
-			submitHandler : function(form) {
-				form.submit();
-			}
-		});
+		// 		$("form[name='form']").validate({
+
+		// 			rules : {
+
+		// 				purpose : "required",
+		// 				remarks : "required",
+
+		// 			},
+		// 			submitHandler : function(form) {
+		// 				form.submit();
+		// 			}
+		// 		});
 	});
+
+	
 
 	$(function() {
 
@@ -173,7 +199,9 @@
 									+ count
 									+ '" onchange="run('
 									+ count
-									+ ')"><option value="">Select One</option><c:forEach var="product" items="${productList}"><option value="${product.id}">${product.name}</option></c:forEach></select></th><th><label for="quantity">Quantity:</label> <input required id="quantity'
+									+ ')"><option value="">Select One</option><c:forEach var="product" items="${productList}"><option value="${product.id}">${product.name}</option></c:forEach></select><br> <span id="selectRes'
+									+ count
+									+ '" style="color: red;"></span></th><th><label for="quantity">Quantity:</label> <input required id="quantity'
 									+ count
 									+ '" name="quantity_'
 									+ count
@@ -193,8 +221,62 @@
 
 	});
 
+	var selectedProductId = [];
+	var countSelectedProduct = document.getElementById('listSize').value;
+	for (var r = 1; r <= countSelectedProduct; r++) {
+		selectedProductId[r - 1] = Number(document
+				.getElementById("tempProductId" + r).value);
+	}
+
+	console.log(selectedProductId);
+
 	function run(i) {
+
+		selectedProductId[i - 1] = Number(document
+				.getElementById("tempProductId" + i).value);
+
+		var count1 = 0;
+		for (var t = 0; t < selectedProductId.length; t++) {
+
+			var x = selectedProductId[t];
+			if (Number(document.getElementById("tempProductId" + i).value) == x) {
+				count1++;
+			}
+
+		}
+
+		if (count1 >= 2) {
+			document.getElementById('selectRes' + i).innerHTML = "Product already selected";
+			$('#product_selected').val('1');
+
+		} else {
+			document.getElementById('selectRes' + i).innerHTML = "";
+			$('#product_selected').val('0');
+		}
+
+		console.log(selectedProductId);
+		console.log("count1 : " + count1);
+
+		var checkResult = calculateDuplication(selectedProductId);
+
+		if (checkResult) {
+			document.getElementById('submitBtn').disabled = true;
+		} else {
+			document.getElementById('submitBtn').disabled = false;
+		}
+
 		totalPrice(i);
+	}
+
+	var calculateDuplication = function(a) {
+		for (var i = 0; i <= a.length; i++) {
+			for (var j = i; j <= a.length; j++) {
+				if (i != j && a[i] == a[j]) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	function totalPrice(z) {
@@ -228,7 +310,7 @@
 		});
 
 		document.getElementById("priceTotal").value = total;
-		console.log(total);
+		//console.log(total);
 	}
 
 	var statusCheckArray = [];
@@ -303,8 +385,7 @@
 		var updatedTotalPrice = total - parseFloat(deletedPrice);
 		document.getElementById("priceTotal").value = numberformate(updatedTotalPrice);
 		var i = r.parentNode.parentNode.rowIndex;
-		document.getElementById("boxTable").deleteRow(i);
-		
+
 		var index = statusCheckArray.indexOf("true" + id);
 		if (index > -1) {
 			statusCheckArray.splice(index, 1);
@@ -312,13 +393,41 @@
 		console.log(statusCheckArray);
 
 		if (statusCheckArray.length === 0) {
-		
+
 			document.getElementById('submitBtn').disabled = false;
 		} else {
-			
+
 			document.getElementById('submitBtn').disabled = true;
 		}
-		
-		
+
+		var count1 = 0;
+
+		var indexOfProductId = selectedProductId.indexOf(Number(document
+				.getElementById("tempProductId" + id).value));
+
+		if (indexOfProductId > -1) {
+			selectedProductId.splice(indexOfProductId, 1);
+		}
+
+		for (var t = 0; t < selectedProductId.length; t++) {
+
+			var x = selectedProductId[t];
+			if (Number(document.getElementById("tempProductId" + id).value) == x) {
+				count1++;
+			}
+
+		}
+
+		if (count1 >= 2) {
+			document.getElementById('selectRes' + id).innerHTML = "Product already selected";
+			$('#product_selected').val('1');
+
+		} else {
+			document.getElementById('selectRes' + id).innerHTML = "";
+			$('#product_selected').val('0');
+		}
+
+		document.getElementById("boxTable").deleteRow(i);
+
 	}
 </script>

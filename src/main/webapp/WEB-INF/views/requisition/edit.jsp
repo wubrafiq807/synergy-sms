@@ -4,7 +4,7 @@
 		<h1>Edit Requisition</h1>
 		<ul class="top-links">
 			<li><a class="btn btn-primary btn-xs"
-				href="${pageContext.request.contextPath}/listProductRequisition">
+				href="${pageContext.request.contextPath}/">
 					<i class="fa fa-reorder"></i>Requisition List
 			</a></li>
 
