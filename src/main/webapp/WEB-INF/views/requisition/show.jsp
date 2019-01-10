@@ -14,26 +14,24 @@
 		<ul class="top-links">
 
 			<c:if test="${showAppRjctBtn}">
-			
-			<c:if test="${!showStoreManSection}">
-			<li>
-					<button title="${requisition.settings.btnText}"
-						class="${requisition.settings.btnClass}" data-toggle="modal"
-						data-target="#myModalApp">
-						<i class="${requisition.settings.btnClass}"></i>
-						${requisition.settings.btnText}
-					</button>
-				</li>
-			</c:if>
-			
-			<c:if test="${showStoreManSection}">
-			<li>
-			<a class="${requisition.settings.btnClass}"
-					href="${pageContext.request.contextPath}/editReq/${requisition.id}"><i
-						class="fa fa-fw fa-edit"></i>${requisition.settings.btnText}</a>
-				</li>
-			</c:if>
-				
+
+				<c:if test="${!showStoreManSection}">
+					<li>
+						<button title="${requisition.settings.btnText}"
+							class="${requisition.settings.btnClass}" data-toggle="modal"
+							data-target="#myModalApp">
+							<i class="${requisition.settings.btnClass}"></i>
+							${requisition.settings.btnText}
+						</button>
+					</li>
+				</c:if>
+
+				<c:if test="${showStoreManSection}">
+					<li><a class="${requisition.settings.btnClass}"
+						href="${pageContext.request.contextPath}/editReq/${requisition.id}"><i
+							class="fa fa-fw fa-edit"></i>${requisition.settings.btnText}</a></li>
+				</c:if>
+
 
 				<c:if test="${requisition.settings.canReject eq '1' }">
 					<li>
@@ -108,7 +106,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div id="myModalApp" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 
@@ -116,7 +114,8 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">${requisition.settings.btnText} Requisition</h4>
+						<h4 class="modal-title">${requisition.settings.btnText}
+							Requisition</h4>
 					</div>
 					<div class="modal-body">
 						<form action="${pageContext.request.contextPath}/approveReq"
@@ -152,13 +151,12 @@
 							method="post" name="reject_form" id="reject_form">
 							<div class="form-group">
 								<label for="email">Rejection Reason</label>
-								<textarea rows="" name="rejectionReason" id="rejectionReason" class="form-control" cols=""></textarea>
-							<span style="color: red" id="rejectionReason_error"></span>
+								<textarea rows="" name="rejectionReason" id="rejectionReason"
+									class="form-control" cols=""></textarea>
+								<span style="color: red" id="rejectionReason_error"></span>
 							</div>
 							<input type="hidden" name="req_id" value="${requisition.id}">
-							<button type="submit"
-								
-								class="btn btn-info">Reject</button>
+							<button type="submit" class="btn btn-info">Reject</button>
 						</form>
 
 					</div>
@@ -221,14 +219,13 @@
 
 
 													<c:if test="${history.isRejected=='0'}">
-														<td>Action:
-														<c:if test="${history.settings.btnText =='Delivery'}">
+														<td>Action: <c:if
+																test="${history.settings.btnText =='Delivery'}">
 														Delivered
-														</c:if>
-														<c:if test="${history.settings.btnText != 'Delivery'}">
+														</c:if> <c:if test="${history.settings.btnText != 'Delivery'}">
 														${history.settings.btnText}${history.settings.btnText=='Submit'?'ted':history.settings.btnText=='Approve'?'d':'ed'}
 														</c:if>
-															</td>
+														</td>
 														<td style="color: green">Status: Done</td>
 													</c:if>
 
@@ -241,22 +238,18 @@
 																Reject Reason: ${history.rejectionReason}
 															</c:if></td>
 													<c:if test="${history.isRejected=='0'}">
-														<td>
-														<c:if test="${history.settings.btnText =='Delivery'}">
+														<td><c:if
+																test="${history.settings.btnText =='Delivery'}">
 														Delivered
-														</c:if>
-														<c:if test="${history.settings.btnText != 'Delivery'}">
+														</c:if> <c:if test="${history.settings.btnText != 'Delivery'}">
 														${history.settings.btnText}${history.settings.btnText=='Submit'?'ted':history.settings.btnText=='Approve'?'d':'ed'}
-														</c:if>
-															By: ${history.createdBy.name}</td>
-														<td>
-														<c:if test="${history.settings.btnText =='Delivery'}">
+														</c:if> By: ${history.createdBy.name}</td>
+														<td><c:if
+																test="${history.settings.btnText =='Delivery'}">
 														Delivered
-														</c:if>
-														<c:if test="${history.settings.btnText != 'Delivery'}">
+														</c:if> <c:if test="${history.settings.btnText != 'Delivery'}">
 														${history.settings.btnText}${history.settings.btnText=='Submit'?'ted':history.settings.btnText=='Approve'?'d':'ed'}
-														</c:if>
-																Date: <fmt:formatDate pattern="dd-MM-yyyy hh:mm:ss a"
+														</c:if> Date: <fmt:formatDate pattern="dd-MM-yyyy hh:mm:ss a"
 																value="${history.createdDate}" />
 													</c:if>
 													<c:if test="${history.isRejected=='1'}">
@@ -323,15 +316,16 @@
 
 
 						<table class="table table-striped">
-						
-						<c:if test="${not empty errorMessage}">
-						
-						<tr>
-								<th colspan="2"><div class="alert alert-warning">
-  <strong>Warning product out of stock!</strong> ${errorMessage}.
-</div></th>
-							</tr>
-						</c:if>
+
+							<c:if test="${not empty errorMessage}">
+
+								<tr>
+									<th colspan="2"><div class="alert alert-warning">
+											<strong>Warning product out of stock!</strong>
+											${errorMessage}.
+										</div></th>
+								</tr>
+							</c:if>
 							<tr>
 								<th colspan="2"><h4>Employee Information</h4></th>
 							</tr>
@@ -458,32 +452,36 @@
 	<!-- /.content -->
 </div>
 <script>
-	$(document).ready(function() {
-		$('#thead').hide();
-		$('#reject_form').submit(function() {
-			   var status = ${requisition.settings.isRejectReasonMandatory};
-			   var reason=$('#rejectionReason').val().trim();
-			   
-			   if(status==1 &&reason.length<=0){
-				   $('#rejectionReason_error').text('Please Enter Rejected Reason....');
-				   return false;
-			   }
-			   
-			   else{
-				   $('#rejectionReason_error').text('');
-			   return true; 
-			   }
-			  });
-	});
-	
-	
-	
-	function ConfirmDelete()
-	{
-	  var x = confirm("Are you sure you want to Reject?");
-	  if (x)
-		  $('#myModalRej').modal('show');
-	  else
-	    return false;
+	$(document).ready(
+			function() {
+				$('#thead').hide();
+				$('#reject_form').submit(
+						function() {
+							var status = $
+							{
+								requisition.settings.isRejectReasonMandatory
+							}
+							;
+							var reason = $('#rejectionReason').val().trim();
+
+							if (status == 1 && reason.length <= 0) {
+								$('#rejectionReason_error').text(
+										'Please Enter Rejected Reason....');
+								return false;
+							}
+
+							else {
+								$('#rejectionReason_error').text('');
+								return true;
+							}
+						});
+			});
+
+	function ConfirmDelete() {
+		var x = confirm("Are you sure you want to Reject?");
+		if (x)
+			$('#myModalRej').modal('show');
+		else
+			return false;
 	}
 </script>
