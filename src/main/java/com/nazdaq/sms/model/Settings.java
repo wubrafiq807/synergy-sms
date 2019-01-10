@@ -49,6 +49,9 @@ public class Settings implements Serializable {
 	@Column(name = "auth_role")
 	private String authRole;
 	
+	@Column(name = "status")
+	private Integer status=1;
+	
 	@ManyToOne
 	@JoinColumn(name="reject_to",nullable=true)
 	private Settings rejectTo;

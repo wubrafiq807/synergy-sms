@@ -126,7 +126,7 @@ public class RequisitionController implements Constants {
 
 				requisitionDB.setStatus(Integer.parseInt(STATUS_CLOSE));
 				List<Settings> settingsList = commonService.getObjectListByHqlQuery(
-						"from Settings where stage>" + requisitionDB.getSettings().getStage() + " order by stage ASC ")
+						"from Settings where status=1 and stage>" + requisitionDB.getSettings().getStage() + " order by stage ASC ")
 						.stream().map(x -> (Settings) x).collect(Collectors.toList());
 				if (!settingsList.isEmpty()) {
 					requisitionDB.setSettings(settingsList.get(0));
@@ -155,7 +155,7 @@ public class RequisitionController implements Constants {
 
 		} else {
 
-			List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings order by stage ASC")
+			List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings where status=1 order by stage ASC")
 					.stream().map(x -> (Settings) x).collect(Collectors.toList());
 			requisition.setCreatedBy(loginEmployee);
 			requisition.setCreatedDate(new Date());
@@ -204,7 +204,7 @@ public class RequisitionController implements Constants {
 
 		List<Settings> settingsList = commonService
 				.getObjectListByHqlQuery(
-						"from Settings where stage>" + requisitionDB.getSettings().getStage() + " order by stage ASC ")
+						"from Settings where status=1 and  stage>" + requisitionDB.getSettings().getStage() + " order by stage ASC ")
 				.stream().map(x -> (Settings) x).collect(Collectors.toList());
 		if (!settingsList.isEmpty()) {
 
@@ -245,7 +245,7 @@ public class RequisitionController implements Constants {
 				request.getParameter("req_id"));
 		Employee loginEmployee = (Employee) session.getAttribute("loginEmployee");
 
-		List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings  order by stage ASC")
+		List<Settings> settingsList = commonService.getObjectListByHqlQuery("from Settings where status=1  order by stage ASC")
 				.stream().map(x -> (Settings) x).collect(Collectors.toList());
 
 		// CREATE HISTORY
