@@ -222,7 +222,13 @@
 
 													<c:if test="${history.isRejected=='0'}">
 														<td>Action:
-															${history.settings.btnText}${history.settings.btnText=='Submit'?'ted':history.settings.btnText=='Approve'?'d':'ed'}</td>
+														<c:if test="${history.settings.btnText =='Delivery'}">
+														Delivered
+														</c:if>
+														<c:if test="${history.settings.btnText != 'Delivery'}">
+														${history.settings.btnText}${history.settings.btnText=='Submit'?'ted':history.settings.btnText=='Approve'?'d':'ed'}
+														</c:if>
+															</td>
 														<td style="color: green">Status: Done</td>
 													</c:if>
 
@@ -235,10 +241,22 @@
 																Reject Reason: ${history.rejectionReason}
 															</c:if></td>
 													<c:if test="${history.isRejected=='0'}">
-														<td>${history.settings.btnText}${history.settings.btnText=='Submit'?'ted':history.settings.btnText=='Approve'?'d':'ed'}
+														<td>
+														<c:if test="${history.settings.btnText =='Delivery'}">
+														Delivered
+														</c:if>
+														<c:if test="${history.settings.btnText != 'Delivery'}">
+														${history.settings.btnText}${history.settings.btnText=='Submit'?'ted':history.settings.btnText=='Approve'?'d':'ed'}
+														</c:if>
 															By: ${history.createdBy.name}</td>
-														<td>${history.settings.btnText}${history.settings.btnText=='Submit'?'ted':history.settings.btnText=='Approve'?'d':'ed'}
-															Date: <fmt:formatDate pattern="dd-MM-yyyy hh:mm:ss a"
+														<td>
+														<c:if test="${history.settings.btnText =='Delivery'}">
+														Delivered
+														</c:if>
+														<c:if test="${history.settings.btnText != 'Delivery'}">
+														${history.settings.btnText}${history.settings.btnText=='Submit'?'ted':history.settings.btnText=='Approve'?'d':'ed'}
+														</c:if>
+																Date: <fmt:formatDate pattern="dd-MM-yyyy hh:mm:ss a"
 																value="${history.createdDate}" />
 													</c:if>
 													<c:if test="${history.isRejected=='1'}">
