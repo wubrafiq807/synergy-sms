@@ -524,14 +524,11 @@ public class RequisitionController implements Constants {
 
 		if (quantityValue > stock.getQuantity()) {
 			return true;
-		} else {
+		}else {
 			return false;
 		}
 
 	}
-	
-	
-	
 	
 	
 	@RequestMapping(value = "/ajaxProductQuantityCheckForVIPRequisition", method = RequestMethod.POST)
@@ -550,11 +547,4 @@ public class RequisitionController implements Constants {
 
 	}
 	
-	
-	
-	
-	
-	
-	
-
 }
