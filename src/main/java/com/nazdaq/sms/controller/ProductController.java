@@ -86,7 +86,11 @@ public class ProductController {
 			Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
 					product.getId().toString());
 			Integer totalQuantity=product.getPurchaseQuantity()+product.getVipPurchaseQuantity();
-			Integer totalQuantityDB=productDb.getPurchaseQuantity()+productDb.getVipPurchaseQuantity();
+			Integer vipQTDB=0;
+			if(productDb.getVipPurchaseQuantity()!=null)
+				vipQTDB=productDb.getVipPurchaseQuantity();
+			
+			Integer totalQuantityDB=productDb.getPurchaseQuantity()+vipQTDB;
 
 			if (totalQuantity != totalQuantityDB) {
 

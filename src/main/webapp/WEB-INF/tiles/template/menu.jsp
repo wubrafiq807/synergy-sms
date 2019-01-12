@@ -282,7 +282,7 @@
 			</sec:authorize>
 
 
-			<sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_SUPERVISOR')">
+			<sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_SUPERVISOR') or hasRole('ROLE_STORE_MANAGER')">
 				<li class=""><a href="javascript:void(0)"
 					class="dropdown-toggle"> <i
 						class="menu-icon fa fa-chain-broken"></i> <span class="menu-text">

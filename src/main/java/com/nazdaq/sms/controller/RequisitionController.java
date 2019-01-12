@@ -51,20 +51,44 @@ public class RequisitionController implements Constants {
 	private CommonService commonService;
 
 	@RequestMapping(value = "/addProductRequisition", method = RequestMethod.GET)
-	public ModelAndView addProductRequisition(Model model, Principal principal) {
+	public ModelAndView addProductRequisition(ModelMap model, Principal principal) {
 		if (principal == null) {
 			return new ModelAndView("redirect:/login");
 		}
-
+		String roleName = commonService.getAuthRoleName();
+		boolean isVipRequisition = false;
+		List<Product> theProducts=new ArrayList<>();
+		if (roleName != null && roleName.trim().equals(AUTH_STORE_MANAGER)) {
+			isVipRequisition = true;
+			List<Employee> employeeList = commonService.getAllObjectList("Employee").stream().map(x -> (Employee) x)
+					.collect(Collectors.toList());
+			model.put("employeeList", employeeList);
+		List<Product>	 listPro = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
+					.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
+		List<Stock> stocks=commonService.getAllObjectList("Stock").stream().map(x->(Stock)x).filter(x->x.getVipQuantity()!=null&&x.getVipQuantity()>0).collect(Collectors.toList());
+		
+		for (Stock stock : stocks) {
+			for (Product product : listPro) {
+				if(stock.getProduct().getId().toString().equals(product.getId().toString())) {
+					theProducts.add(product);
+					break;
+				}
+			}
+		}
+		
+		}else {
+			 theProducts = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
+					.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
+		}
 		Requisition requisition = new Requisition();
 
-		List<Product> theProducts = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
-				.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
+		
 		theProducts.forEach(x -> x.setWeightedAvgPrice(this.getWeighttedAvgPrice(x.getId())));
 
-		model.addAttribute("command", requisition);
-		model.addAttribute("productList", theProducts);
-		return new ModelAndView("productRequestionAdd");
+		model.put("command", requisition);
+		model.put("productList", theProducts);
+		model.put("isVipRequisition", isVipRequisition);
+		return new ModelAndView("productRequestionAdd",model);
 	}
 
 	private Double getWeighttedAvgPrice(Integer productID) {
@@ -156,19 +180,51 @@ public class RequisitionController implements Constants {
 			createRequisitionItems(request, requisitionDB);
 
 		} else {
-
-			List<Settings> settingsList = commonService
-					.getObjectListByHqlQuery("from Settings where status=1 order by stage ASC").stream()
-					.map(x -> (Settings) x).collect(Collectors.toList());
+			String roleName = commonService.getAuthRoleName();
+			
 			requisition.setCreatedBy(loginEmployee);
 			requisition.setCreatedDate(new Date());
-			requisition.setSettings(settingsList.get(0));
-			requisition.setEmployee(loginEmployee);
 			requisition.setStatus(Integer.parseInt(STATUS_ACTIVE));
+			RequisitionHistory requisitionHistory=new RequisitionHistory();
+			if(roleName.trim().equals(AUTH_STORE_MANAGER)) {
+				
+				requisitionHistory.setCreatedBy(loginEmployee);
+				requisitionHistory.setCreatedDate(new Date());
+				
+				Settings settings=(Settings) commonService.getAnObjectByAnyUniqueColumn("Settings", "auth_role", AUTH_STORE_MANAGER);
+			
+				requisitionHistory.setSettings(settings);
+				List<Settings> settingsList = commonService
+						.getObjectListByHqlQuery("from Settings where status=1 and stage>"+settings.getStage()+" order by stage ASC").stream()
+						.map(x -> (Settings) x).collect(Collectors.toList());
+				Employee employee=(Employee) commonService.getAnObjectByAnyUniqueColumn("Employee", "id", requisition.getEmployee_id().toString());
+				
+				requisition.setSettings(settingsList.get(0));
+				requisition.setEmployee(employee);
+				requisition.setIsVip(1);
+				
+			}else {
+				List<Settings> settingsList = commonService
+						.getObjectListByHqlQuery("from Settings where status=1 order by stage ASC").stream()
+						.map(x -> (Settings) x).collect(Collectors.toList());
+				
+				
+				requisition.setSettings(settingsList.get(0));
+				requisition.setEmployee(loginEmployee);
+			}
+			
+			
 			Integer id = commonService.saveWithReturnId(requisition);
 			Requisition requisitionDB = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id",
 					id.toString());
 			createRequisitionItems(request, requisitionDB);
+			
+			if(roleName.trim().equals(AUTH_STORE_MANAGER)) {
+				requisitionHistory.setRequisition(requisitionDB);
+				requisitionHistory.setRemarks(requisition.getRemarks());
+				commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
+			}
+			
 
 		}
 
@@ -228,8 +284,8 @@ public class RequisitionController implements Constants {
 				;
 				// deliver validation start
 				boolean flag = false;
-				
-				String errorMessage="";
+
+				String errorMessage = "";
 				for (RequisitionItem requisitionItem : requisitionItems) {
 					Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
 							requisitionItem.getProduct().getId().toString());
@@ -237,25 +293,28 @@ public class RequisitionController implements Constants {
 						if (requisitionDB.getIsVip() == 1) {
 							if (stock.getVipQuantity() < requisitionItem.getQuantity()) {
 								flag = true;
-								
-							errorMessage+=","+requisitionItem.getProduct().getName()+"-"+requisitionItem.getProduct().getId();
+
+								errorMessage += "," + requisitionItem.getProduct().getName() + "-"
+										+ requisitionItem.getProduct().getId();
 							}
 						} else {
 							if (stock.getQuantity() < requisitionItem.getQuantity()) {
 								flag = true;
-								errorMessage+=","+requisitionItem.getProduct().getName()+"-"+requisitionItem.getProduct().getId();
+								errorMessage += "," + requisitionItem.getProduct().getName() + "-"
+										+ requisitionItem.getProduct().getId();
 							}
 						}
 					} else {
 						flag = true;
-						errorMessage+=","+requisitionItem.getProduct().getName()+"-"+requisitionItem.getProduct().getId();
+						errorMessage += "," + requisitionItem.getProduct().getName() + "-"
+								+ requisitionItem.getProduct().getId();
 					}
 				}
-				//delivery validation end
-				if(flag) {
+				// delivery validation end
+				if (flag) {
 					redirectAttributes.addFlashAttribute("errorMessage", errorMessage.trim().substring(1));
-					return new ModelAndView("redirect:/showReq/"+requisitionDB.getId());
-				}else {
+					return new ModelAndView("redirect:/showReq/" + requisitionDB.getId());
+				} else {
 					// generate delivery
 					for (RequisitionItem requisitionItem : requisitionItems) {
 						Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
@@ -263,12 +322,12 @@ public class RequisitionController implements Constants {
 						stock.setModifiedBy(loginEmployee);
 						stock.setModifiedDate(new Date());
 						if (requisitionDB.getIsVip() == 1) {
-							stock.setVipQuantity(stock.getVipQuantity()-requisitionItem.getQuantity());
+							stock.setVipQuantity(stock.getVipQuantity() - requisitionItem.getQuantity());
 						} else {
-							stock.setQuantity(stock.getQuantity()-requisitionItem.getQuantity());
+							stock.setQuantity(stock.getQuantity() - requisitionItem.getQuantity());
 						}
 						commonService.saveOrUpdateModelObjectToDB(stock);
-						ProductDelivery productDelivery=new ProductDelivery();
+						ProductDelivery productDelivery = new ProductDelivery();
 						productDelivery.setProduct(requisitionItem.getProduct());
 						productDelivery.setCreatedBy(loginEmployee);
 						productDelivery.setCreatedDate(new Date());

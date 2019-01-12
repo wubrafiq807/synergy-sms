@@ -6,6 +6,28 @@
 	width: 128px;
 }
 </style>
+
+<c:if test="${isVipRequisition}">
+<input type="hidden" id="isVipRequisition" value="1" readonly="readonly">
+<div class="form-group">
+	<label for="employee_id" class="col-sm-2 control-label"> <strong>Employee
+			: </strong>
+	</label>
+	<div class="col-sm-8">
+	<select name="employee_id" id="employee_id" class="form-control">
+	<option value="">Select</option>
+	<c:forEach var="employee" items="${employeeList}" >
+	
+	<option value="${employee.id}">${employee.name}</option>
+	</c:forEach>
+	</select>
+		
+
+		<span id="employee_id_error" style="color: red; font-size: 18px"></span>
+	</div>
+</div>
+</c:if>
+
 <div class="form-group">
 	<label for="purpose" class="col-sm-2 control-label"> <strong>Purpose
 			: </strong>
@@ -103,6 +125,17 @@
 				.on(
 						'submit',
 						function(e) {
+							if($('#isVipRequisition').val()=='1'){
+								if ($('#employee_id').val() == '') {
+									$('#employee_id_error')
+											.text(
+													'Please select an employee.');
+									return false;
+								} else {
+									$('#employee_id_error').text('');
+								}
+							}
+							
 							if ($('#purpose').val() == '') {
 								$('#purpose_error')
 										.text(
