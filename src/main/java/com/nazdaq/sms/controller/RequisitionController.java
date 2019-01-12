@@ -529,5 +529,32 @@ public class RequisitionController implements Constants {
 		}
 
 	}
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/ajaxProductQuantityCheckForVIPRequisition", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean ajaxProductQuantityCheckForVIPRequisition(Principal principal, HttpServletRequest request) {
+
+		String productValue = request.getParameter("productValue");
+		int quantityValue = Integer.parseInt(request.getParameter("quantityValue"));
+		Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id", productValue);
+
+		if (quantityValue > stock.getVipQuantity()) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	
 
 }

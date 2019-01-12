@@ -39,6 +39,7 @@
 		</label>
 		<div class="col-sm-8">
 			<textarea class="form-control" id="purpose" name="purpose">${requisition.purpose}</textarea>
+			<span id="purpose_error" style="color: red; font-size: 18px"></span>
 		</div>
 	</div>
 

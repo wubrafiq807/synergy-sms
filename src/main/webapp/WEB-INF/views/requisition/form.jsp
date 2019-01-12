@@ -8,24 +8,22 @@
 </style>
 
 <c:if test="${isVipRequisition}">
-<input type="hidden" id="isVipRequisition" value="1" readonly="readonly">
-<div class="form-group">
-	<label for="employee_id" class="col-sm-2 control-label"> <strong>Employee
-			: </strong>
-	</label>
-	<div class="col-sm-8">
-	<select name="employee_id" id="employee_id" class="form-control">
-	<option value="">Select</option>
-	<c:forEach var="employee" items="${employeeList}" >
-	
-	<option value="${employee.id}">${employee.name}</option>
-	</c:forEach>
-	</select>
-		
+	<input type="hidden" id="isVipRequisition" value="1"
+		readonly="readonly">
+	<div class="form-group">
+		<label for="employee_id" class="col-sm-2 control-label"> <strong>Employee
+				: </strong>
+		</label>
+		<div class="col-sm-8">
+			<select name="employee_id" id="employee_id" class="form-control">
+				<option value="">Select</option>
+				<c:forEach var="employee" items="${employeeList}">
 
-		<span id="employee_id_error" style="color: red; font-size: 18px"></span>
+					<option value="${employee.id}">${employee.name}</option>
+				</c:forEach>
+			</select> <span id="employee_id_error" style="color: red; font-size: 18px"></span>
+		</div>
 	</div>
-</div>
 </c:if>
 
 <div class="form-group">
@@ -92,8 +90,8 @@
 			</tfoot>
 
 		</table>
-		<input type="hidden" name="size" value="1" id="size"> 
-		<input type="hidden" id="product_selected" value="0" id="size">
+		<input type="hidden" name="size" value="1" id="size"> <input
+			type="hidden" id="product_selected" value="0" id="size">
 	</div>
 
 </div>
@@ -125,17 +123,16 @@
 				.on(
 						'submit',
 						function(e) {
-							if($('#isVipRequisition').val()=='1'){
+							if ($('#isVipRequisition').val() == '1') {
 								if ($('#employee_id').val() == '') {
-									$('#employee_id_error')
-											.text(
-													'Please select an employee.');
+									$('#employee_id_error').text(
+											'Please select an employee.');
 									return false;
 								} else {
 									$('#employee_id_error').text('');
 								}
 							}
-							
+
 							if ($('#purpose').val() == '') {
 								$('#purpose_error')
 										.text(
@@ -264,13 +261,19 @@
 		var productValue = domProduct.options[domProduct.selectedIndex].value;
 		var quantityValue = domQuantity.value;
 
+		var isVipRequisition = document.getElementById("isVipRequisition").value;
+
 		if ((productValue !== null && productValue !== undefined && productValue.length > 0)
 				&& (quantityValue !== null && quantityValue !== undefined && quantityValue.length > 0)) {
 
 			console.log("product value : " + productValue + ' quantity : '
 					+ quantityValue);
 
-			cehckProductQuantity(productValue, quantityValue, z);
+			if (isVipRequisition == 1) {
+				cehckProductQuantityForVIP(productValue, quantityValue, z);
+			} else {
+				cehckProductQuantity(productValue, quantityValue, z);
+			}
 
 		}
 
@@ -336,6 +339,66 @@
 					}
 				})
 	}
+	
+	
+	
+	
+	function cehckProductQuantityForVIP(productValue, quantityValue, id) {
+		$
+				.ajax({
+					url : "${pageContext.request.contextPath}"
+							+ "/ajaxProductQuantityCheckForVIPRequisition",
+					method : 'POST',
+					data : {
+						productValue : productValue,
+						quantityValue : quantityValue
+					},
+					dataType : 'json',
+					success : function(data) {
+
+						if (data) {
+							if (statusCheckArray.indexOf(data.toString() + id) === -1) {
+								statusCheckArray.push(data.toString() + id);
+							}
+							console.log(statusCheckArray);
+
+							document.getElementById('res' + id).innerHTML = "Quantity out of stock";
+							document.getElementById('submitBtn').disabled = true;
+						}
+
+						else {
+
+							var index = statusCheckArray.indexOf("true" + id);
+							if (index > -1) {
+								statusCheckArray.splice(index, 1);
+							}
+
+							console.log(statusCheckArray);
+
+							if (statusCheckArray.length === 0) {
+								document.getElementById('res' + id).innerHTML = "";
+								document.getElementById('submitBtn').disabled = false;
+							} else {
+								document.getElementById('res' + id).innerHTML = "";
+								document.getElementById('submitBtn').disabled = true;
+							}
+						}
+					}
+				})
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	function numberformate(str) {
 
