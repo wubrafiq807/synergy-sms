@@ -38,8 +38,7 @@
 <script
 	src="${pageContext.request.contextPath}/resource/js/resizeImage.js"></script>
 
-<script
-	src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 
 <script type="text/javascript">
 function archiveFunction(url, msg) {

@@ -6,7 +6,11 @@
 	width: 128px;
 }
 </style>
-
+<c:if test="${!isVipRequisition}">
+	<input type="hidden" id="isVipRequisition" value="0"
+		readonly="readonly">
+	
+</c:if>
 <c:if test="${isVipRequisition}">
 	<input type="hidden" id="isVipRequisition" value="1"
 		readonly="readonly">
