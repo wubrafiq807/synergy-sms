@@ -49,7 +49,8 @@
 				<value>com.nazdaq.sms.model.RequisitionHistory</value>
 				<value>com.nazdaq.sms.model.RequisitionItem</value>
 				<value>com.nazdaq.sms.model.Settings</value>
-				<value>com.nazdaq.sms.model.Stock</value>				
+				<value>com.nazdaq.sms.model.Stock</value>			
+				<value>com.nazdaq.sms.model.RequisitionStatus</value>	
 			</list>
 		</property>
 		<property name="hibernateProperties">

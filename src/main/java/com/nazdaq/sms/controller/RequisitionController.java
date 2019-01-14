@@ -34,6 +34,7 @@ import com.nazdaq.sms.model.ProductRecive;
 import com.nazdaq.sms.model.Requisition;
 import com.nazdaq.sms.model.RequisitionHistory;
 import com.nazdaq.sms.model.RequisitionItem;
+import com.nazdaq.sms.model.RequisitionStatus;
 import com.nazdaq.sms.model.Settings;
 import com.nazdaq.sms.model.Stock;
 import com.nazdaq.sms.service.CommonService;
@@ -57,38 +58,38 @@ public class RequisitionController implements Constants {
 		}
 		String roleName = commonService.getAuthRoleName();
 		boolean isVipRequisition = false;
-		List<Product> theProducts=new ArrayList<>();
+		List<Product> theProducts = new ArrayList<>();
 		if (roleName != null && roleName.trim().equals(AUTH_STORE_MANAGER)) {
 			isVipRequisition = true;
 			List<Employee> employeeList = commonService.getAllObjectList("Employee").stream().map(x -> (Employee) x)
 					.collect(Collectors.toList());
 			model.put("employeeList", employeeList);
-		List<Product>	 listPro = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
+			List<Product> listPro = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
 					.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
-		List<Stock> stocks=commonService.getAllObjectList("Stock").stream().map(x->(Stock)x).filter(x->x.getVipQuantity()!=null&&x.getVipQuantity()>0).collect(Collectors.toList());
-		
-		for (Stock stock : stocks) {
-			for (Product product : listPro) {
-				if(stock.getProduct().getId().toString().equals(product.getId().toString())) {
-					theProducts.add(product);
-					break;
+			List<Stock> stocks = commonService.getAllObjectList("Stock").stream().map(x -> (Stock) x)
+					.filter(x -> x.getVipQuantity() != null && x.getVipQuantity() > 0).collect(Collectors.toList());
+
+			for (Stock stock : stocks) {
+				for (Product product : listPro) {
+					if (stock.getProduct().getId().toString().equals(product.getId().toString())) {
+						theProducts.add(product);
+						break;
+					}
 				}
 			}
-		}
-		
-		}else {
-			 theProducts = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
+
+		} else {
+			theProducts = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
 					.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
 		}
 		Requisition requisition = new Requisition();
 
-		
 		theProducts.forEach(x -> x.setWeightedAvgPrice(this.getWeighttedAvgPrice(x.getId())));
 
 		model.put("command", requisition);
 		model.put("productList", theProducts);
 		model.put("isVipRequisition", isVipRequisition);
-		return new ModelAndView("productRequestionAdd",model);
+		return new ModelAndView("productRequestionAdd", model);
 	}
 
 	private Double getWeighttedAvgPrice(Integer productID) {
@@ -181,50 +182,50 @@ public class RequisitionController implements Constants {
 
 		} else {
 			String roleName = commonService.getAuthRoleName();
-			
+
 			requisition.setCreatedBy(loginEmployee);
 			requisition.setCreatedDate(new Date());
 			requisition.setStatus(Integer.parseInt(STATUS_ACTIVE));
-			RequisitionHistory requisitionHistory=new RequisitionHistory();
-			if(roleName.trim().equals(AUTH_STORE_MANAGER)) {
-				
+			RequisitionHistory requisitionHistory = new RequisitionHistory();
+			if (roleName.trim().equals(AUTH_STORE_MANAGER)) {
+
 				requisitionHistory.setCreatedBy(loginEmployee);
 				requisitionHistory.setCreatedDate(new Date());
-				
-				Settings settings=(Settings) commonService.getAnObjectByAnyUniqueColumn("Settings", "auth_role", AUTH_STORE_MANAGER);
-			
+
+				Settings settings = (Settings) commonService.getAnObjectByAnyUniqueColumn("Settings", "auth_role",
+						AUTH_STORE_MANAGER);
+
 				requisitionHistory.setSettings(settings);
 				List<Settings> settingsList = commonService
-						.getObjectListByHqlQuery("from Settings where status=1 and stage>"+settings.getStage()+" order by stage ASC").stream()
-						.map(x -> (Settings) x).collect(Collectors.toList());
-				Employee employee=(Employee) commonService.getAnObjectByAnyUniqueColumn("Employee", "id", requisition.getEmployee_id().toString());
-				
+						.getObjectListByHqlQuery(
+								"from Settings where status=1 and stage>" + settings.getStage() + " order by stage ASC")
+						.stream().map(x -> (Settings) x).collect(Collectors.toList());
+				Employee employee = (Employee) commonService.getAnObjectByAnyUniqueColumn("Employee", "id",
+						requisition.getEmployee_id().toString());
+
 				requisition.setSettings(settingsList.get(0));
 				requisition.setEmployee(employee);
 				requisition.setIsVip(1);
-				
-			}else {
+
+			} else {
 				List<Settings> settingsList = commonService
 						.getObjectListByHqlQuery("from Settings where status=1 order by stage ASC").stream()
 						.map(x -> (Settings) x).collect(Collectors.toList());
-				
-				
+
 				requisition.setSettings(settingsList.get(0));
 				requisition.setEmployee(loginEmployee);
 			}
-			
-			
+
 			Integer id = commonService.saveWithReturnId(requisition);
 			Requisition requisitionDB = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id",
 					id.toString());
 			createRequisitionItems(request, requisitionDB);
-			
-			if(roleName.trim().equals(AUTH_STORE_MANAGER)) {
+
+			if (roleName.trim().equals(AUTH_STORE_MANAGER)) {
 				requisitionHistory.setRequisition(requisitionDB);
 				requisitionHistory.setRemarks(requisition.getRemarks());
 				commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
 			}
-			
 
 		}
 
@@ -524,13 +525,12 @@ public class RequisitionController implements Constants {
 
 		if (quantityValue > stock.getQuantity()) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 
 	}
-	
-	
+
 	@RequestMapping(value = "/ajaxProductQuantityCheckForVIPRequisition", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean ajaxProductQuantityCheckForVIPRequisition(Principal principal, HttpServletRequest request) {
@@ -546,5 +546,62 @@ public class RequisitionController implements Constants {
 		}
 
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/viewRequisitionStatus", method = RequestMethod.GET)
+	public ModelAndView viewRequisitionStatus(Model model, Principal principal) {
+		if (principal == null) {
+			return new ModelAndView("redirect:/login");
+		}
+
+		List<com.nazdaq.sms.model.RequisitionStatus> requisitionStatus = (List<com.nazdaq.sms.model.RequisitionStatus>) (Object) commonService
+				.getAllObjectList("RequisitionStatus");
+		model.addAttribute("requisitionStatus", requisitionStatus);
+		return new ModelAndView("productRequisitionStatus");
+
+	}
+
+//	@RequestMapping(value = "/inactiveRequisitionItem", method = RequestMethod.GET)
+//	public ModelAndView inactiveRequisitionItem(Model model, Principal principal, HttpServletRequest request) {
+//
+//		RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
+//				.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", request.getParameter("id"));
+//		requisitionStatus.setReqStatus(0);
+//
+//		commonService.saveOrUpdateModelObjectToDB(requisitionStatus);
+//
+//		return new ModelAndView("redirect:/viewRequisitionStatus");
+//
+//	}
+//
+//	@RequestMapping(value = "/activeRequisitionItem", method = RequestMethod.GET)
+//	public ModelAndView activeRequisitionItem(Model model, Principal principal, HttpServletRequest request) {
+//
+//		RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
+//				.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", request.getParameter("id"));
+//		requisitionStatus.setReqStatus(1);
+//
+//		commonService.saveOrUpdateModelObjectToDB(requisitionStatus);
+//
+//		return new ModelAndView("redirect:/viewRequisitionStatus");
+//
+//	}
+
+	@RequestMapping(value = "/ajaxChangeProductRequisitionStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean ajaxChangeProductRequisitionStatus(Principal principal, HttpServletRequest request) {
+
+		Integer reqStatus = Integer.parseInt(request.getParameter("status"));
+
+		RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
+				.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
+
+		
+		requisitionStatus.setReqStatus(reqStatus);
+		commonService.saveOrUpdateModelObjectToDB(requisitionStatus);
+		
+		return true;
+
+	}
+
 }

@@ -339,10 +339,7 @@
 					}
 				})
 	}
-	
-	
-	
-	
+
 	function cehckProductQuantityForVIP(productValue, quantityValue, id) {
 		$
 				.ajax({
@@ -386,19 +383,6 @@
 					}
 				})
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	function numberformate(str) {
 

@@ -231,7 +231,8 @@
 	<definition name="showReq" extends="base-definition">
 		<put-attribute name="title"
 			value="Store Supervision Requisition Show List" />
-		<put-attribute name="body" value="/WEB-INF/views/requisition/show.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/requisition/show.jsp" />
 	</definition>
 
 	<!-- Store Supervision Product Category End -->
@@ -372,20 +373,36 @@
 
 
 	<!-- Store Supervision Requisition Start -->
-	
+
 	<definition name="productRequestionAdd" extends="base-definition">
-		<put-attribute name="title"
-			value="Store Supervision Requisition Add" />
+		<put-attribute name="title" value="Store Supervision Requisition Add" />
 		<put-attribute name="body"
 			value="/WEB-INF/views/requisition/create.jsp" />
 	</definition>
-	
+
 	<definition name="editReq" extends="base-definition">
-		<put-attribute name="title"
-			value="Store Supervision Requisition Edit" />
+		<put-attribute name="title" value="Store Supervision Requisition Edit" />
 		<put-attribute name="body"
 			value="/WEB-INF/views/requisition/edit.jsp" />
 	</definition>
 
 	<!-- Store Supervision Requisition End -->
+
+
+
+	
+	<!-- Store Supervision Requisition Status Start -->
+	
+	<definition name="productRequisitionStatus" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Requisition Status List" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/requisition-status/list.jsp" />
+	</definition>
+	
+
+
+	<!-- Store Supervision Requisition Status End -->
+
+
 </tiles-definitions>

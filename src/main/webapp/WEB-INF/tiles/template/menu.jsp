@@ -108,6 +108,70 @@
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resource/css/style.css" />
+
+
+
+<style>
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+}
+
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked+.slider {
+	background-color: #2196F3;
+}
+
+input:focus+.slider {
+	box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+</style>
 <body>
 
 	<div id="sidebar" class="sidebar responsive ace-save-state">
@@ -151,28 +215,28 @@
 						Dashboard </span>
 			</a> <b class="arrow"></b></li>
 
-<%-- 			<sec:authorize access="hasRole('ROLE_ADMIN')"> --%>
-<!-- 				<li class=""><a href="javascript:void(0)" -->
-<!-- 					class="dropdown-toggle"> <i class="menu-icon fa fa-life-ring"></i> -->
-<!-- 						<span class="menu-text"> Model </span> <b -->
-<!-- 						class="arrow fa fa-angle-down"></b> -->
-<!-- 				</a> <b class="arrow"></b> -->
+			<%-- 			<sec:authorize access="hasRole('ROLE_ADMIN')"> --%>
+			<!-- 				<li class=""><a href="javascript:void(0)" -->
+			<!-- 					class="dropdown-toggle"> <i class="menu-icon fa fa-life-ring"></i> -->
+			<!-- 						<span class="menu-text"> Model </span> <b -->
+			<!-- 						class="arrow fa fa-angle-down"></b> -->
+			<!-- 				</a> <b class="arrow"></b> -->
 
-<!-- 					<ul class="submenu"> -->
+			<!-- 					<ul class="submenu"> -->
 
 
-<!-- 						<li class=""><a -->
-<%-- 							href="${pageContext.request.contextPath}/addProductModel"> <i --%>
-<!-- 								class="menu-icon fa fa-plus purple"></i> Add MOdel -->
-<!-- 						</a> <b class="arrow"></b></li> -->
+			<!-- 						<li class=""><a -->
+			<%-- 							href="${pageContext.request.contextPath}/addProductModel"> <i --%>
+			<!-- 								class="menu-icon fa fa-plus purple"></i> Add MOdel -->
+			<!-- 						</a> <b class="arrow"></b></li> -->
 
-<!-- 						<li class=""><a -->
-<%-- 							href="${pageContext.request.contextPath}/listProductModel"> <i --%>
-<!-- 								class="menu-icon fa fa-list"></i> Model List -->
-<!-- 						</a> <b class="arrow"></b></li> -->
-<!-- 					</ul></li> -->
+			<!-- 						<li class=""><a -->
+			<%-- 							href="${pageContext.request.contextPath}/listProductModel"> <i --%>
+			<!-- 								class="menu-icon fa fa-list"></i> Model List -->
+			<!-- 						</a> <b class="arrow"></b></li> -->
+			<!-- 					</ul></li> -->
 
-<%-- 			</sec:authorize> --%>
+			<%-- 			</sec:authorize> --%>
 
 
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -282,7 +346,8 @@
 			</sec:authorize>
 
 
-			<sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_SUPERVISOR') or hasRole('ROLE_STORE_MANAGER')">
+			<sec:authorize
+				access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_SUPERVISOR') or hasRole('ROLE_STORE_MANAGER')">
 				<li class=""><a href="javascript:void(0)"
 					class="dropdown-toggle"> <i
 						class="menu-icon fa fa-chain-broken"></i> <span class="menu-text">
@@ -297,10 +362,24 @@
 						</a> <b class="arrow"></b></li>
 
 
-						
+
 					</ul></li>
 
 			</sec:authorize>
+
+
+
+
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<li class=""><a
+					href="${pageContext.request.contextPath}/viewRequisitionStatus">
+						<i class="menu-icon fa fa-bell-o"></i> <span class="menu-text">
+							Requisition Status </span>
+				</a> <b class="arrow"></b></li>
+
+			</sec:authorize>
+
+
 
 
 

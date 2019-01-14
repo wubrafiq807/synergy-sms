@@ -1,18 +1,15 @@
 <div class="footer">
 	<div class="footer-inner">
 		<div class="footer-content">
-		
-			 <span class="bigger-120">
-				<span class="blue bolder">Synergy Inc.</span>
-				&copy; <script> document.write(new Date().getFullYear()); </script>
-			</span>
 
-			&nbsp; &nbsp;
-			<span> Design &amp; Developed By :  <span class="bigger-120"> <a
-					href="javascript:void(0)"
-					style="text-decoration: none; font-style: italic;"> nazdaqTechnologies Inc.
-						</a> </span>
-				</span>
+			<span class="bigger-120"> <span class="blue bolder">Synergy
+					Inc.</span> &copy; <script> document.write(new Date().getFullYear()); </script>
+			</span> &nbsp; &nbsp; <span> Design &amp; Developed By : <span
+				class="bigger-120"> <a href="javascript:void(0)"
+					style="text-decoration: none; font-style: italic;">
+						nazdaqTechnologies Inc. </a>
+			</span>
+			</span>
 		</div>
 	</div>
 </div>
@@ -22,20 +19,27 @@
 <script type="text/javascript">
 	if('ontouchstart' in document.documentElement) document.write("<script src='${pageContext.request.contextPath}/resource/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>
-<script src="${pageContext.request.contextPath}/resource/assets/js/bootstrap.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resource/assets/js/bootstrap.min.js"></script>
 <!-- ace scripts -->
-<script src="${pageContext.request.contextPath}/resource/assets/js/ace-elements.min.js"></script>
-<script src="${pageContext.request.contextPath}/resource/assets/js/ace.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resource/assets/js/ace-elements.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resource/assets/js/ace.min.js"></script>
 
 <script
 	src="${pageContext.request.contextPath}/resource/js/additional-methods.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resource/js/jquery.validate.min.js"></script>
-	
-<script src="${pageContext.request.contextPath}/resource/js/sweetalert.min.js"></script>
+
+<script
+	src="${pageContext.request.contextPath}/resource/js/sweetalert.min.js"></script>
 
 <script
 	src="${pageContext.request.contextPath}/resource/js/resizeImage.js"></script>
+
+<script
+	src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 <script type="text/javascript">
 function archiveFunction(url, msg) {
