@@ -379,7 +379,25 @@ input:checked+.slider:before {
 
 			</sec:authorize>
 
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<li class=""><a href="javascript:void(0)"
+					class="dropdown-toggle"> <i
+						class="menu-icon fa fa-chain-broken"></i> <span class="menu-text">
+							Report</span> <b class="arrow fa fa-angle-down"></b>
+				</a> <b class="arrow"></b>
 
+					<ul class="submenu">
+
+						<li class=""><a
+							href="${pageContext.request.contextPath}/smsReqForm">
+								<i class="menu-icon fa fa-plus purple"></i> Requisitions
+						</a> <b class="arrow"></b></li>
+
+
+						
+					</ul></li>
+
+			</sec:authorize>
 
 
 

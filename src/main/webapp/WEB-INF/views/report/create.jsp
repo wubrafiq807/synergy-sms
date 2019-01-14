@@ -1,6 +1,6 @@
 <div class="content-wrapper" style="margin: 0px;">
 	<!-- Content Header (Page header) -->
-
+	
 
 	<!-- Main content -->
 	<section class="content">
@@ -11,12 +11,12 @@
 				<!-- Horizontal Form -->
 				<div class="box box-primary">
 					<div class="box-header with-border">
-						<h3 class="box-title center">New Report  Form</h3>
+						<h3 class="box-title center">Requisition report Form</h3>
 					</div>
 					<!-- /.box-header -->
 					<!-- form start -->
-					<form action="${pageContext.request.contextPath}/getRepoFilter" name="form"
-						method="post" class="formValMenu form-horizontal" enctype="multipart/form-data" modelAttribute="command">
+					<form action="${pageContext.request.contextPath}/smsReqReport" name="form"
+						method="post" class="formValMenu form-horizontal" enctype="multipart/form-data" >
 						<div class="box-body">
 							
 							<%@include file="../report/form.jsp"%>							
@@ -27,8 +27,8 @@
 							<button type="reset" class="btn btn-warning">
 								<i class="fa fa-hand-paper-o"></i>Reset
 							</button>
-							<button type="submit" class="btn btn-primary pull-right req-save-update-btn" name="submit_btn" value="save">
-								<i class="fa fa-save"></i>Execute
+							<button type="submit" class="btn btn-primary pull-right req-save-update-btn" name="submit_btn" value="save" id="submitBtn">
+								<i class="fa fa-save"></i>Save
 							</button>
 						</div>
 						<!-- /.box-footer -->

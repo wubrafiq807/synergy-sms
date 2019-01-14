@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.nazdaq.sms.beans.RequisitionBean;
 import com.nazdaq.sms.beans.SmsAdvanceBean;
 import com.nazdaq.sms.beans.SubReportBean;
 import com.nazdaq.sms.model.ProductPriceHistory;
@@ -63,6 +66,7 @@ public class ReportController implements Constants {
 	public void jobAdvanceReport(@PathVariable("id") String id, ModelMap model, RedirectAttributes redirectAttributes,
 			Principal principal, HttpSession session, HttpServletResponse response)
 			throws JRException, IOException, ParseException {
+		
 
 		JRDataSource jRdataSource = null;
 
@@ -92,11 +96,12 @@ public class ReportController implements Constants {
 			Double totalAmount = wAvg * requisitionItem.getQuantity();
 			totalApproveAmount += totalAmount;
 
-			subReportBean.setProductName(requisitionItem.getProduct().getName()+"-"+requisitionItem.getProduct().getCategory().getName());
+			subReportBean.setProductName(requisitionItem.getProduct().getName() + "-"
+					+ requisitionItem.getProduct().getCategory().getName());
 			subReportBean.setQuantity(requisitionItem.getQuantity());
 			subReportBean.setPrice(NumberWordConverter.convertDoubleToCurrency(totalAmount));
 			subReportBean.setSinglePrice(NumberWordConverter.convertDoubleToCurrency(wAvg));
-			
+
 			subReportBeans.add(subReportBean);
 
 		}
@@ -113,10 +118,10 @@ public class ReportController implements Constants {
 				smsAdvanceBean.setApprovedAmount(NumberWordConverter.convertDoubleToCurrency(totalApproveAmount));
 
 				smsAdvanceBean.setReqPurpose(requisition.getPurpose());
-				if(requisition.getId().toString().length()>1)
-				smsAdvanceBean.setReqNumber("REQ NO:-0" + requisition.getId());
+				if (requisition.getId().toString().length() > 1)
+					smsAdvanceBean.setReqNumber("REQ NO:-0" + requisition.getId());
 				else
-				smsAdvanceBean.setReqNumber("REQ NO:-00" + requisition.getId());
+					smsAdvanceBean.setReqNumber("REQ NO:-00" + requisition.getId());
 
 				smsAdvanceBean.setSubmissionDate(
 						NumberWordConverter.getCustomDateFromDateFormate(requisition.getCreatedDate().toString()));
@@ -169,9 +174,79 @@ public class ReportController implements Constants {
 
 	}
 
+	// methods to company show
+	@RequestMapping(value = "/smsReqReport", method = RequestMethod.POST)
+	public void smsReqReport(Principal principal, HttpSession session, HttpServletRequest request,
+			HttpServletResponse response) throws JRException, IOException, ParseException {
+
+		JRDataSource jRdataSource = null;
+		String status = request.getParameter("status").trim();
+		String title = status.equals(STATUS_CLOSE) ? "Closed"
+				: status.equals(STATUS_ACTIVE) ? "Pending" : "Rejected" ;
+		title+=" Requisition list";
+		String statusText = status.equals(STATUS_CLOSE) ? "Closed"
+				: status.equals(STATUS_ACTIVE) ? "Pending" : "Rejected";
+		String hqlQuery = "From Requisition where status = " + Integer.parseInt(status);
+		if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length()>0
+				&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length()>0) {
+			hqlQuery += " and modified_date BETWEEN '" + request.getParameter("startDate") + "' and '"
+					+ request.getParameter("endDate") + "'";
+			title += " from " + request.getParameter("startDate") + " to" + request.getParameter("endDate");
+
+		}
+
+		hqlQuery += " order by id asc";
+		// @formatter:on
+		List<RequisitionBean> requisitionBeans = new ArrayList<>();
+		List<Requisition> requisitionList = commonService.getObjectListByHqlQuery(hqlQuery).stream()
+				.map(x -> (Requisition) x).collect(Collectors.toList());
+		Double totalPriceSum = 0.0;
+		for (Requisition requisition2 : requisitionList) {
+			RequisitionBean requisitionBean = new RequisitionBean();
+			requisitionBean.setDate(
+					NumberWordConverter.getCustomDateFromDateFormate(requisition2.getCreatedDate().toString()));
+			requisitionBean.setApprovedAmount(NumberWordConverter.convertDoubleToCurrency(getTotalPrice(requisition2)));
+			totalPriceSum += getTotalPrice(requisition2);
+			requisitionBean.setEmployeeDesignation(requisition2.getEmployee().getDesignation());
+			requisitionBean.setEmployeeId(requisition2.getEmployee().getLxnId());
+			requisitionBean.setEmployeeName(requisition2.getEmployee().getName());
+			String statusLocal = requisition2.getStatus().toString().trim();
+			requisitionBean.setReqNumber(requisition2.getId().toString().length() > 1 ? "0" + requisition2.getId()
+					: "00" + requisition2.getId());
+			requisitionBean.setStatus(statusLocal.equals(STATUS_CLOSE) ? "Closed"
+					: statusLocal.equals(STATUS_ACTIVE) ? "Pending" : "Rejected");
+			requisitionBean.setReqPurpose(requisition2.getPurpose());
+			
+			requisitionBeans.add(requisitionBean);
+		}
+
+		InputStream jasperStream = null;
+
+		jasperStream = this.getClass().getResourceAsStream("/report/smsReqReport.jasper");
+		RequisitionBean requisitionBean = new RequisitionBean();
+		Map<String, Object> params = new HashMap<>();
+		Map<String, Object> datasourcemap = new HashMap<>();
+		datasourcemap.put("requisitionBean", requisitionBean);
+		jRdataSource = new JRBeanCollectionDataSource(requisitionBeans, false);
+
+		params.put("datasource", jRdataSource);
+		params.put("title", title.toUpperCase());
+		params.put("totalAmount", NumberWordConverter.convertDoubleToCurrency(totalPriceSum));
+
+		// prepare report first for one
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, jRdataSource);
+
+		response.setContentType("application/x-pdf");
+		response.setHeader("Content-disposition", "inline; filename=req_List_" + statusText + ".pdf");
+		final OutputStream outStream = response.getOutputStream();
+		JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+
+	}
+
 	private String getamounText(RequisitionHistory requisitionHistory) {
 		String text = "";
-		
+
 		if (requisitionHistory.getSettings().getBtnText().equals("Approve")) {
 			text = "d";
 		} else if (requisitionHistory.getSettings().getBtnText().equals("Submit")) {
@@ -179,14 +254,26 @@ public class ReportController implements Constants {
 		} else {
 			text = "ed";
 		}
-		
-		if(requisitionHistory.getSettings().getBtnText().equals("Delivery")) {
+
+		if (requisitionHistory.getSettings().getBtnText().equals("Delivery")) {
 			return new String("Delivered");
-		}else {
+		} else {
 			return new String((requisitionHistory.getSettings().getBtnText() + text));
 		}
-		
-		
+
+	}
+
+	private Double getTotalPrice(Requisition requisition) {
+		Double sum = 0.0;
+		List<RequisitionItem> requisitionItems = commonService
+				.getObjectListByAnyColumn("RequisitionItem", "requisition_id", requisition.getId().toString()).stream()
+				.map(x -> (RequisitionItem) x).collect(Collectors.toList());
+		for (RequisitionItem requisitionItem : requisitionItems) {
+			sum += this.getWeighttedAvgPrice(requisitionItem.getProduct().getId()) * requisitionItem.getQuantity();
+		}
+
+		return sum;
+
 	}
 
 	private Double getWeighttedAvgPrice(Integer productID) {

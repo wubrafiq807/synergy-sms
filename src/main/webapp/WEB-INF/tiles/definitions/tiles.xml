@@ -401,7 +401,12 @@
 	</definition>
 	
 
-
+<definition name="smsReqForm" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Requisition Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/report/create.jsp" />
+	</definition>
 	<!-- Store Supervision Requisition Status End -->
 
 
