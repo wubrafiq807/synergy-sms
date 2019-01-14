@@ -547,61 +547,6 @@ public class RequisitionController implements Constants {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/viewRequisitionStatus", method = RequestMethod.GET)
-	public ModelAndView viewRequisitionStatus(Model model, Principal principal) {
-		if (principal == null) {
-			return new ModelAndView("redirect:/login");
-		}
 
-		List<com.nazdaq.sms.model.RequisitionStatus> requisitionStatus = (List<com.nazdaq.sms.model.RequisitionStatus>) (Object) commonService
-				.getAllObjectList("RequisitionStatus");
-		model.addAttribute("requisitionStatus", requisitionStatus);
-		return new ModelAndView("productRequisitionStatus");
-
-	}
-
-//	@RequestMapping(value = "/inactiveRequisitionItem", method = RequestMethod.GET)
-//	public ModelAndView inactiveRequisitionItem(Model model, Principal principal, HttpServletRequest request) {
-//
-//		RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
-//				.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", request.getParameter("id"));
-//		requisitionStatus.setReqStatus(0);
-//
-//		commonService.saveOrUpdateModelObjectToDB(requisitionStatus);
-//
-//		return new ModelAndView("redirect:/viewRequisitionStatus");
-//
-//	}
-//
-//	@RequestMapping(value = "/activeRequisitionItem", method = RequestMethod.GET)
-//	public ModelAndView activeRequisitionItem(Model model, Principal principal, HttpServletRequest request) {
-//
-//		RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
-//				.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", request.getParameter("id"));
-//		requisitionStatus.setReqStatus(1);
-//
-//		commonService.saveOrUpdateModelObjectToDB(requisitionStatus);
-//
-//		return new ModelAndView("redirect:/viewRequisitionStatus");
-//
-//	}
-
-	@RequestMapping(value = "/ajaxChangeProductRequisitionStatus", method = RequestMethod.POST)
-	@ResponseBody
-	public Boolean ajaxChangeProductRequisitionStatus(Principal principal, HttpServletRequest request) {
-
-		Integer reqStatus = Integer.parseInt(request.getParameter("status"));
-
-		RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
-				.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
-
-		
-		requisitionStatus.setReqStatus(reqStatus);
-		commonService.saveOrUpdateModelObjectToDB(requisitionStatus);
-		
-		return true;
-
-	}
 
 }
