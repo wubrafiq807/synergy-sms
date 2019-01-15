@@ -191,7 +191,7 @@ public class ReportController implements Constants {
 				&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length()>0) {
 			hqlQuery += " and modified_date BETWEEN '" + request.getParameter("startDate") + "' and '"
 					+ request.getParameter("endDate") + "'";
-			title += " from " + request.getParameter("startDate") + " to" + request.getParameter("endDate");
+			title += " from " + request.getParameter("startDate") + " to " + request.getParameter("endDate");
 
 		}
 
@@ -213,8 +213,9 @@ public class ReportController implements Constants {
 			String statusLocal = requisition2.getStatus().toString().trim();
 			requisitionBean.setReqNumber(requisition2.getId().toString().length() > 1 ? "0" + requisition2.getId()
 					: "00" + requisition2.getId());
-			requisitionBean.setStatus(statusLocal.equals(STATUS_CLOSE) ? "Closed"
-					: statusLocal.equals(STATUS_ACTIVE) ? "Pending" : "Rejected");
+//			requisitionBean.setStatus(statusLocal.equals(STATUS_CLOSE) ? "Closed"
+//					: statusLocal.equals(STATUS_ACTIVE) ? "Pending" : "Rejected");
+			requisitionBean.setStatus(requisition2.getSettings().getViewText());
 			requisitionBean.setReqPurpose(requisition2.getPurpose());
 			
 			requisitionBeans.add(requisitionBean);

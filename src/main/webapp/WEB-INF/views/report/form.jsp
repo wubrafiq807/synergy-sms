@@ -38,15 +38,15 @@
 		var year = (new Date()).getFullYear();
 		// US Format
 		$('input[type=eu-date]').w2field('date', {
-			format : 'dd-mm-yyyy'
+			format : 'yyyy-mm-dd'
 		});
 
 		$('input[type=eu-date1]').w2field('date', {
-			format : 'dd-mm-yyyy',
+			format : 'yyyy-mm-dd',
 			end : $('input[type=eu-date2]')
 		});
 		$('input[type=eu-date2]').w2field('date', {
-			format : 'dd-mm-yyyy',
+			format : 'yyyy-mm-dd',
 			start : $('input[type=eu-date1]')
 		});
 
