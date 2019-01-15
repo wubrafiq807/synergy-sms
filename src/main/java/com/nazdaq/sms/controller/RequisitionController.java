@@ -214,9 +214,14 @@ public class RequisitionController implements Constants {
 				requisition.setSettings(settingsList.get(0));
 				requisition.setEmployee(loginEmployee);
 			}
+			Integer id=null;
+			try {
+				 id = commonService.saveWithReturnId(requisition);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 			
 			
-			Integer id = commonService.saveWithReturnId(requisition);
 			Requisition requisitionDB = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id",
 					id.toString());
 			createRequisitionItems(request, requisitionDB);
