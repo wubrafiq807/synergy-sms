@@ -37,50 +37,22 @@
 										<td class="text-center" title="Show Category List">
 											${tr.count}</td>
 
-										<%-- 											${requisitionStatus.reqStatus=='1'?'Active':'Inactive'} --%>
 										<td class="text-center"><span id="statusResult"></span></td>
 										<td class="text-center"><c:choose>
 												<c:when test="${requisitionStatus.reqStatus=='1'}">
-
-
-
-
 
 													<label class="switch"> <input type="checkbox"
 														checked onclick="changeActiveToInactive()"> <span
 														class="slider round"></span>
 													</label>
-
-
-
-
-													<!-- 													<a -->
-													<%-- 														href="inactiveRequisitionItem?id=${requisitionStatus.id}" --%>
-													<!-- 														style="font-size: 30px;" class="text-success"><i -->
-													<!-- 														class="fa fa-arrow-up" aria-hidden="true" -->
-													<!-- 														title="Inactive Requisition"></i></a> -->
-
-
 												</c:when>
 												<c:otherwise>
-
-													<%-- 													<a href="activeRequisitionItem?id=${requisitionStatus.id}" --%>
-													<!-- 														style="font-size: 30px;" class="text-danger"><i -->
-													<!-- 														class="fa fa-arrow-down" aria-hidden="true" -->
-													<!-- 														title="Active Requisition"></i></a> -->
-
-
-
 
 													<label class="switch"> <input type="checkbox"
 														onclick="changeInActiveToActive()"> <span
 														class="slider round"></span>
 													</label>
-
-
-
-
-
+													
 												</c:otherwise>
 											</c:choose></td>
 									</tr>
