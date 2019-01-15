@@ -9,6 +9,12 @@
 <input type="hidden" value="${pageContext.request.contextPath}"
 	id="contextPath" />
 
+<c:forEach items="${requisitionStatus}" var="requisitionStatus">
+	<input type="text" id="finalStatus"
+		value="${requisitionStatus.reqStatus}" />
+
+</c:forEach>
+
 <div id="navbar" class="navbar navbar-default          ace-save-state">
 	<div class="navbar-container ace-save-state" id="navbar-container">
 		<button type="button" class="navbar-toggle menu-toggler pull-left"
@@ -20,48 +26,74 @@
 
 		<div class="navbar-header pull-left">
 			<a href="${pageContext.request.contextPath}/" class="navbar-brand">
-				<small> <i class="glyphicon glyphicon-home"></i>
-					<%-- ${properties['project.title']} --%>
-					SYNERGY STORE SUPERVISION 				
+				<small> <i class="glyphicon glyphicon-home"></i> <%-- ${properties['project.title']} --%>
+					SYNERGY STORE SUPERVISION
 			</small>
-			</a>		
+			</a>
 		</div>
-		
+
 
 		<div class="navbar-buttons navbar-header pull-right" role="navigation">
 			<ul class="nav ace-nav">
 				<!-- ---------------------------------------------------------------- -->
 				<li class="light-blue">
-				${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
-				<c:set var="userName" value="${sessionScope.userr}" scope="page" />
-				<c:set var="userId" value="${sessionScope.userrId}" scope="page" />
-				<c:set var="roleName" value="${sessionScope.roleName}" scope="page" />	
-				<c:set var="loginEmployee" value="${sessionScope.loginEmployee}" scope="page" />	
-				
-						<li class="green"> <a href="${pageContext.request.contextPath}/myProfile"> <i
-								class="fa fa-fw fa-eye"></i> My Profile
+					${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} <c:set
+						var="userName" value="${sessionScope.userr}" scope="page" /> <c:set
+						var="userId" value="${sessionScope.userrId}" scope="page" /> <c:set
+						var="roleName" value="${sessionScope.roleName}" scope="page" /> <c:set
+						var="loginEmployee" value="${sessionScope.loginEmployee}"
+						scope="page" /> <c:forEach items="${requisitionStatus}"
+						var="requisitionStatus">
+
+						<li class="red red_li" style="display: none;"><a
+							href="${pageContext.request.contextPath}/myProfile"> <label
+								class="switch"
+								style="position: relative; top: -18px; margin-right: 10px">
+									<input type="checkbox" checked
+									onclick="changeActiveToInactive()"> <span
+									class="slider round"></span>
+							</label><span id="span-active">Active</span>
 						</a></li>
-						
-						<li class="purple"> <a href="${pageContext.request.contextPath}/changePassword"> 
-						<span class="fa-passwd-reset fa-stack"> <span class="fa fa-undo fa-stack-2x"></span> 
-						<span class="fa fa-lock fa-stack-1x"></span> </span> Change Password
+
+						<li class="red green_li" style="display: none;"><a
+							href="${pageContext.request.contextPath}/myProfile"> <label
+								class="switch"
+								style="position: relative; top: -18px; margin-right: 10px">
+									<input type="checkbox" onclick="changeInActiveToActive()">
+									<span class="slider round"></span>
+							</label><span id="span-inactive">Inactive</span>
 						</a></li>
-						
-						<li class="red"> <a href="${pageContext.request.contextPath}/<c:url value='j_spring_security_logout' />"> <i
-								class="ace-icon fa fa-power-off"></i> Logout
-						</a></li>
-						
-						<!-- <li class="light-blue"> -->
-						<li class="blue">
-							<a href="${pageContext.request.contextPath}/" >
-								<img class="nav-user-photo" src="${pageContext.request.contextPath}/resource/assets/images/avatars/user.jpg" alt="Jason's Photo" />
-								<span class="user-info">
-									<small>Welcome,</small>
-									${userName}
-								</span>
-							</a>
-						</li>
-					
+
+
+					</c:forEach> <!-- 					<li class="green"><a --> <%-- 					href="${pageContext.request.contextPath}/myProfile"> <i --%>
+					<!-- 						class="fa fa-fw fa-eye"></i> active/inactive --> <!-- 				</a></li> -->
+				<li class="green"><a
+					href="${pageContext.request.contextPath}/myProfile"> <i
+						class="fa fa-fw fa-eye"></i> My Profile
+				</a></li>
+
+				<li class="purple"><a
+					href="${pageContext.request.contextPath}/changePassword"> <span
+						class="fa-passwd-reset fa-stack"> <span
+							class="fa fa-undo fa-stack-2x"></span> <span
+							class="fa fa-lock fa-stack-1x"></span>
+					</span> Change Password
+				</a></li>
+
+				<li class="red"><a
+					href="${pageContext.request.contextPath}/<c:url value='j_spring_security_logout' />">
+						<i class="ace-icon fa fa-power-off"></i> Logout
+				</a></li>
+
+				<!-- <li class="light-blue"> -->
+				<li class="blue"><a href="${pageContext.request.contextPath}/">
+						<img class="nav-user-photo"
+						src="${pageContext.request.contextPath}/resource/assets/images/avatars/user.jpg"
+						alt="Jason's Photo" /> <span class="user-info"> <small>Welcome,</small>
+							${userName}
+					</span>
+				</a></li>
+
 				<!-- ---------------------------------------------------------------- -->
 			</ul>
 		</div>

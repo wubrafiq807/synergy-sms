@@ -84,6 +84,7 @@ public class DashboardController implements Constants {
 		return new ModelAndView("userDashboard", model);
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/adminDashboard", method = RequestMethod.GET)
 	public ModelAndView adminDashboard(ModelMap model, Principal principal, HttpSession session,
 			HttpServletRequest request) {
@@ -132,6 +133,13 @@ public class DashboardController implements Constants {
 			model.put("totalApprovedReq", approvedReqList.size());
 			model.put("totalRejectedJobReq", rejectedReqList.size());
 		}
+
+		// Get The Requisition Data From Server
+
+		List<com.nazdaq.sms.model.RequisitionStatus> requisitionStatus = (List<com.nazdaq.sms.model.RequisitionStatus>) (Object) commonService
+				.getAllObjectList("RequisitionStatus");
+
+		model.addAttribute("requisitionStatus", requisitionStatus);
 
 		return new ModelAndView("adminDashboard", model);
 	}
