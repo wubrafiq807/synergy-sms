@@ -370,14 +370,7 @@ input:checked+.slider:before {
 
 
 
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<li class=""><a
-					href="${pageContext.request.contextPath}/viewRequisitionStatus">
-						<i class="menu-icon fa fa-bell-o"></i> <span class="menu-text">
-							Requisition Status </span>
-				</a> <b class="arrow"></b></li>
-
-			</sec:authorize>
+			
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">
 				<li class=""><a href="javascript:void(0)"

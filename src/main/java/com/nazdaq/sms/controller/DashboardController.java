@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.nazdaq.sms.model.Employee;
 import com.nazdaq.sms.model.Requisition;
 import com.nazdaq.sms.model.RequisitionHistory;
+import com.nazdaq.sms.model.RequisitionStatus;
 import com.nazdaq.sms.model.Settings;
 import com.nazdaq.sms.service.CommonService;
 import com.nazdaq.sms.util.Constants;
@@ -134,13 +135,9 @@ public class DashboardController implements Constants {
 			model.put("totalRejectedJobReq", rejectedReqList.size());
 		}
 
-		// Get The Requisition Data From Server
-
-		List<com.nazdaq.sms.model.RequisitionStatus> requisitionStatus = (List<com.nazdaq.sms.model.RequisitionStatus>) (Object) commonService
-				.getAllObjectList("RequisitionStatus");
-
-		model.addAttribute("requisitionStatus", requisitionStatus);
-
+		RequisitionStatus requisitionStatus=(RequisitionStatus) commonService.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
+		
+		model.put("requisitionStatus", requisitionStatus);
 		return new ModelAndView("adminDashboard", model);
 	}
 

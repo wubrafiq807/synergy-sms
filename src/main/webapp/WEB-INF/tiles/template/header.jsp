@@ -9,11 +9,7 @@
 <input type="hidden" value="${pageContext.request.contextPath}"
 	id="contextPath" />
 
-<c:forEach items="${requisitionStatus}" var="requisitionStatus">
-	<input type="text" id="finalStatus"
-		value="${requisitionStatus.reqStatus}" />
 
-</c:forEach>
 
 <div id="navbar" class="navbar navbar-default          ace-save-state">
 	<div class="navbar-container ace-save-state" id="navbar-container">
@@ -42,30 +38,47 @@
 						var="userId" value="${sessionScope.userrId}" scope="page" /> <c:set
 						var="roleName" value="${sessionScope.roleName}" scope="page" /> <c:set
 						var="loginEmployee" value="${sessionScope.loginEmployee}"
-						scope="page" /> <c:forEach items="${requisitionStatus}"
-						var="requisitionStatus">
-
-						<li class="red red_li" style="display: none;"><a
-							href="${pageContext.request.contextPath}/myProfile"> <label
+						scope="page" /> 
+						
+						<c:set
+						var="requisitionStatus" value="${sessionScope.requisitionStatus}"
+						scope="page" /> 
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<c:if test="${not empty requisitionStatus}">
+						<input type="hidden" id="finalStatus"
+		value="${requisitionStatus.reqStatus}" />
+		
+		<li class="red red_li" style="display: none;"><a
+							href="${pageContext.request.contextPath}/myProfile"> 
+							<span id="span-inactive">Requisition Switch</span>
+							<label
 								class="switch"
-								style="position: relative; top: -18px; margin-right: 10px">
+								style="position: relative; top: -5px; margin-right: 10px">
 									<input type="checkbox" checked
 									onclick="changeActiveToInactive()"> <span
 									class="slider round"></span>
-							</label><span id="span-active">Active</span>
+							</label><span id="span-active">ON/OFF</span>
 						</a></li>
 
 						<li class="red green_li" style="display: none;"><a
-							href="${pageContext.request.contextPath}/myProfile"> <label
+							href="${pageContext.request.contextPath}/myProfile"> 
+							<span id="span-inactive">Requisition Switch</span>
+							<label
 								class="switch"
-								style="position: relative; top: -18px; margin-right: 10px">
+								style="position: relative; top: -5px; margin-right: 10px">
 									<input type="checkbox" onclick="changeInActiveToActive()">
 									<span class="slider round"></span>
-							</label><span id="span-inactive">Inactive</span>
+							</label><span id="span-inactive">ON/OFF</span>
 						</a></li>
+						</c:if>
+				
+						
+
+			</sec:authorize>
 
 
-					</c:forEach> <!-- 					<li class="green"><a --> <%-- 					href="${pageContext.request.contextPath}/myProfile"> <i --%>
+
+					 <!-- 					<li class="green"><a --> <%-- 					href="${pageContext.request.contextPath}/myProfile"> <i --%>
 					<!-- 						class="fa fa-fw fa-eye"></i> active/inactive --> <!-- 				</a></li> -->
 				<li class="green"><a
 					href="${pageContext.request.contextPath}/myProfile"> <i

@@ -72,14 +72,15 @@ function archiveFunction(url, msg) {
 								if (status == 1) {
 									console.log('changeActiveToInActive');
 									document.getElementById("finalStatus").value = '0';
-
+									
+									
 									changeProductStatus(document
 											.getElementById("finalStatus").value);
 
 								} else {
 									console.log('changeInActiveToActive');
 									document.getElementById("finalStatus").value = '1';
-
+									
 									changeProductStatus(document
 											.getElementById("finalStatus").value);
 								}
@@ -93,13 +94,13 @@ function archiveFunction(url, msg) {
 								if (status == 0) {
 									console.log('changeInActiveToActive');
 									document.getElementById("finalStatus").value = '1';
-
+									
 									changeProductStatus(document
 											.getElementById("finalStatus").value);
 								} else {
 									console.log('changeActiveToInActive');
 									document.getElementById("finalStatus").value = '0';
-
+									
 									changeProductStatus(document
 											.getElementById("finalStatus").value);
 								}
@@ -121,24 +122,11 @@ function archiveFunction(url, msg) {
 													console.log("success");
 													if (document
 															.getElementById("finalStatus").value == 1) {
-														
-// 														console.log("active");
-														
-// 														document.getElementById('span-active').innerHTML = "Active";
-// 														document.getElementById('span-inactive').innerHTML = "";
-
-														 $('.red_li').show();
-														  $('.green_li').hide();
+												
 
 													} else {
 														
-// 														console.log("Inactive");													
-														
-// 														document.getElementById('span-active').innerHTML = "";
-// 														document.getElementById('span-inactive').innerHTML = "Inactive";
-
-														$('.red_li').hide();
-														  $('.green_li').show();
+													
 														
 													}
 

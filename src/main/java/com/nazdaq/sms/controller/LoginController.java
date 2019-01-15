@@ -76,15 +76,19 @@ public class LoginController extends SavedRequestAwareAuthenticationSuccessHandl
 
 		Employee employee = (Employee) commonService.getAnObjectByAnyUniqueColumn("Employee", "punch_id",
 				user.getEmpId().toString());
-
+		
+		
 		session.setAttribute("loginEmployee", employee);
-
+		
+	
+		
 		session.setAttribute("userr", name);
 		session.setAttribute("uid", 1);
 		session.setAttribute("userrId", session.getAttribute("userr"));
 		session.setAttribute("roleName", roleName);
 
 		model.addAttribute("loginEmployee", session.getAttribute("loginEmployee"));
+		
 
 		model.addAttribute("userName", session.getAttribute("userr"));
 		model.addAttribute("userId", session.getAttribute("userrId"));
@@ -93,6 +97,8 @@ public class LoginController extends SavedRequestAwareAuthenticationSuccessHandl
 		Settings js = (Settings) commonService.getAnObjectByAnyUniqueColumn("Settings", "auth_role", roleName);
 
 		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_JOB_ADMIN")) {
+			
+			
 			pageLocation = "redirect:/adminDashboard";
 
 		} else if (js != null && !js.getAuthRole().trim().equals("ROLE_SUPERVISOR")) {
