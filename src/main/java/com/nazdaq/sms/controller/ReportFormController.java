@@ -62,7 +62,7 @@ public class ReportFormController implements Constants {
 	@Value("${cc.email.addresss}")
 	String ccEmailAddresss;
 
-	// methods to company show
+	
 	@RequestMapping(value = "/smsReqForm", method = RequestMethod.GET)
 	public ModelAndView smsReqForm(Principal principal)
 			throws JRException, IOException, ParseException {
@@ -72,6 +72,18 @@ public class ReportFormController implements Constants {
 		}
 		return new ModelAndView("smsReqForm");
 	}
+	
+
+	@RequestMapping(value = "/smsStockReport", method = RequestMethod.GET)
+	public ModelAndView smsStockReport(Principal principal)
+			throws JRException, IOException, ParseException {
+
+		if (principal == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		return new ModelAndView("smsStockReport");
+	}
+
 
 	
 

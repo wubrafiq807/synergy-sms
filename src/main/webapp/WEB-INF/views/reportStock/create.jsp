@@ -11,15 +11,15 @@
 				<!-- Horizontal Form -->
 				<div class="box box-primary">
 					<div class="box-header with-border">
-						<h3 class="box-title center">Requisition report Form</h3>
+						<h3 class="box-title center">Stock report Form</h3>
 					</div>
 					<!-- /.box-header -->
 					<!-- form start -->
-					<form action="${pageContext.request.contextPath}/smsReqReport" name="form"
+					<form action="${pageContext.request.contextPath}/smsStockReport" name="form"
 						method="post" class="formValMenu form-horizontal" enctype="multipart/form-data" >
 						<div class="box-body">
 							
-							<%@include file="../report/form.jsp"%>							
+							<%@include file="../reportStock/form.jsp"%>							
 
 						</div>
 						<!-- /.box-body -->

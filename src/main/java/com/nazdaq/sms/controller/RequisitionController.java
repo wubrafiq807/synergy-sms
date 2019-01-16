@@ -34,6 +34,7 @@ import com.nazdaq.sms.model.ProductRecive;
 import com.nazdaq.sms.model.Requisition;
 import com.nazdaq.sms.model.RequisitionHistory;
 import com.nazdaq.sms.model.RequisitionItem;
+import com.nazdaq.sms.model.RequisitionStatus;
 import com.nazdaq.sms.model.Settings;
 import com.nazdaq.sms.model.Stock;
 import com.nazdaq.sms.service.CommonService;
@@ -180,6 +181,12 @@ public class RequisitionController implements Constants {
 			createRequisitionItems(request, requisitionDB);
 
 		} else {
+			RequisitionStatus requisitionStatus=(RequisitionStatus) commonService.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
+			
+			if(requisitionStatus!=null&&requisitionStatus.getReqStatus().toString().equals("0")) {
+				return new ModelAndView("redirect:/login");
+			}
+			
 			String roleName = commonService.getAuthRoleName();
 			
 			requisition.setCreatedBy(loginEmployee);
@@ -551,6 +558,25 @@ public class RequisitionController implements Constants {
 		} else {
 			return false;
 		}
+
+	}
+	
+	@RequestMapping(value = "/checkReqvalid", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean checkReqvalid(Principal principal) {
+
+		boolean flag=true;
+		RequisitionStatus requisitionStatus=(RequisitionStatus) commonService.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
+		
+		if(requisitionStatus!=null) {
+			if(requisitionStatus.getReqStatus().toString().equals("1")) {
+				flag=true;
+			}else {
+				flag=false;
+			}
+		}
+		
+		return flag;
 
 	}
 	

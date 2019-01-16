@@ -25,11 +25,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nazdaq.sms.beans.RequisitionBean;
 import com.nazdaq.sms.beans.SmsAdvanceBean;
+import com.nazdaq.sms.beans.StockBean;
 import com.nazdaq.sms.beans.SubReportBean;
 import com.nazdaq.sms.model.ProductPriceHistory;
 import com.nazdaq.sms.model.Requisition;
 import com.nazdaq.sms.model.RequisitionHistory;
 import com.nazdaq.sms.model.RequisitionItem;
+import com.nazdaq.sms.model.Stock;
 import com.nazdaq.sms.service.CommonService;
 import com.nazdaq.sms.util.Constants;
 import com.nazdaq.sms.util.EnglishNumberToWords;
@@ -66,7 +68,6 @@ public class ReportController implements Constants {
 	public void jobAdvanceReport(@PathVariable("id") String id, ModelMap model, RedirectAttributes redirectAttributes,
 			Principal principal, HttpSession session, HttpServletResponse response)
 			throws JRException, IOException, ParseException {
-		
 
 		JRDataSource jRdataSource = null;
 
@@ -174,23 +175,28 @@ public class ReportController implements Constants {
 
 	}
 
-	// methods to company show
 	@RequestMapping(value = "/smsReqReport", method = RequestMethod.POST)
 	public void smsReqReport(Principal principal, HttpSession session, HttpServletRequest request,
 			HttpServletResponse response) throws JRException, IOException, ParseException {
 
 		JRDataSource jRdataSource = null;
 		String status = request.getParameter("status").trim();
-		String title = status.equals(STATUS_CLOSE) ? "Closed"
-				: status.equals(STATUS_ACTIVE) ? "Pending" : "Rejected" ;
-		title+=" Requisition list";
+		String title = status.equals(STATUS_CLOSE) ? "Closed" : status.equals(STATUS_ACTIVE) ? "Pending" : "Rejected";
+		title += " Requisition list";
 		String statusText = status.equals(STATUS_CLOSE) ? "Closed"
 				: status.equals(STATUS_ACTIVE) ? "Pending" : "Rejected";
 		String hqlQuery = "From Requisition where status = " + Integer.parseInt(status);
-		if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length()>0
-				&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length()>0) {
-			hqlQuery += " and modified_date BETWEEN '" + request.getParameter("startDate") + "' and '"
-					+ request.getParameter("endDate") + "'";
+		if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length() > 0
+				&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length() > 0) {
+
+			if (status.equals(STATUS_ACTIVE)) {
+				hqlQuery += " and created_date >= '" + request.getParameter("startDate") + "' and created_date <='"
+						+ request.getParameter("endDate") + " 23:59:59.999'";
+			} else {
+				hqlQuery += " and modified_date >= '" + request.getParameter("startDate") + "' and modified_date <='"
+						+ request.getParameter("endDate") + " 23:59:59.999'";
+			}
+
 			title += " from " + request.getParameter("startDate") + " to " + request.getParameter("endDate");
 
 		}
@@ -213,11 +219,11 @@ public class ReportController implements Constants {
 			String statusLocal = requisition2.getStatus().toString().trim();
 			requisitionBean.setReqNumber(requisition2.getId().toString().length() > 1 ? "0" + requisition2.getId()
 					: "00" + requisition2.getId());
-//			requisitionBean.setStatus(statusLocal.equals(STATUS_CLOSE) ? "Closed"
-//					: statusLocal.equals(STATUS_ACTIVE) ? "Pending" : "Rejected");
+			// requisitionBean.setStatus(statusLocal.equals(STATUS_CLOSE) ? "Closed"
+			// : statusLocal.equals(STATUS_ACTIVE) ? "Pending" : "Rejected");
 			requisitionBean.setStatus(requisition2.getSettings().getViewText());
 			requisitionBean.setReqPurpose(requisition2.getPurpose());
-			
+
 			requisitionBeans.add(requisitionBean);
 		}
 
@@ -240,6 +246,69 @@ public class ReportController implements Constants {
 
 		response.setContentType("application/x-pdf");
 		response.setHeader("Content-disposition", "inline; filename=req_List_" + statusText + ".pdf");
+		final OutputStream outStream = response.getOutputStream();
+		JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+
+	}
+
+	// methods to company show
+	@RequestMapping(value = "/smsStockReport", method = RequestMethod.POST)
+	public void smsStockReport(Principal principal, HttpSession session, HttpServletRequest request,
+			HttpServletResponse response) throws JRException, IOException, ParseException {
+
+		JRDataSource jRdataSource = null;
+		
+
+		String title = "Product Stocks";
+
+		String hqlQuery = "From Stock";
+		if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length() > 0
+				&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length() > 0) {
+
+			hqlQuery += " where  created_date >= '" + request.getParameter("startDate") + "' and created_date <='"
+					+ request.getParameter("endDate") + " 23:59:59.999'";
+
+			title += " from " + request.getParameter("startDate") + " to " + request.getParameter("endDate");
+
+		}
+
+		hqlQuery += " order by id asc";
+		// @formatter:on
+		List<StockBean> stockBeans = new ArrayList<>();
+		List<Stock> stockList = commonService.getObjectListByHqlQuery(hqlQuery).stream()
+				.map(x -> (Stock) x).collect(Collectors.toList());
+		
+		for (Stock stock : stockList) {
+			StockBean stockBean=new StockBean();
+			if(stock.getCreatedDate()!=null)
+			stockBean.setDate(NumberWordConverter.getCustomDateFromDateFormate(stock.getCreatedDate().toString()));
+			stockBean.setEmployeeName(stock.getCreatedBy().getName());
+			stockBean.setGeneralQuantity(stock.getQuantity());
+			stockBean.setVipQuantity(stock.getVipQuantity());
+			stockBean.setProductId(stock.getProduct().getId());
+			stockBean.setProductName(stock.getProduct().getName());
+			stockBeans.add(stockBean);
+		}
+
+		InputStream jasperStream = null;
+
+		jasperStream = this.getClass().getResourceAsStream("/report/smsProductStock.jasper");
+		StockBean stockBean = new StockBean();
+		Map<String, Object> params = new HashMap<>();
+		Map<String, Object> datasourcemap = new HashMap<>();
+		datasourcemap.put("stockBean", stockBean);
+		jRdataSource = new JRBeanCollectionDataSource(stockBeans, false);
+
+		params.put("datasource", jRdataSource);
+		params.put("title", title.toUpperCase());
+		
+
+		// prepare report first for one
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, jRdataSource);
+
+		response.setContentType("application/x-pdf");
+		response.setHeader("Content-disposition", "inline; filename=req_stock_list.pdf");
 		final OutputStream outStream = response.getOutputStream();
 		JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
 

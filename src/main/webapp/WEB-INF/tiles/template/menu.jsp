@@ -385,6 +385,10 @@ input:checked+.slider:before {
 							href="${pageContext.request.contextPath}/smsReqForm">
 								<i class="menu-icon fa fa-plus purple"></i> Requisitions
 						</a> <b class="arrow"></b></li>
+						<li class=""><a
+							href="${pageContext.request.contextPath}/smsStockReport">
+								<i class="menu-icon fa fa-plus purple"></i> Stocks
+						</a> <b class="arrow"></b></li>
 
 
 						

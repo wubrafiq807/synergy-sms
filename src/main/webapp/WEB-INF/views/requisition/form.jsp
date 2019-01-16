@@ -127,6 +127,22 @@
 				.on(
 						'submit',
 						function(e) {
+							jQuery.ajax({
+								type: "POST",
+								url: "${pageContext.request.contextPath}/checkReqvalid",
+								dataType: 'json',
+								
+								success: function(res) {
+								if (!res)
+								{
+								
+									w2alert('<span style="color:red;font-size:16px">Requisition Submission Is Off Now Please Contract ADMIN department.</span>');
+									return false;
+								
+								}
+								}
+								});
+							
 							if ($('#isVipRequisition').val() == '1') {
 								if ($('#employee_id').val() == '') {
 									$('#employee_id_error').text(
