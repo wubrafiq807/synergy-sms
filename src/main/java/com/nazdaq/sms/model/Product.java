@@ -45,11 +45,7 @@ public class Product extends CommonModel implements Serializable{
 	@Column(name = "price")
 	private Double price;
 	
-	@Column(name = "purchase_quantity")
-	private Integer purchaseQuantity;
 	
-	@Column(name = "purchase_quantity_vip")
-	private Integer vipPurchaseQuantity;
 	
 	
 	@ManyToOne
@@ -150,13 +146,7 @@ public class Product extends CommonModel implements Serializable{
 		this.weightedAvgPrice = weightedAvgPrice;
 	}
 
-	public Integer getPurchaseQuantity() {
-		return purchaseQuantity;
-	}
 
-	public void setPurchaseQuantity(Integer purchaseQuantity) {
-		this.purchaseQuantity = purchaseQuantity;
-	}
 
 	public String getWeightedAvgPriceCurrency() {
 		return weightedAvgPriceCurrency;
@@ -174,13 +164,7 @@ public class Product extends CommonModel implements Serializable{
 		this.totalPriceCurrency = totalPriceCurrency;
 	}
 
-	public Integer getVipPurchaseQuantity() {
-		return vipPurchaseQuantity;
-	}
 
-	public void setVipPurchaseQuantity(Integer vipPurchaseQuantity) {
-		this.vipPurchaseQuantity = vipPurchaseQuantity;
-	}
 	
 	
 }

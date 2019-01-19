@@ -81,65 +81,17 @@ public class ProductController {
 			Category category = (Category) commonService.getAnObjectByAnyUniqueColumn("Category", "id",
 					product.getCategoryId().toString());
 
-//			Model model = (Model) commonService.getAnObjectByAnyUniqueColumn("Model", "id",
-//					product.getModelId().toString());
-			Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
-					product.getId().toString());
-			Integer totalQuantity=product.getPurchaseQuantity()+product.getVipPurchaseQuantity();
-			Integer vipQTDB=0;
-			if(productDb.getVipPurchaseQuantity()!=null)
-				vipQTDB=productDb.getVipPurchaseQuantity();
-			
-			Integer totalQuantityDB=productDb.getPurchaseQuantity()+vipQTDB;
-
-			if (totalQuantity != totalQuantityDB) {
-
-				// UPDATING THE PRODUCT QUANTITY TABLE
-
-				stock.setQuantity(product.getPurchaseQuantity());
-				stock.setVipQuantity(product.getVipPurchaseQuantity());
-				commonService.saveOrUpdateModelObjectToDB(stock);
-
-				// SAVING NEW DATA TO PRODUCT RECIVE TABLE
-
-				ProductRecive productRecive = new ProductRecive();
-				productRecive.setProduct(product);
-				productRecive.setQuantity(totalQuantity);
-				productRecive.setModifiedBy(loginEmployee);
-				productRecive.setModifiedDate(new Date());
-				commonService.saveOrUpdateModelObjectToDB(productRecive);
-
-			}
-
 			productDb.setCategory(category);
-			//productDb.setModel(model);
+			// productDb.setModel(model);
 			productDb.setName(product.getName());
 			productDb.setRemarks(product.getRemarks());
 			productDb.setStatus(product.getStatus());
 			productDb.setPrice(product.getPrice());
 			productDb.setDescription(product.getDescription());
-			productDb.setPurchaseQuantity(product.getPurchaseQuantity());
-			productDb.setVipPurchaseQuantity(product.getVipPurchaseQuantity());
+
 			productDb.setModifiedDate(new Date());
 			productDb.setModifiedBy(loginEmployee);
 			commonService.saveOrUpdateModelObjectToDB(productDb);
-
-			List<ProductPriceHistory> priceHistories = commonService
-					.getObjectListByHqlQuery(
-							"from ProductPriceHistory where product_id=" + product.getId() + " order by id desc")
-					.stream().map(x -> (ProductPriceHistory) x).collect(Collectors.toList());
-			if (!priceHistories.isEmpty()) {
-				if (product.getPrice() != priceHistories.get(0).getPrice()
-						|| totalQuantity != priceHistories.get(0).getPurchaseQuantity()) {
-					ProductPriceHistory productPriceHistory = new ProductPriceHistory();
-					productPriceHistory.setProduct(product);
-					productPriceHistory.setPrice(product.getPrice());
-					productPriceHistory.setCreatedBy(loginEmployee);
-					productPriceHistory.setCreatedDate(new Date());
-					productPriceHistory.setPurchaseQuantity(product.getPurchaseQuantity()+product.getVipPurchaseQuantity());
-					commonService.saveOrUpdateModelObjectToDB(productPriceHistory);
-				}
-			}
 
 		} else {
 
@@ -147,44 +99,13 @@ public class ProductController {
 
 			Category category = (Category) commonService.getAnObjectByAnyUniqueColumn("Category", "id",
 					product.getCategoryId().toString());
-//			Model model = (Model) commonService.getAnObjectByAnyUniqueColumn("Model", "id",
-//					product.getModelId().toString());
 
 			product.setCategory(category);
-			//product.setModel(model);
+
 			product.setCreatedBy(loginEmployee);
 			product.setCreatedDate(new Date());
 			commonService.saveOrUpdateModelObjectToDB(product);
 
-			// PRODUCT PRICE HISTORY GENERATE
-
-			ProductPriceHistory productPriceHistory = new ProductPriceHistory();
-			productPriceHistory.setProduct(product);
-			productPriceHistory.setPrice(product.getPrice());
-			
-			productPriceHistory.setPurchaseQuantity(product.getPurchaseQuantity()+product.getVipPurchaseQuantity());
-			productPriceHistory.setCreatedBy(loginEmployee);
-			productPriceHistory.setCreatedDate(new Date());
-			commonService.saveOrUpdateModelObjectToDB(productPriceHistory);
-
-			// STOCK BLANCE GENERATE
-
-			Stock stock = new Stock();
-			stock.setProduct(product);
-			stock.setQuantity(product.getPurchaseQuantity());
-			stock.setVipQuantity(product.getVipPurchaseQuantity());
-			stock.setCreatedBy(loginEmployee);
-			stock.setCreatedDate(new Date());
-			commonService.saveOrUpdateModelObjectToDB(stock);
-
-			// PRODUCT RECEIVE GENERATE
-
-			ProductRecive productRecive = new ProductRecive();
-			productRecive.setProduct(product);
-			productRecive.setQuantity(product.getPurchaseQuantity()+product.getVipPurchaseQuantity());
-			productRecive.setCreatedBy(loginEmployee);
-			productRecive.setCreatedDate(new Date());
-			commonService.saveOrUpdateModelObjectToDB(productRecive);
 		}
 
 		return new ModelAndView("redirect:/listProduct");
@@ -213,11 +134,10 @@ public class ProductController {
 
 		List<Product> products = (List<Product>) (Object) commonService.getAllObjectList("Product").stream()
 				.map(x -> (Product) x).filter(x -> x.getStatus() != 2).collect(Collectors.toList());
-		products.forEach(x ->{
+		products.forEach(x -> {
 			x.setWeightedAvgPriceCurrency(
 					NumberWordConverter.convertDoubleToCurrency(this.getWeighttedAvgPrice(x.getId())));
-			if(x.getVipPurchaseQuantity()!=null)
-			x.setPurchaseQuantity(x.getPurchaseQuantity()+x.getVipPurchaseQuantity());
+
 		});
 
 		theModel.addAttribute("products", products);
@@ -235,11 +155,12 @@ public class ProductController {
 
 		List<Category> theCategories = commonService.getAllObjectList("Category").stream().map(x -> (Category) x)
 				.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
-//		List<Model> themodels = commonService.getAllObjectList("Model").stream().map(x -> (Model) x)
-//				.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
+		// List<Model> themodels =
+		// commonService.getAllObjectList("Model").stream().map(x -> (Model) x)
+		// .filter(x -> x.getStatus() == 1).collect(Collectors.toList());
 
 		theModel.addAttribute("categoryList", theCategories);
-		//theModel.addAttribute("modelList", themodels);
+		// theModel.addAttribute("modelList", themodels);
 		theModel.addAttribute("product", product);
 
 		return new ModelAndView("productEdit");
@@ -306,32 +227,99 @@ public class ProductController {
 			Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
 					productReceive.getProductId().toString());
 
-			stock.setQuantity((stock.getQuantity() - productReceiveDb.getQuantity()) + productReceive.getQuantity());
+			if (productReceive.getQuantity() != null)
+				stock.setQuantity(
+						(stock.getQuantity() - productReceiveDb.getQuantity()) + productReceive.getQuantity());
+
+			if (productReceive.getVipPurchaseQuantity() != null)
+				stock.setVipQuantity((stock.getVipQuantity() - productReceiveDb.getVipPurchaseQuantity())
+						+ productReceive.getVipPurchaseQuantity());
+
 			commonService.saveOrUpdateModelObjectToDB(stock);
 
 			productReceiveDb.setQuantity(productReceive.getQuantity());
+			productReceiveDb.setVipPurchaseQuantity(productReceive.getVipPurchaseQuantity());
 			productReceiveDb.setModifiedDate(new Date());
 			productReceiveDb.setModifiedBy(loginEmployee);
 
 			commonService.saveOrUpdateModelObjectToDB(productReceiveDb);
+
+			ProductPriceHistory productPriceHistory = (ProductPriceHistory) commonService.getAnObjectByAnyUniqueColumn(
+					"ProductPriceHistory", "recive_id", productReceiveDb.getId().toString());
+			productPriceHistory.setModifiedBy(loginEmployee);
+			productPriceHistory.setModifiedDate(new Date());
+			Integer totalQuantity = 0;
+			if (productReceiveDb.getQuantity() != null)
+				totalQuantity += productReceiveDb.getQuantity();
+
+			if (productReceiveDb.getVipPurchaseQuantity() != null)
+				totalQuantity += productReceiveDb.getVipPurchaseQuantity();
+			productPriceHistory.setPurchaseQuantity(totalQuantity);
+			commonService.saveOrUpdateModelObjectToDB(productPriceHistory);
+
 		} else {
 
 			Product product = (Product) commonService.getAnObjectByAnyUniqueColumn("Product", "id",
 					productReceive.getProductId().toString());
 
 			productReceive.setProduct(product);
-			productReceive.setQuantity(productReceive.getQuantity());
+
 			productReceive.setCreatedBy(loginEmployee);
 			productReceive.setCreatedDate(new Date());
 			commonService.saveOrUpdateModelObjectToDB(productReceive);
 
+			ProductPriceHistory productPriceHistory = new ProductPriceHistory();
+			productPriceHistory.setCreatedBy(loginEmployee);
+			productPriceHistory.setCreatedDate(new Date());
+			productPriceHistory.setPrice(product.getPrice());
+			productPriceHistory.setProduct(product);
+			Integer totalQuantity = 0;
+			if (productReceive.getQuantity() != null)
+				totalQuantity = productReceive.getQuantity();
+			if (productReceive.getVipPurchaseQuantity() != null)
+				totalQuantity += productReceive.getVipPurchaseQuantity();
+			productPriceHistory.setStatus(1);
+
+			productPriceHistory.setPurchaseQuantity(totalQuantity);
+
+			commonService.saveOrUpdateModelObjectToDB(productPriceHistory);
 			Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
 					product.getId().toString());
+			if (stock != null) {
 
-			stock.setQuantity(stock.getQuantity() + productReceive.getQuantity());
-			stock.setModifiedBy(loginEmployee);
-			stock.setModifiedDate(new Date());
-			commonService.saveOrUpdateModelObjectToDB(stock);
+				if (productReceive.getQuantity() != null && stock.getQuantity() != null)
+					stock.setQuantity(stock.getQuantity() + productReceive.getQuantity());
+				else {
+					if (stock.getQuantity() == null && productReceive.getQuantity() != null) {
+						stock.setQuantity(productReceive.getQuantity());
+					}
+				}
+				if (productReceive.getVipPurchaseQuantity() != null && stock.getVipQuantity() != null)
+					stock.setVipQuantity(stock.getVipQuantity() + productReceive.getVipPurchaseQuantity());
+				else {
+
+					if (stock.getVipQuantity() == null && productReceive.getVipPurchaseQuantity() != null) {
+						stock.setVipQuantity(productReceive.getVipPurchaseQuantity());
+					}
+
+				}
+				stock.setModifiedBy(loginEmployee);
+				stock.setModifiedDate(new Date());
+				commonService.saveOrUpdateModelObjectToDB(stock);
+
+			} else {
+				Stock stocNew = new Stock();
+				stocNew.setCreatedBy(loginEmployee);
+				stocNew.setCreatedDate(new Date());
+				if (productReceive.getQuantity() != null)
+					stocNew.setQuantity(productReceive.getQuantity());
+				if (productReceive.getVipPurchaseQuantity() != null)
+					stocNew.setVipQuantity(productReceive.getVipPurchaseQuantity());
+				stocNew.setProduct(product);
+				commonService.saveOrUpdateModelObjectToDB(stocNew);
+
+			}
+
 		}
 
 		// commonService.saveOrUpdateModelObjectToDB(Category);
@@ -494,12 +482,13 @@ public class ProductController {
 	public Boolean ajaxDuplicateProductCategoryModelCheck(Principal principal, HttpServletRequest request) {
 
 		String productName = request.getParameter("productName");
-		//String modelId = request.getParameter("modelId");
+		// String modelId = request.getParameter("modelId");
 		String categoryId = request.getParameter("categoryId");
 
-//		String queryString = "from Product where name = '" + productName + "'" + " and model_id = " + modelId
-//				+ " and category_id = " + categoryId;
-		
+		// String queryString = "from Product where name = '" + productName + "'" + "
+		// and model_id = " + modelId
+		// + " and category_id = " + categoryId;
+
 		String queryString = "from Product where name = '" + productName + "'" + " and category_id = " + categoryId;
 
 		List<Product> productDeliveryLists = (List<Product>) (Object) commonService

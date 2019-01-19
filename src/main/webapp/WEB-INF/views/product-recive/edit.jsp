@@ -31,7 +31,7 @@
 					<form action="${pageContext.request.contextPath}/saveReceiveProduct" name="editProductReceiveForm" id="form2"
 						method="post" class="formValMenu form-horizontal" enctype="multipart/form-data" modelAttribute="command">
 						<div class="box-body">							 
-							<%@include file="../product-recive/editForm.jsp"%>
+							<%@include file="../product-recive/form.jsp"%>
 						</div>
 						<!-- /.box-body -->
 						<div class="box-footer">

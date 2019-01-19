@@ -24,7 +24,8 @@
 									<th class="text-center">Sl NO.</th>
 									<th class="text-center">ID</th>
 									<th class="text-center">Product Name</th>
-									<th class="text-center">Receive Quantity</th>
+									<th class="text-center">General Quantity</th>
+									<th class="text-center">Vip Quantity</th>
 
 <!-- 									<th class="text-center">Product Model</th> -->
 									<th class="text-center">Product Category</th>
@@ -41,6 +42,7 @@
 										<td class="text-center">${productReciveList.id}</td>
 										<td class="text-center">${productReciveList.product.name}</td>
 										<td class="text-center">${productReciveList.quantity}</td>
+										<td class="text-center">${productReciveList.vipPurchaseQuantity}</td>
 <%-- 										<td class="text-center">${productReciveList.product.model.name}</td> --%>
 										<td class="text-center">${productReciveList.product.category.name}</td>
 										<td class="text-center"><a

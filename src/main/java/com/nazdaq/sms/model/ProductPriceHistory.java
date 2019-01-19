@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -35,6 +36,10 @@ public class ProductPriceHistory extends CommonModel implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+	
+	@ManyToOne
+	@JoinColumn(name = "recive_id")
+	private ProductRecive productRecive;
 	
 	@Column(name = "price")
 	private Double price;
@@ -73,6 +78,14 @@ public class ProductPriceHistory extends CommonModel implements Serializable {
 
 	public void setPurchaseQuantity(Integer purchaseQuantity) {
 		this.purchaseQuantity = purchaseQuantity;
+	}
+
+	public ProductRecive getProductRecive() {
+		return productRecive;
+	}
+
+	public void setProductRecive(ProductRecive productRecive) {
+		this.productRecive = productRecive;
 	}
 
 		

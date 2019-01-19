@@ -25,9 +25,7 @@
 									<th class="text-center">ID</th>
 									<th class="text-center">Name</th>
 									<th class="text-center">Last Price</th>
-
-									<th class="text-center">Weighted Average Price</th>
-									<th class="text-center">Last Purchase Quantity</th>
+									<th class="text-center">Weighted Average Price</th>									
 									<th class="text-center">Description</th>
 									<th class="text-center">Status</th>
 									<!-- <th class="text-center">Model</th> -->
@@ -51,7 +49,7 @@
 										<td class="text-center">${product.name}</td>
 										<td class="text-center">${product.price}</td>
 										<td class="text-center">${product.weightedAvgPriceCurrency}</td>
-										<td class="text-center">${product.purchaseQuantity}</td>
+										
 										<td class="text-center">${product.description}</td>
 										<td class="text-center">${product.status=='1'?'Active':'Inactive'}</td>
 										<%-- <td class="text-center">${product.model.name}</td> --%>

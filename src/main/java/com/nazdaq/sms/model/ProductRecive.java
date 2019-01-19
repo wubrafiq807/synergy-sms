@@ -38,6 +38,9 @@ public class ProductRecive extends CommonModel implements Serializable {
 	@Column(name = "quantity")
 	private Integer quantity;
 	
+	@Column(name = "purchase_quantity_vip")
+	private Integer vipPurchaseQuantity;
+	
 	@Transient
 	private Integer productId;
 
@@ -71,6 +74,14 @@ public class ProductRecive extends CommonModel implements Serializable {
 
 	public void setProductId(Integer productId) {
 		this.productId = productId;
+	}
+
+	public Integer getVipPurchaseQuantity() {
+		return vipPurchaseQuantity;
+	}
+
+	public void setVipPurchaseQuantity(Integer vipPurchaseQuantity) {
+		this.vipPurchaseQuantity = vipPurchaseQuantity;
 	}
 	
 	

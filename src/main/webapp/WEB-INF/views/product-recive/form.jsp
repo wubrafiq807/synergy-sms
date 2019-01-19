@@ -23,11 +23,21 @@
 
 
 <div class="form-group">
-	<label for="quantity" class="col-sm-2 control-label"> <strong>Product
+	<label for="quantity" class="col-sm-2 control-label"> <strong>General
 			Quantity : </strong>
 	</label>
 	<div class="col-sm-6">
 		<input id="quantity" name="quantity" value="${productRecive.quantity}"
+			type="number" class="form-control" />
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="quantity" class="col-sm-2 control-label"> <strong>VIP
+			Quantity : </strong>
+	</label>
+	<div class="col-sm-6">
+		<input id="vipPurchaseQuantity" name="vipPurchaseQuantity" value="${productRecive.vipPurchaseQuantity}"
 			type="number" class="form-control" />
 	</div>
 </div>
@@ -64,11 +74,9 @@
 				// The key name on the left side is the name attribute
 				// of an input field. Validation rules are defined
 				// on the right side
-				name : "required",
-				status : "required",
-				price : "required",
-				categoryId : "required",
-				modelId : "required",
+				productId : "required",
+				quantity : "required",
+				vipPurchaseQuantity : "required",
 
 			},
 

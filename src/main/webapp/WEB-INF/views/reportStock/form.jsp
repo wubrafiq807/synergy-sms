@@ -33,6 +33,7 @@
 			format : 'yyyy-mm-dd',
 			end : $('input[type=eu-date2]')
 		});
+		
 		$('input[type=eu-date2]').w2field('date', {
 			format : 'yyyy-mm-dd',
 			start : $('input[type=eu-date1]')
@@ -51,7 +52,7 @@
 							
 							if ($('#startDate').val() != '') {
 								if ($('#endDate').val() == '') {
-									w2alert('Please Select ToDate');
+									w2alert('Please Select To Date');
 									return false;
 								}
 							}

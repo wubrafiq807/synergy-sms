@@ -12,29 +12,7 @@
 	</div>
 </div>
 
-<div class="form-group">
-	<label for="purchaseQuantity" class="col-sm-2 control-label"> <strong>Purchase
-			Quantity : </strong>
-	</label>
-	<div class="col-sm-6">
-		<input id="purchaseQuantity" name="purchaseQuantity"
-			value="${product.purchaseQuantity}" type="number"
-			class="form-control" onblur="checkQuantityValue()" /> <span
-			id="resQuantity" style="color: red;"></span>
-	</div>
-</div>
 
-<div class="form-group">
-	<label for="purchaseQuantity" class="col-sm-2 control-label"> <strong>VIP Purchase
-			Quantity : </strong>
-	</label>
-	<div class="col-sm-6">
-		<input id="vipPurchaseQuantity" name="vipPurchaseQuantity"
-			value="${product.vipPurchaseQuantity}" type="number"
-			class="form-control" onblur="checkVIPQuantityValue()" /> <span
-			id="resVIPQuantity" style="color: red;"></span>
-	</div>
-</div>
 
 <div class="form-group">
 	<label for="price" class="col-sm-2 control-label"> <strong>Price
@@ -130,8 +108,7 @@
 				status : "required",
 				price : "required",
 				categoryId : "required",
-				modelId : "required",
-				purchaseQuantity:"required"
+				
 
 			},
 
