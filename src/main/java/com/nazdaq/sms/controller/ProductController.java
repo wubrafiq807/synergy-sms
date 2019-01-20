@@ -248,12 +248,14 @@ public class ProductController {
 					"ProductPriceHistory", "recive_id", productReceiveDb.getId().toString());
 			productPriceHistory.setModifiedBy(loginEmployee);
 			productPriceHistory.setModifiedDate(new Date());
+			
 			Integer totalQuantity = 0;
 			if (productReceiveDb.getQuantity() != null)
 				totalQuantity += productReceiveDb.getQuantity();
 
 			if (productReceiveDb.getVipPurchaseQuantity() != null)
 				totalQuantity += productReceiveDb.getVipPurchaseQuantity();
+			
 			productPriceHistory.setPurchaseQuantity(totalQuantity);
 			commonService.saveOrUpdateModelObjectToDB(productPriceHistory);
 
@@ -285,6 +287,7 @@ public class ProductController {
 			commonService.saveOrUpdateModelObjectToDB(productPriceHistory);
 			Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id",
 					product.getId().toString());
+			
 			if (stock != null) {
 
 				if (productReceive.getQuantity() != null && stock.getQuantity() != null)

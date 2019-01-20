@@ -133,7 +133,7 @@
 								dataType: 'json',
 								
 								success: function(res) {
-								if (!res)
+								if (res==false)
 								{
 								
 									w2alert('<span style="color:red;font-size:16px">Requisition Submission Is Off Now Please Contract ADMIN department.</span>');

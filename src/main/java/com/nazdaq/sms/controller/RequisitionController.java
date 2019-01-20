@@ -181,10 +181,11 @@ public class RequisitionController implements Constants {
 			createRequisitionItems(request, requisitionDB);
 
 		} else {
+			
 			RequisitionStatus requisitionStatus=(RequisitionStatus) commonService.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
 			
 			if(requisitionStatus!=null&&requisitionStatus.getReqStatus().toString().equals("0")) {
-				return new ModelAndView("redirect:/login");
+				return new ModelAndView("redirect:/logout");
 			}
 			
 			String roleName = commonService.getAuthRoleName();
