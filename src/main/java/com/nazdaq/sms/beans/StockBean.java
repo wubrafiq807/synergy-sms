@@ -1,6 +1,6 @@
 package com.nazdaq.sms.beans;
 
-public class StockBean {
+public class StockBean implements Comparable<StockBean>{
 	
 	private Integer productId;
 	private String date;
@@ -10,6 +10,7 @@ public class StockBean {
 	private Integer vipQuantity;
 	private Integer totalStock;
 	private String totalPrice;
+	private Double totalPriceSum;
 	
 	public Integer getProductId() {
 		return productId;
@@ -58,6 +59,17 @@ public class StockBean {
 	}
 	public void setTotalPrice(String totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+	public Double getTotalPriceSum() {
+		return totalPriceSum;
+	}
+	public void setTotalPriceSum(Double totalPriceSum) {
+		this.totalPriceSum = totalPriceSum;
+	}
+	@Override
+	public int compareTo(StockBean o) {
+		// TODO Auto-generated method stub
+		return this.productId-o.productId;
 	}
 	
 	

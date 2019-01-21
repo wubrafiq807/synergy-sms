@@ -389,6 +389,15 @@ input:checked+.slider:before {
 							href="${pageContext.request.contextPath}/smsStockReport">
 								<i class="menu-icon fa fa-plus purple"></i> Stocks
 						</a> <b class="arrow"></b></li>
+						
+						<li class=""><a
+							href="${pageContext.request.contextPath}/smsReceiveReport">
+								<i class="menu-icon fa fa-plus purple"></i> Product Receive
+						</a> <b class="arrow"></b></li>
+						<li class=""><a
+							href="${pageContext.request.contextPath}/smsDeliveryReport">
+								<i class="menu-icon fa fa-plus purple"></i> Product Delivery
+						</a> <b class="arrow"></b></li>
 
 
 						

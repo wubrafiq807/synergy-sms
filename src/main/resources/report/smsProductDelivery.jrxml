@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="smsReqReport" pageWidth="595" pageHeight="842" columnWidth="540" leftMargin="50" rightMargin="5" topMargin="20" bottomMargin="0" uuid="db4d4c72-754b-41fb-a13f-29bc90430ab4">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="36"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="totalPrice" class="java.lang.String"/>
+	<field name="productId" class="java.lang.Integer"/>
+	<field name="date" class="java.lang.String"/>
+	<field name="employeeName" class="java.lang.String"/>
+	<field name="productName" class="java.lang.String"/>
+	<field name="generalQuantity" class="java.lang.Integer"/>
+	<field name="vipQuantity" class="java.lang.Integer"/>
+	<field name="totalStock" class="java.lang.Integer"/>
+	<field name="totalPrice" class="java.lang.String"/>
+	<field name="totalPriceSum" class="java.lang.Double"/>
+	<variable name="subTotal" class="java.lang.Number" resetType="Group" resetGroup="productId" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalPriceSum}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{totalPriceSum}]]></initialValueExpression>
+	</variable>
+	<group name="productId">
+		<groupExpression><![CDATA[$F{productId}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<staticText>
+					<reportElement mode="Opaque" x="-1" y="0" width="119" height="12" forecolor="#FFFFFF" backcolor="#990000" uuid="9f9baeab-29ce-4289-bf07-8ccbf5e3aba7"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Cambria" size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Product Name:]]></text>
+				</staticText>
+				<textField>
+					<reportElement mode="Opaque" x="118" y="0" width="204" height="12" forecolor="#FFFFFF" backcolor="#990000" uuid="c513a106-780c-49c2-be6f-5e90cd48aebd"/>
+					<box leftPadding="4">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Cambria" size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="322" y="0" width="68" height="12" forecolor="#FFFFFF" backcolor="#990000" uuid="6dea085c-11b7-47a9-82e0-066582b2f236"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Cambria" size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Product ID:]]></text>
+				</staticText>
+				<textField>
+					<reportElement mode="Opaque" x="390" y="0" width="150" height="12" forecolor="#FFFFFF" backcolor="#990000" uuid="6660af3c-b18e-4d5b-868b-f71166d410a0"/>
+					<box leftPadding="4">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Cambria" size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{productId}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<staticText>
+					<reportElement x="-1" y="0" width="119" height="14" uuid="6ccfeb88-0ed7-483e-9ad5-ee385ee948e9"/>
+					<box topPadding="2" leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Cambria" size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[SUB TOTAL IN BDT]]></text>
+				</staticText>
+				<textField pattern="#,##0.00">
+					<reportElement x="118" y="0" width="422" height="14" uuid="74ec6219-a5b9-47fe-ac5f-dec355081a1a"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Cambria" size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{subTotal}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="76">
+			<staticText>
+				<reportElement x="0" y="30" width="105" height="20" uuid="eb302a63-23b7-4141-a994-fc70f5a80913"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivery Products]]></text>
+			</staticText>
+			<image>
+				<reportElement x="190" y="12" width="148" height="37" uuid="8cd7f7bd-becb-4fe7-8573-04dbd36bfb25"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="50" width="540" height="26" uuid="9974f157-fd02-4b73-a140-f5cf64d8481c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="12">
+			<staticText>
+				<reportElement x="-1" y="0" width="29" height="12" uuid="bcd1c280-a039-49da-bb6a-9de220cd0449"/>
+				<box topPadding="2" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sl NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="0" width="94" height="12" uuid="a3920be0-be6b-490d-8172-8c5cb7f35d7f"/>
+				<box topPadding="2" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivered Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="0" width="90" height="12" uuid="cd9cb3cc-ba07-4d49-9488-9445ea28a26c"/>
+				<box topPadding="2" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivered Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="118" y="0" width="110" height="12" uuid="b2510552-75d5-49f8-85ed-e85a82bbae64"/>
+				<box topPadding="2" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[  Price]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="322" y="0" width="218" height="12" uuid="81486315-7b9f-4e11-8a88-69846f78f338"/>
+				<box topPadding="2" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivered By]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="28" y="0" width="90" height="12" uuid="950e8e31-b9b1-4fda-9416-9b3e81d0853b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalStock}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="0" width="110" height="12" uuid="735b7362-573f-473b-83f4-617e6a0272ca"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="228" y="0" width="94" height="12" uuid="76ea67a2-6131-4ca8-b74e-b73d93d647b6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="322" y="0" width="218" height="12" uuid="2f877995-a8f7-4ac7-b30a-233fdc7ab053"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeeName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-1" y="0" width="29" height="12" uuid="2e8ca980-9497-4906-96b0-82c6c922977f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="12">
+			<textField isBlankWhenNull="true">
+				<reportElement x="175" y="0" width="80" height="12" uuid="81a0bedc-88d1-4690-9133-3388485ed5b3"/>
+				<textElement textAlignment="Right">
+					<font fontName="Cambria" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="255" y="0" width="40" height="12" uuid="a97d4e18-5dde-49f2-88e8-14158c718d9c"/>
+				<textElement>
+					<font fontName="Cambria" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="14">
+			<staticText>
+				<reportElement x="-1" y="0" width="119" height="14" uuid="8f7f8c37-9585-4f3f-9fea-d602929c2219"/>
+				<box topPadding="2" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL AMOUNT IN BDT]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="118" y="0" width="422" height="14" uuid="f6c568c3-2194-4683-8ba8-9dcd6099cd45"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalPrice}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
