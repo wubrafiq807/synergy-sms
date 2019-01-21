@@ -278,8 +278,11 @@ public class ReportController implements Constants {
 		List<Stock> stockList = commonService.getObjectListByHqlQuery(hqlQuery).stream()
 				.map(x -> (Stock) x).collect(Collectors.toList());
 		
+		Double totalSum=0.0;
 		for (Stock stock : stockList) {
 			StockBean stockBean=new StockBean();
+			Integer totalStock=0;
+			Double totalPrice=0.0;
 			if(stock.getCreatedDate()!=null)
 			stockBean.setDate(NumberWordConverter.getCustomDateFromDateFormate(stock.getCreatedDate().toString()));
 			stockBean.setEmployeeName(stock.getCreatedBy().getName());
@@ -287,6 +290,14 @@ public class ReportController implements Constants {
 			stockBean.setVipQuantity(stock.getVipQuantity());
 			stockBean.setProductId(stock.getProduct().getId());
 			stockBean.setProductName(stock.getProduct().getName());
+			if(stock.getQuantity()!=null)
+				totalStock+=stock.getQuantity();
+			if(stock.getVipQuantity()!=null)
+				totalStock+=stock.getVipQuantity();
+			stockBean.setTotalStock(totalStock);
+			totalPrice=totalStock*getWeighttedAvgPrice(stock.getProduct().getId());
+			totalSum+=totalPrice;
+			stockBean.setTotalPrice(NumberWordConverter.convertDoubleToCurrency(totalPrice));			
 			stockBeans.add(stockBean);
 		}
 
@@ -301,6 +312,7 @@ public class ReportController implements Constants {
 
 		params.put("datasource", jRdataSource);
 		params.put("title", title.toUpperCase());
+		params.put("totalPrice", NumberWordConverter.convertDoubleToCurrency(totalSum));
 		
 
 		// prepare report first for one

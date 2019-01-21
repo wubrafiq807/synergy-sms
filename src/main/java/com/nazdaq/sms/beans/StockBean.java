@@ -8,6 +8,8 @@ public class StockBean {
 	private String productName;
 	private Integer generalQuantity;
 	private Integer vipQuantity;
+	private Integer totalStock;
+	private String totalPrice;
 	
 	public Integer getProductId() {
 		return productId;
@@ -45,6 +47,19 @@ public class StockBean {
 	public void setVipQuantity(Integer vipQuantity) {
 		this.vipQuantity = vipQuantity;
 	}
+	public Integer getTotalStock() {
+		return totalStock;
+	}
+	public void setTotalStock(Integer totalStock) {
+		this.totalStock = totalStock;
+	}
+	public String getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(String totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+	
 	
 	
 	

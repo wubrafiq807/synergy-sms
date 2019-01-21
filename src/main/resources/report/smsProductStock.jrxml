@@ -4,12 +4,15 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="title" class="java.lang.String"/>
+	<parameter name="totalPrice" class="java.lang.String"/>
 	<field name="productId" class="java.lang.Integer"/>
 	<field name="date" class="java.lang.String"/>
 	<field name="employeeName" class="java.lang.String"/>
 	<field name="productName" class="java.lang.String"/>
 	<field name="generalQuantity" class="java.lang.Integer"/>
 	<field name="vipQuantity" class="java.lang.Integer"/>
+	<field name="totalStock" class="java.lang.Integer"/>
+	<field name="totalPrice" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -45,7 +48,7 @@
 	<columnHeader>
 		<band height="24">
 			<staticText>
-				<reportElement x="17" y="0" width="41" height="24" uuid="dc684cad-4776-43b0-a082-fe05dca36b04"/>
+				<reportElement x="17" y="0" width="36" height="24" uuid="dc684cad-4776-43b0-a082-fe05dca36b04"/>
 				<box topPadding="2" leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -59,7 +62,7 @@
 				<text><![CDATA[Product Id]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="58" y="0" width="209" height="24" uuid="9d669957-7032-4171-a499-3adda8e66a26"/>
+				<reportElement x="53" y="0" width="170" height="24" uuid="9d669957-7032-4171-a499-3adda8e66a26"/>
 				<box topPadding="2" leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -73,7 +76,7 @@
 				<text><![CDATA[Product Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="267" y="0" width="40" height="24" uuid="27c21ad3-0fb8-4638-b2c4-928cc540c3a8"/>
+				<reportElement x="223" y="0" width="30" height="24" uuid="27c21ad3-0fb8-4638-b2c4-928cc540c3a8"/>
 				<box topPadding="2" leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -87,7 +90,7 @@
 				<text><![CDATA[General Stock]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="307" y="0" width="31" height="24" uuid="a1a7e036-d4b0-48c9-a8c1-0f6b59a3b3d5"/>
+				<reportElement x="253" y="0" width="30" height="24" uuid="a1a7e036-d4b0-48c9-a8c1-0f6b59a3b3d5"/>
 				<box topPadding="2" leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -101,7 +104,7 @@
 				<text><![CDATA[VIP Stock]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="448" y="0" width="92" height="24" uuid="81486315-7b9f-4e11-8a88-69846f78f338"/>
+				<reportElement x="455" y="0" width="85" height="24" uuid="81486315-7b9f-4e11-8a88-69846f78f338"/>
 				<box topPadding="2" leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -129,7 +132,7 @@
 				<text><![CDATA[Sl NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="338" y="0" width="110" height="24" uuid="a3920be0-be6b-490d-8172-8c5cb7f35d7f"/>
+				<reportElement x="355" y="0" width="100" height="24" uuid="a3920be0-be6b-490d-8172-8c5cb7f35d7f"/>
 				<box topPadding="2" leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -141,6 +144,34 @@
 					<font fontName="Cambria" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[last Updated By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="283" y="0" width="30" height="24" uuid="cd9cb3cc-ba07-4d49-9488-9445ea28a26c"/>
+				<box topPadding="2" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Stock]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="0" width="42" height="24" uuid="b2510552-75d5-49f8-85ed-e85a82bbae64"/>
+				<box topPadding="2" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Stock Price]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -161,7 +192,7 @@
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="17" y="0" width="41" height="12" uuid="383e7e1c-2af7-4352-9e42-f9255483ff63"/>
+				<reportElement x="17" y="0" width="36" height="12" uuid="383e7e1c-2af7-4352-9e42-f9255483ff63"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -175,7 +206,7 @@
 				<textFieldExpression><![CDATA[$F{productId}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="58" y="0" width="209" height="12" uuid="61284ecc-1cda-4733-90fe-4c3df5fea389"/>
+				<reportElement x="53" y="0" width="170" height="12" uuid="61284ecc-1cda-4733-90fe-4c3df5fea389"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -189,7 +220,7 @@
 				<textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="267" y="0" width="40" height="12" uuid="5b5faa69-0a40-4a84-b943-262a014e910c"/>
+				<reportElement x="223" y="0" width="30" height="12" uuid="5b5faa69-0a40-4a84-b943-262a014e910c"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -203,7 +234,7 @@
 				<textFieldExpression><![CDATA[$F{generalQuantity}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="307" y="0" width="31" height="12" uuid="07af8478-e87f-431f-9582-157540c849f2"/>
+				<reportElement x="253" y="0" width="30" height="12" uuid="07af8478-e87f-431f-9582-157540c849f2"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -217,7 +248,7 @@
 				<textFieldExpression><![CDATA[$F{vipQuantity}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="338" y="0" width="110" height="12" uuid="8a8c6f8d-9099-44fb-bf86-3705251da0ad"/>
+				<reportElement x="355" y="0" width="100" height="12" uuid="8a8c6f8d-9099-44fb-bf86-3705251da0ad"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -231,7 +262,7 @@
 				<textFieldExpression><![CDATA[$F{employeeName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="448" y="0" width="92" height="12" uuid="e6613a39-cdf5-4e7f-b60c-a1ea5788f1a6"/>
+				<reportElement x="455" y="0" width="85" height="12" uuid="e6613a39-cdf5-4e7f-b60c-a1ea5788f1a6"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -243,6 +274,34 @@
 					<font fontName="Cambria" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="283" y="0" width="30" height="12" uuid="be468111-dfa2-4b1f-8268-30949461e9cf"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalStock}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="313" y="0" width="42" height="12" uuid="54d2a21d-75a7-478e-b765-04d6a64fc505"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cambria" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -264,4 +323,36 @@
 			</textField>
 		</band>
 	</pageFooter>
+	<summary>
+		<band height="21">
+			<staticText>
+				<reportElement x="-1" y="0" width="314" height="20" uuid="8f7f8c37-9585-4f3f-9fea-d602929c2219"/>
+				<box topPadding="2" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Price]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="313" y="0" width="227" height="20" uuid="f6c568c3-2194-4683-8ba8-9dcd6099cd45"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Cambria" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalPrice}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>
