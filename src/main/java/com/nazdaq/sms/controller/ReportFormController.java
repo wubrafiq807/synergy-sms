@@ -84,7 +84,17 @@ public class ReportFormController implements Constants {
 		return new ModelAndView("smsStockReport");
 	}
 
+	
+	
+	@RequestMapping(value = "/smsProductReport", method = RequestMethod.GET)
+	public ModelAndView smsProductReport(Principal principal)
+			throws JRException, IOException, ParseException {
 
+		if (principal == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		return new ModelAndView("smsProductReport");
+	}
 	
 
 }

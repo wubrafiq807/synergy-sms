@@ -25,10 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.nazdaq.sms.beans.ProductBean;
 import com.nazdaq.sms.beans.RequisitionBean;
 import com.nazdaq.sms.beans.SmsAdvanceBean;
 import com.nazdaq.sms.beans.StockBean;
 import com.nazdaq.sms.beans.SubReportBean;
+import com.nazdaq.sms.model.Product;
 import com.nazdaq.sms.model.ProductDelivery;
 import com.nazdaq.sms.model.ProductPriceHistory;
 import com.nazdaq.sms.model.ProductRecive;
@@ -261,7 +263,6 @@ public class ReportController implements Constants {
 			HttpServletResponse response) throws JRException, IOException, ParseException {
 
 		JRDataSource jRdataSource = null;
-		
 
 		String title = "Product Stocks";
 
@@ -279,29 +280,29 @@ public class ReportController implements Constants {
 		hqlQuery += " order by id asc";
 		// @formatter:on
 		List<StockBean> stockBeans = new ArrayList<>();
-		List<Stock> stockList = commonService.getObjectListByHqlQuery(hqlQuery).stream()
-				.map(x -> (Stock) x).collect(Collectors.toList());
-		
-		Double totalSum=0.0;
+		List<Stock> stockList = commonService.getObjectListByHqlQuery(hqlQuery).stream().map(x -> (Stock) x)
+				.collect(Collectors.toList());
+
+		Double totalSum = 0.0;
 		for (Stock stock : stockList) {
-			StockBean stockBean=new StockBean();
-			Integer totalStock=0;
-			Double totalPrice=0.0;
-			if(stock.getCreatedDate()!=null)
-			stockBean.setDate(NumberWordConverter.getCustomDateFromDateFormate(stock.getCreatedDate().toString()));
+			StockBean stockBean = new StockBean();
+			Integer totalStock = 0;
+			Double totalPrice = 0.0;
+			if (stock.getCreatedDate() != null)
+				stockBean.setDate(NumberWordConverter.getCustomDateFromDateFormate(stock.getCreatedDate().toString()));
 			stockBean.setEmployeeName(stock.getCreatedBy().getName());
 			stockBean.setGeneralQuantity(stock.getQuantity());
 			stockBean.setVipQuantity(stock.getVipQuantity());
 			stockBean.setProductId(stock.getProduct().getId());
 			stockBean.setProductName(stock.getProduct().getName());
-			if(stock.getQuantity()!=null)
-				totalStock+=stock.getQuantity();
-			if(stock.getVipQuantity()!=null)
-				totalStock+=stock.getVipQuantity();
+			if (stock.getQuantity() != null)
+				totalStock += stock.getQuantity();
+			if (stock.getVipQuantity() != null)
+				totalStock += stock.getVipQuantity();
 			stockBean.setTotalStock(totalStock);
-			totalPrice=totalStock*getWeighttedAvgPrice(stock.getProduct().getId());
-			totalSum+=totalPrice;
-			stockBean.setTotalPrice(NumberWordConverter.convertDoubleToCurrency(totalPrice));			
+			totalPrice = totalStock * getWeighttedAvgPrice(stock.getProduct().getId());
+			totalSum += totalPrice;
+			stockBean.setTotalPrice(NumberWordConverter.convertDoubleToCurrency(totalPrice));
 			stockBeans.add(stockBean);
 		}
 
@@ -317,7 +318,6 @@ public class ReportController implements Constants {
 		params.put("datasource", jRdataSource);
 		params.put("title", title.toUpperCase());
 		params.put("totalPrice", NumberWordConverter.convertDoubleToCurrency(totalSum));
-		
 
 		// prepare report first for one
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
@@ -330,160 +330,264 @@ public class ReportController implements Constants {
 
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	// SMS PRODUCT REPORT BY ME
+
 	// methods to company show
-		@RequestMapping(value = "/smsReceiveReport", method = RequestMethod.GET)
-		public void smsReceiveReport(Principal principal, HttpSession session, HttpServletRequest request,
-				HttpServletResponse response) throws JRException, IOException, ParseException {
+	@RequestMapping(value = "/smsProductReport", method = RequestMethod.POST)
+	public void smsProductReport(Principal principal, HttpSession session, HttpServletRequest request,
+			HttpServletResponse response) throws JRException, IOException, ParseException {
 
-			JRDataSource jRdataSource = null;
-			
+		JRDataSource jRdataSource = null;
 
-			String title = "Product Receive Report";
+		String title = "Product";
 
-			String hqlQuery = "From Stock";
-			if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length() > 0
-					&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length() > 0) {
+		String hqlQuery = "From Product";
+		if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length() > 0
+				&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length() > 0) {
 
-				hqlQuery += " where  created_date >= '" + request.getParameter("startDate") + "' and created_date <='"
-						+ request.getParameter("endDate") + " 23:59:59.999'";
+			hqlQuery += " where  created_date >= '" + request.getParameter("startDate") + "' and created_date <='"
+					+ request.getParameter("endDate") + " 23:59:59.999'";
 
-				title += " from " + request.getParameter("startDate") + " to " + request.getParameter("endDate");
-
-			}
-
-			hqlQuery += " order by id asc";
-			// @formatter:on
-			List<StockBean> stockBeans = new ArrayList<>();
-			
-			List<ProductRecive> productRecives=commonService.getAllObjectList("ProductRecive").stream().map(x->(ProductRecive)x).collect(Collectors.toList());
-			Double totalSum=0.0;
-			for (ProductRecive productRecive : productRecives) {
-				StockBean stockBean=new StockBean();
-				Integer totalStock=0;
-				Double totalPrice=0.0;
-				if(productRecive.getCreatedDate()!=null)
-				stockBean.setDate(NumberWordConverter.getCustomDateFromDateFormate(productRecive.getCreatedDate().toString()));
-				stockBean.setEmployeeName(productRecive.getCreatedBy().getName());
-				stockBean.setGeneralQuantity(productRecive.getQuantity());
-				stockBean.setVipQuantity(productRecive.getVipPurchaseQuantity());
-				stockBean.setProductId(productRecive.getProduct().getId());
-				stockBean.setProductName(productRecive.getProduct().getName());
-				if(productRecive.getQuantity()!=null)
-					totalStock+=productRecive.getQuantity();
-				if(productRecive.getVipPurchaseQuantity()!=null)
-					totalStock+=productRecive.getVipPurchaseQuantity();
-				stockBean.setTotalStock(totalStock);
-				totalPrice=totalStock*getWeighttedAvgPrice(productRecive.getProduct().getId());
-				totalSum+=totalPrice;
-				stockBean.setTotalPrice(NumberWordConverter.convertDoubleToCurrency(totalPrice));
-				stockBean.setTotalPriceSum(totalPrice);
-				stockBeans.add(stockBean);
-			}
-			
-			Collections.sort(stockBeans);
-			
-
-			InputStream jasperStream = null;
-
-			jasperStream = this.getClass().getResourceAsStream("/report/smsProductRecive.jasper");
-			StockBean stockBean = new StockBean();
-			Map<String, Object> params = new HashMap<>();
-			Map<String, Object> datasourcemap = new HashMap<>();
-			datasourcemap.put("stockBean", stockBean);
-			jRdataSource = new JRBeanCollectionDataSource(stockBeans, false);
-
-			params.put("datasource", jRdataSource);
-			params.put("title", title.toUpperCase());
-			params.put("totalPrice", NumberWordConverter.convertDoubleToCurrency(totalSum));
-			
-
-			// prepare report first for one
-			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, jRdataSource);
-
-			response.setContentType("application/x-pdf");
-			response.setHeader("Content-disposition", "inline; filename=req_recive_list.pdf");
-			final OutputStream outStream = response.getOutputStream();
-			JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+			title += " from " + request.getParameter("startDate") + " to " + request.getParameter("endDate");
 
 		}
+
+		hqlQuery += " order by id asc";
+		// @formatter:on
+		List<ProductBean> productBeans = new ArrayList<>();
+		List<Product> productList = commonService.getObjectListByHqlQuery(hqlQuery).stream().map(x -> (Product) x)
+				.collect(Collectors.toList());
+
+		Double totalSum = 0.0;
+		for (Product product : productList) {
+			ProductBean productBean = new ProductBean();
+			Integer totalStock = 0;
+			Double totalPrice = 0.0;
+			if (product.getCreatedDate() != null)
+
+			productBean.setDate(NumberWordConverter.getCustomDateFromDateFormate(product.getCreatedDate().toString()));
+			productBean.setEmployeeName(product.getCreatedBy().getName());
+
+			productBean.setProductId(product.getId());
+			productBean.setProductName(product.getName());
+			
+			productBean.setLastUpdatedPrice(NumberWordConverter.convertDoubleToCurrency(product.getPrice()));
+
+			totalPrice = getWeighttedAvgPrice(product.getId());
+			totalSum += totalPrice;
+			productBean.setTotalPrice(NumberWordConverter.convertDoubleToCurrency(totalPrice));
+			productBeans.add(productBean);
+		}
 		
-		// methods to company show
-				@RequestMapping(value = "/smsDeliveryReport", method = RequestMethod.GET)
-				public void smsDeliveryReport(Principal principal, HttpSession session, HttpServletRequest request,
-						HttpServletResponse response) throws JRException, IOException, ParseException {
+		
+		InputStream jasperStream = null;
 
-					JRDataSource jRdataSource = null;
-					
+		jasperStream = this.getClass().getResourceAsStream("/report/smsProduct.jasper");
+		ProductBean productBean = new ProductBean();
+		Map<String, Object> params = new HashMap<>();
+		Map<String, Object> datasourcemap = new HashMap<>();
+		datasourcemap.put("productBean", productBean);
+		jRdataSource = new JRBeanCollectionDataSource(productBeans, false);
 
-					String title = "Product Delivery Report";
+		params.put("datasource", jRdataSource);
+		params.put("title", title.toUpperCase());
+		params.put("totalPrice", NumberWordConverter.convertDoubleToCurrency(totalSum));
 
-					String hqlQuery = "From Stock";
-					if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length() > 0
-							&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length() > 0) {
+		// prepare report first for one
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, jRdataSource);
 
-						hqlQuery += " where  created_date >= '" + request.getParameter("startDate") + "' and created_date <='"
-								+ request.getParameter("endDate") + " 23:59:59.999'";
+		response.setContentType("application/x-pdf");
+		response.setHeader("Content-disposition", "inline; filename=req_product_list.pdf");
+		final OutputStream outStream = response.getOutputStream();
+		JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
 
-						title += " from " + request.getParameter("startDate") + " to " + request.getParameter("endDate");
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-					}
+	// methods to company show
+	@RequestMapping(value = "/smsReceiveReport", method = RequestMethod.GET)
+	public void smsReceiveReport(Principal principal, HttpSession session, HttpServletRequest request,
+			HttpServletResponse response) throws JRException, IOException, ParseException {
 
-					hqlQuery += " order by id asc";
-					// @formatter:on
-					List<StockBean> stockBeans = new ArrayList<>();
-					
-					List<ProductDelivery> productDeliveries=commonService.getAllObjectList("ProductDelivery").stream().map(x->(ProductDelivery)x).collect(Collectors.toList());
-					Double totalSum=0.0;
-					for (ProductDelivery productDelivery : productDeliveries) {
-						StockBean stockBean=new StockBean();
-						Integer totalStock=0;
-						Double totalPrice=0.0;
-						if(productDelivery.getCreatedDate()!=null)
-						stockBean.setDate(NumberWordConverter.getCustomDateFromDateFormate(productDelivery.getCreatedDate().toString()));
-						stockBean.setEmployeeName(productDelivery.getCreatedBy().getName());
-						stockBean.setGeneralQuantity(productDelivery.getQuantity());
-						
-						stockBean.setProductId(productDelivery.getProduct().getId());
-						stockBean.setProductName(productDelivery.getProduct().getName());
-						if(productDelivery.getQuantity()!=null)
-							totalStock+=productDelivery.getQuantity();
-						
-						stockBean.setTotalStock(totalStock);
-						totalPrice=totalStock*getWeighttedAvgPrice(productDelivery.getProduct().getId());
-						totalSum+=totalPrice;
-						stockBean.setTotalPrice(NumberWordConverter.convertDoubleToCurrency(totalPrice));
-						stockBean.setTotalPriceSum(totalPrice);
-						stockBeans.add(stockBean);
-					}
-					
-					Collections.sort(stockBeans);
-					
+		JRDataSource jRdataSource = null;
 
-					InputStream jasperStream = null;
+		String title = "Product Receive Report";
 
-					jasperStream = this.getClass().getResourceAsStream("/report/smsProductDelivery.jasper");
-					StockBean stockBean = new StockBean();
-					Map<String, Object> params = new HashMap<>();
-					Map<String, Object> datasourcemap = new HashMap<>();
-					datasourcemap.put("stockBean", stockBean);
-					jRdataSource = new JRBeanCollectionDataSource(stockBeans, false);
+		String hqlQuery = "From Stock";
+		if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length() > 0
+				&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length() > 0) {
 
-					params.put("datasource", jRdataSource);
-					params.put("title", title.toUpperCase());
-					params.put("totalPrice", NumberWordConverter.convertDoubleToCurrency(totalSum));
-					
+			hqlQuery += " where  created_date >= '" + request.getParameter("startDate") + "' and created_date <='"
+					+ request.getParameter("endDate") + " 23:59:59.999'";
 
-					// prepare report first for one
-					JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
-					JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, jRdataSource);
+			title += " from " + request.getParameter("startDate") + " to " + request.getParameter("endDate");
 
-					response.setContentType("application/x-pdf");
-					response.setHeader("Content-disposition", "inline; filename=req_delivery_list.pdf");
-					final OutputStream outStream = response.getOutputStream();
-					JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+		}
 
-				}
+		hqlQuery += " order by id asc";
+		// @formatter:on
+		List<StockBean> stockBeans = new ArrayList<>();
+
+		List<ProductRecive> productRecives = commonService.getAllObjectList("ProductRecive").stream()
+				.map(x -> (ProductRecive) x).collect(Collectors.toList());
+		Double totalSum = 0.0;
+		for (ProductRecive productRecive : productRecives) {
+			StockBean stockBean = new StockBean();
+			Integer totalStock = 0;
+			Double totalPrice = 0.0;
+			if (productRecive.getCreatedDate() != null)
+				stockBean.setDate(
+						NumberWordConverter.getCustomDateFromDateFormate(productRecive.getCreatedDate().toString()));
+			stockBean.setEmployeeName(productRecive.getCreatedBy().getName());
+			stockBean.setGeneralQuantity(productRecive.getQuantity());
+			stockBean.setVipQuantity(productRecive.getVipPurchaseQuantity());
+			stockBean.setProductId(productRecive.getProduct().getId());
+			stockBean.setProductName(productRecive.getProduct().getName());
+			if (productRecive.getQuantity() != null)
+				totalStock += productRecive.getQuantity();
+			if (productRecive.getVipPurchaseQuantity() != null)
+				totalStock += productRecive.getVipPurchaseQuantity();
+			stockBean.setTotalStock(totalStock);
+			totalPrice = totalStock * getWeighttedAvgPrice(productRecive.getProduct().getId());
+			totalSum += totalPrice;
+			stockBean.setTotalPrice(NumberWordConverter.convertDoubleToCurrency(totalPrice));
+			stockBean.setTotalPriceSum(totalPrice);
+			stockBeans.add(stockBean);
+		}
+
+		Collections.sort(stockBeans);
+
+		InputStream jasperStream = null;
+
+		jasperStream = this.getClass().getResourceAsStream("/report/smsProductRecive.jasper");
+		StockBean stockBean = new StockBean();
+		Map<String, Object> params = new HashMap<>();
+		Map<String, Object> datasourcemap = new HashMap<>();
+		datasourcemap.put("stockBean", stockBean);
+		jRdataSource = new JRBeanCollectionDataSource(stockBeans, false);
+
+		params.put("datasource", jRdataSource);
+		params.put("title", title.toUpperCase());
+		params.put("totalPrice", NumberWordConverter.convertDoubleToCurrency(totalSum));
+
+		// prepare report first for one
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, jRdataSource);
+
+		response.setContentType("application/x-pdf");
+		response.setHeader("Content-disposition", "inline; filename=req_recive_list.pdf");
+		final OutputStream outStream = response.getOutputStream();
+		JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+
+	}
+
+	// methods to company show
+	@RequestMapping(value = "/smsDeliveryReport", method = RequestMethod.GET)
+	public void smsDeliveryReport(Principal principal, HttpSession session, HttpServletRequest request,
+			HttpServletResponse response) throws JRException, IOException, ParseException {
+
+		JRDataSource jRdataSource = null;
+
+		String title = "Product Delivery Report";
+
+		String hqlQuery = "From Stock";
+		if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length() > 0
+				&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length() > 0) {
+
+			hqlQuery += " where  created_date >= '" + request.getParameter("startDate") + "' and created_date <='"
+					+ request.getParameter("endDate") + " 23:59:59.999'";
+
+			title += " from " + request.getParameter("startDate") + " to " + request.getParameter("endDate");
+
+		}
+
+		hqlQuery += " order by id asc";
+		// @formatter:on
+		List<StockBean> stockBeans = new ArrayList<>();
+
+		List<ProductDelivery> productDeliveries = commonService.getAllObjectList("ProductDelivery").stream()
+				.map(x -> (ProductDelivery) x).collect(Collectors.toList());
+		Double totalSum = 0.0;
+		for (ProductDelivery productDelivery : productDeliveries) {
+			StockBean stockBean = new StockBean();
+			Integer totalStock = 0;
+			Double totalPrice = 0.0;
+			if (productDelivery.getCreatedDate() != null)
+				stockBean.setDate(
+						NumberWordConverter.getCustomDateFromDateFormate(productDelivery.getCreatedDate().toString()));
+			stockBean.setEmployeeName(productDelivery.getCreatedBy().getName());
+			stockBean.setGeneralQuantity(productDelivery.getQuantity());
+
+			stockBean.setProductId(productDelivery.getProduct().getId());
+			stockBean.setProductName(productDelivery.getProduct().getName());
+			if (productDelivery.getQuantity() != null)
+				totalStock += productDelivery.getQuantity();
+
+			stockBean.setTotalStock(totalStock);
+			totalPrice = totalStock * getWeighttedAvgPrice(productDelivery.getProduct().getId());
+			totalSum += totalPrice;
+			stockBean.setTotalPrice(NumberWordConverter.convertDoubleToCurrency(totalPrice));
+			stockBean.setTotalPriceSum(totalPrice);
+			stockBeans.add(stockBean);
+		}
+
+		Collections.sort(stockBeans);
+
+		InputStream jasperStream = null;
+
+		jasperStream = this.getClass().getResourceAsStream("/report/smsProductDelivery.jasper");
+		StockBean stockBean = new StockBean();
+		Map<String, Object> params = new HashMap<>();
+		Map<String, Object> datasourcemap = new HashMap<>();
+		datasourcemap.put("stockBean", stockBean);
+		jRdataSource = new JRBeanCollectionDataSource(stockBeans, false);
+
+		params.put("datasource", jRdataSource);
+		params.put("title", title.toUpperCase());
+		params.put("totalPrice", NumberWordConverter.convertDoubleToCurrency(totalSum));
+
+		// prepare report first for one
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, jRdataSource);
+
+		response.setContentType("application/x-pdf");
+		response.setHeader("Content-disposition", "inline; filename=req_delivery_list.pdf");
+		final OutputStream outStream = response.getOutputStream();
+		JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+
+	}
 
 	private String getamounText(RequisitionHistory requisitionHistory) {
 		String text = "";

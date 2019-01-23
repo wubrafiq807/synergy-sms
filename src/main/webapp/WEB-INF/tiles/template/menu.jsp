@@ -370,9 +370,9 @@ input:checked+.slider:before {
 
 
 
-			
 
-<sec:authorize access="hasRole('ROLE_ADMIN')">
+
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<li class=""><a href="javascript:void(0)"
 					class="dropdown-toggle"> <i
 						class="menu-icon fa fa-chain-broken"></i> <span class="menu-text">
@@ -382,17 +382,22 @@ input:checked+.slider:before {
 					<ul class="submenu">
 
 						<li class=""><a
-							href="${pageContext.request.contextPath}/smsReqForm">
-								<i class="menu-icon fa fa-plus purple"></i> Requisitions
+							href="${pageContext.request.contextPath}/smsReqForm"> <i
+								class="menu-icon fa fa-plus purple"></i> Requisitions
 						</a> <b class="arrow"></b></li>
 						<li class=""><a
-							href="${pageContext.request.contextPath}/smsStockReport">
-								<i class="menu-icon fa fa-plus purple"></i> Stocks
+							href="${pageContext.request.contextPath}/smsStockReport"> <i
+								class="menu-icon fa fa-plus purple"></i> Stocks
 						</a> <b class="arrow"></b></li>
-						
+
 						<li class=""><a
-							href="${pageContext.request.contextPath}/smsReceiveReport">
-								<i class="menu-icon fa fa-plus purple"></i> Product Receive
+							href="${pageContext.request.contextPath}/smsProductReport"> <i
+								class="menu-icon fa fa-plus purple"></i> Products
+						</a> <b class="arrow"></b></li>
+
+						<li class=""><a
+							href="${pageContext.request.contextPath}/smsReceiveReport"> <i
+								class="menu-icon fa fa-plus purple"></i> Product Receive
 						</a> <b class="arrow"></b></li>
 						<li class=""><a
 							href="${pageContext.request.contextPath}/smsDeliveryReport">
@@ -400,7 +405,7 @@ input:checked+.slider:before {
 						</a> <b class="arrow"></b></li>
 
 
-						
+
 					</ul></li>
 
 			</sec:authorize>

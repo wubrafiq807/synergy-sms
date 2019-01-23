@@ -390,31 +390,38 @@
 
 
 
-	
+
 	<!-- Store Supervision Requisition Status Start -->
-	
+
 	<definition name="productRequisitionStatus" extends="base-definition">
 		<put-attribute name="title"
 			value="Store Supervision Requisition Status List" />
 		<put-attribute name="body"
 			value="/WEB-INF/views/requisition-status/list.jsp" />
 	</definition>
-	
 
-<definition name="smsReqForm" extends="base-definition">
+
+	<definition name="smsReqForm" extends="base-definition">
 		<put-attribute name="title"
 			value="Store Supervision Requisition Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/views/report/create.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/report/create.jsp" />
 	</definition>
 	<!-- Store Supervision Requisition Status End -->
-	
+
 	<definition name="smsStockReport" extends="base-definition">
 		<put-attribute name="title"
 			value="Store Supervision Requisition Report" />
 		<put-attribute name="body"
 			value="/WEB-INF/views/reportStock/create.jsp" />
 	</definition>
+	
+	<definition name="smsProductReport" extends="base-definition">
+		<put-attribute name="title"
+			value="Store Supervision Product Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/reportProduct/create.jsp" />
+	</definition>
+	
 	<!-- Store Supervision Requisition Status End -->
 
 
