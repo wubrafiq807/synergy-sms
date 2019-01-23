@@ -192,6 +192,9 @@ public class ReportController implements Constants {
 		String statusText = status.equals(STATUS_CLOSE) ? "Closed"
 				: status.equals(STATUS_ACTIVE) ? "Pending" : "Rejected";
 		String hqlQuery = "From Requisition where status = " + Integer.parseInt(status);
+		if(request.getParameter("employee_id")!=null&&request.getParameter("employee_id").trim().length()>0) {
+			hqlQuery+=" and employee_id="+request.getParameter("employee_id");
+		}
 		if (request.getParameter("startDate") != null && request.getParameter("startDate").trim().length() > 0
 				&& request.getParameter("endDate") != null && request.getParameter("endDate").trim().length() > 0) {
 

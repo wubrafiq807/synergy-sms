@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.nazdaq.sms.beans.RequisitionBean;
 import com.nazdaq.sms.beans.SmsAdvanceBean;
 import com.nazdaq.sms.beans.SubReportBean;
+import com.nazdaq.sms.model.Employee;
 import com.nazdaq.sms.model.ProductPriceHistory;
 import com.nazdaq.sms.model.Requisition;
 import com.nazdaq.sms.model.RequisitionHistory;
@@ -64,12 +65,17 @@ public class ReportFormController implements Constants {
 
 	
 	@RequestMapping(value = "/smsReqForm", method = RequestMethod.GET)
-	public ModelAndView smsReqForm(Principal principal)
+	public ModelAndView smsReqForm(Principal principal,ModelMap model)
 			throws JRException, IOException, ParseException {
 
 		if (principal == null) {
 			return new ModelAndView("redirect:/login");
 		}
+		
+		List<Employee> employees=commonService.getObjectListByAnyColumn("Employee", "status", "1").stream().map(x->(Employee)x).collect(Collectors.toList());
+		
+		model.put("employees", employees);
+		
 		return new ModelAndView("smsReqForm");
 	}
 	

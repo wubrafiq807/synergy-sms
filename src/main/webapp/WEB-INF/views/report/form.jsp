@@ -1,33 +1,53 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="form-group">
-	<label for="fromDate"  title="format: DD-MM-YYYY" class="col-sm-2 control-label"> <strong>
-			From Date : </strong>
+	<label for="fromDate" title="format: DD-MM-YYYY"
+		class="col-sm-2 control-label"> <strong> From Date :
+	</strong>
 	</label>
 	<div class="col-sm-6">
-		<input id="startDate" name="startDate"  type="eu-date1" class="form-control" title="format: DD-MM-YYYY"/>
+		<input id="startDate" name="startDate" type="eu-date1"
+			class="form-control" title="format: DD-MM-YYYY" />
 	</div>
 </div>
+
+
 
 <div class="form-group">
 	<label for="toDate" class="col-sm-2 control-label"> <strong>
 			To Date : </strong>
 	</label>
 	<div class="col-sm-6">
-		<input id="endDate" name="endDate"  type="eu-date2"
+		<input id="endDate" name="endDate" type="eu-date2"
 			class="form-control" />
 	</div>
 </div>
 
 <div class="form-group">
-	<label for="status" class="col-sm-2 control-label"> <strong>Status <span style="color: red">*</span>
+	<label for="employee_id" class="col-sm-2 control-label"> <strong>Employee
 			: </strong>
+	</label>
+	<div class="col-sm-6">
+		<select name="employee_id" id="employee_id" class="form-control">
+			<option value="">Select</option>
+			<c:forEach var="employee" items="${employees}">
+
+				<option value="${employee.id}">${employee.name}</option>
+			</c:forEach>
+		</select> <span id="employee_id_error" style="color: red; font-size: 18px"></span>
+	</div>
+</div>
+
+<div class="form-group">
+	<label for="status" class="col-sm-2 control-label"> <strong>Status
+			<span style="color: red">*</span> :
+	</strong>
 	</label>
 	<div class="col-sm-6">
 		<select name="status" id="status" class="form-control">
 			<option value="">Select</option>
-			<option value="1" >Pending</option>
-			<option value="3" >Closed</option>
-			<option value="2" >Rejected</option>
+			<option value="1">Pending</option>
+			<option value="3">Closed</option>
+			<option value="2">Rejected</option>
 		</select>
 	</div>
 </div>
@@ -51,29 +71,24 @@
 		});
 
 	});
-	
+
 	$(function() {
 
-		$("form[name='form']")
-				.on(
-						'submit',
-						function(e) {
-							
-							if ($('#status').val() == '') {
-								w2alert('Please Select Status');
-								return false;
-							}
-							
-							if ($('#startDate').val() != '') {
-								if ($('#endDate').val() == '') {
-									w2alert('Please Select ToDate');
-									return false;
-								}
-							}
+		$("form[name='form']").on('submit', function(e) {
 
-						});
+			if ($('#status').val() == '') {
+				w2alert('Please Select Status');
+				return false;
+			}
 
-		
+			if ($('#startDate').val() != '') {
+				if ($('#endDate').val() == '') {
+					w2alert('Please Select ToDate');
+					return false;
+				}
+			}
+
+		});
+
 	});
-
 </script>
