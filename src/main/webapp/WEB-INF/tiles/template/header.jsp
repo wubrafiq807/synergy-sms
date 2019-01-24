@@ -27,7 +27,23 @@
 			</small>
 			</a>
 		</div>
+<style>
 
+
+
+/* this gets chrome */
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+     .switch{
+     top: -16px;
+    } 
+}
+@media screen and (min--moz-device-pixel-ratio:0) {
+   .switch{
+        top: -5px;
+    }
+}
+
+</style>
 
 		<div class="navbar-buttons navbar-header pull-right" role="navigation">
 			<ul class="nav ace-nav">
@@ -53,7 +69,7 @@
 							<span id="span-inactive">Requisition Switch</span>
 							<label
 								class="switch"
-								style="position: relative; top: -5px; margin-right: 10px">
+								style="position: relative;  margin-right: 10px">
 									<input type="checkbox" checked
 									onclick="changeActiveToInactive()"> <span
 									class="slider round"></span>
@@ -65,7 +81,7 @@
 							<span id="span-inactive">Requisition Switch</span>
 							<label
 								class="switch"
-								style="position: relative; top: -5px; margin-right: 10px">
+								style="position: relative; margin-right: 10px">
 									<input type="checkbox" onclick="changeInActiveToActive()">
 									<span class="slider round"></span>
 							</label><span id="span-inactive">ON/OFF</span>

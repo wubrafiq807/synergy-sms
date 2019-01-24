@@ -26,6 +26,7 @@
 	<label for="employee_id" class="col-sm-2 control-label"> <strong>Employee
 			: </strong>
 	</label>
+	
 	<div class="col-sm-6">
 		<select name="employee_id" id="employee_id" class="form-control">
 			<option value="">Select</option>
