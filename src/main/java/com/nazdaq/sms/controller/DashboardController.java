@@ -135,8 +135,9 @@ public class DashboardController implements Constants {
 			model.put("totalRejectedJobReq", rejectedReqList.size());
 		}
 
-		RequisitionStatus requisitionStatus=(RequisitionStatus) commonService.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
-		
+		RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
+				.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
+
 		model.put("requisitionStatus", requisitionStatus);
 		return new ModelAndView("adminDashboard", model);
 	}
@@ -194,6 +195,10 @@ public class DashboardController implements Constants {
 
 		model.put("reqConcenRejectedList", reqConcenRejectedList);
 		model.put("reqConcenApprovvedList", reqConcenApprovvedList);
+		RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
+				.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
+
+		model.put("requisitionStatus", requisitionStatus);
 		return new ModelAndView("concernDashboard", model);
 	}
 
@@ -212,6 +217,8 @@ public class DashboardController implements Constants {
 		} else {
 			fiscalYearName = year + "-" + (year + 1);
 		}
+		
 		return fiscalYearName.replace("20", "").trim().toString();
 	}
+	
 }

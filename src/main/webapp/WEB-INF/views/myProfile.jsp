@@ -21,7 +21,7 @@
 						<table class="table table-striped">
 							<c:if test="${!empty myProfile.name}">
 								<tr>
-									<th>PAF Year</th>
+									<th>Name</th>
 									<td>${myProfile.name}</td>
 								</tr>
 							</c:if>

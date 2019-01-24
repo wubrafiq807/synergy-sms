@@ -60,7 +60,7 @@
 						<c:set
 						var="requisitionStatus" value="${sessionScope.requisitionStatus}"
 						scope="page" /> 
-						<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_STORE_MANAGER')">
 						<c:if test="${not empty requisitionStatus}">
 						<input type="hidden" id="finalStatus"
 		value="${requisitionStatus.reqStatus}" />
