@@ -40,6 +40,9 @@ public class Settings implements Serializable {
 	@Column(name = "view_text")
 	private String viewText;
 	
+	@Column(name = "email")
+	private String email;
+	
 	@Column(name = "btn_text")
 	private String btnText;
 	
@@ -137,6 +140,22 @@ public class Settings implements Serializable {
 
 	public void setIsRejectReasonMandatory(Integer isRejectReasonMandatory) {
 		this.isRejectReasonMandatory = isRejectReasonMandatory;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	

@@ -26,6 +26,7 @@
 									<th class="text-center">Button Text</th>
 									<th class="text-center">Button Class</th>
 									<th class="text-center">View Text</th>
+									<th class="text-center">Email</th>
 									<th class="text-center">Reject To</th>
 									<th class="text-center">Auth Role</th>
 									<th class="text-center">Action</th>
@@ -45,6 +46,7 @@
 												${setting.btnClass} </span></td>
 
 										<td class="text-center">${setting.viewText}</td>
+										<td class="text-center">${setting.email}</td>
 										<td class="text-center">${setting.rejectTo.stage}</td>
 										<td class="text-center">${setting.authRole}</td>
 										<td class="text-center"><a

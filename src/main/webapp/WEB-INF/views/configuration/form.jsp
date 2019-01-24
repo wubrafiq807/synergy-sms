@@ -37,6 +37,16 @@
 	</div>
 </div>
 
+<div class="form-group">
+	<label for="email" class="col-sm-2 control-label"> <strong>
+			Email  </strong>
+	</label>
+	<div class="col-sm-6">
+		<input id="email" name="email" value="${settings.email}"
+			type="email" class="form-control">
+	</div>
+</div>
+
 
 <div class="form-group">
 	<label for="btnText" class="col-sm-2 control-label"> <strong>
@@ -148,7 +158,11 @@
 				authRole : "required",
 				btnText : "required",
 				btnClass : "required",
-				viewText : "required"
+				viewText : "required",
+				email:{
+					required:false,
+					email:true
+				}
 
 			},
 

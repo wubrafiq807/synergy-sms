@@ -37,6 +37,7 @@
      top: -16px;
     } 
 }
+
 @media screen and (min--moz-device-pixel-ratio:0) {
    .switch{
         top: -5px;

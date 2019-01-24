@@ -61,6 +61,7 @@ public class ConfigurationController {
 					settings.getId().toString());
 			settingsDb.setCanReject(settings.getCanReject());
 			settingsDb.setIsRejectReasonMandatory(settings.getIsRejectReasonMandatory());
+			settingsDb.setEmail(settings.getEmail());
 
 			Settings settingsOb = null;
 			int flag = 0;
