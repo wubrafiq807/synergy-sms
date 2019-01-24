@@ -375,7 +375,7 @@ input:checked+.slider:before {
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<li class=""><a href="javascript:void(0)"
 					class="dropdown-toggle"> <i
-						class="menu-icon fa fa-chain-broken"></i> <span class="menu-text">
+						class="menu-icon fa fa-file-text-o"></i> <span class="menu-text">
 							Report</span> <b class="arrow fa fa-angle-down"></b>
 				</a> <b class="arrow"></b>
 
