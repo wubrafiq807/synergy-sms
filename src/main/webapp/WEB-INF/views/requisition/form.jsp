@@ -120,13 +120,14 @@
 		});
 
 	});
-
+var flag=false;
 	$(function() {
 
 		$("form[name='form']")
 				.on(
 						'submit',
 						function(e) {
+							
 							jQuery.ajax({
 								type: "POST",
 								url: "${pageContext.request.contextPath}/checkReqvalid",
@@ -142,6 +143,8 @@
 								}
 								}
 								});
+							
+							
 							
 							if ($('#isVipRequisition').val() == '1') {
 								if ($('#employee_id').val() == '') {
@@ -169,18 +172,26 @@
 
 						});
 
-		// 		$("form[name='form']").validate({
-
-		// 			rules : {
-
-		// 				purpose : "required",
-		// 				remarks : "required",
-
-		// 			},
-		// 			submitHandler : function(form) {
-		// 				form.submit();
-		// 			}
-		// 		});
+		$('#submitBtn').on("click",function(){
+			
+			jQuery.ajax({
+				type: "POST",
+				url: "${pageContext.request.contextPath}/checkReqvalid",
+				dataType: 'json',
+				
+				success: function(res) {
+				if (res==false)
+				{
+				
+					flag=true;
+				
+				}else{
+					flag=false;
+				}
+				}
+				});
+			
+		});
 	});
 
 	$(function() {
