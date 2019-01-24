@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -25,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import com.nazdaq.sms.util.SendEmail;
 import com.nazdaq.sms.model.Category;
 import com.nazdaq.sms.model.Employee;
 import com.nazdaq.sms.model.Product;
@@ -51,6 +55,12 @@ public class RequisitionController implements Constants {
 	@Autowired
 	private CommonService commonService;
 
+	@Autowired
+	private JavaMailSender mailSender;
+
+	@Value("${cc.email.addresss}")
+	String ccEmailAddresss;
+
 	@RequestMapping(value = "/addProductRequisition", method = RequestMethod.GET)
 	public ModelAndView addProductRequisition(ModelMap model, Principal principal) {
 		if (principal == null) {
@@ -58,38 +68,38 @@ public class RequisitionController implements Constants {
 		}
 		String roleName = commonService.getAuthRoleName();
 		boolean isVipRequisition = false;
-		List<Product> theProducts=new ArrayList<>();
+		List<Product> theProducts = new ArrayList<>();
 		if (roleName != null && roleName.trim().equals(AUTH_STORE_MANAGER)) {
 			isVipRequisition = true;
 			List<Employee> employeeList = commonService.getAllObjectList("Employee").stream().map(x -> (Employee) x)
 					.collect(Collectors.toList());
 			model.put("employeeList", employeeList);
-		List<Product>	 listPro = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
+			List<Product> listPro = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
 					.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
-		List<Stock> stocks=commonService.getAllObjectList("Stock").stream().map(x->(Stock)x).filter(x->x.getVipQuantity()!=null&&x.getVipQuantity()>0).collect(Collectors.toList());
-		
-		for (Stock stock : stocks) {
-			for (Product product : listPro) {
-				if(stock.getProduct().getId().toString().equals(product.getId().toString())) {
-					theProducts.add(product);
-					break;
+			List<Stock> stocks = commonService.getAllObjectList("Stock").stream().map(x -> (Stock) x)
+					.filter(x -> x.getVipQuantity() != null && x.getVipQuantity() > 0).collect(Collectors.toList());
+
+			for (Stock stock : stocks) {
+				for (Product product : listPro) {
+					if (stock.getProduct().getId().toString().equals(product.getId().toString())) {
+						theProducts.add(product);
+						break;
+					}
 				}
 			}
-		}
-		
-		}else {
-			 theProducts = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
+
+		} else {
+			theProducts = commonService.getAllObjectList("Product").stream().map(x -> (Product) x)
 					.filter(x -> x.getStatus() == 1).collect(Collectors.toList());
 		}
 		Requisition requisition = new Requisition();
 
-		
 		theProducts.forEach(x -> x.setWeightedAvgPrice(this.getWeighttedAvgPrice(x.getId())));
 
 		model.put("command", requisition);
 		model.put("productList", theProducts);
 		model.put("isVipRequisition", isVipRequisition);
-		return new ModelAndView("productRequestionAdd",model);
+		return new ModelAndView("productRequestionAdd", model);
 	}
 
 	private Double getWeighttedAvgPrice(Integer productID) {
@@ -181,65 +191,66 @@ public class RequisitionController implements Constants {
 			createRequisitionItems(request, requisitionDB);
 
 		} else {
-			
-			RequisitionStatus requisitionStatus=(RequisitionStatus) commonService.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
-			
-			if(requisitionStatus!=null&&requisitionStatus.getReqStatus().toString().equals("0")) {
+
+			RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
+					.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
+
+			if (requisitionStatus != null && requisitionStatus.getReqStatus().toString().equals("0")) {
 				return new ModelAndView("redirect:/logout");
 			}
-			
+
 			String roleName = commonService.getAuthRoleName();
-			
+
 			requisition.setCreatedBy(loginEmployee);
 			requisition.setCreatedDate(new Date());
 			requisition.setStatus(Integer.parseInt(STATUS_ACTIVE));
-			RequisitionHistory requisitionHistory=new RequisitionHistory();
-			if(roleName.trim().equals(AUTH_STORE_MANAGER)) {
-				
+			RequisitionHistory requisitionHistory = new RequisitionHistory();
+			if (roleName.trim().equals(AUTH_STORE_MANAGER)) {
+
 				requisitionHistory.setCreatedBy(loginEmployee);
 				requisitionHistory.setCreatedDate(new Date());
-				
-				Settings settings=(Settings) commonService.getAnObjectByAnyUniqueColumn("Settings", "auth_role", AUTH_STORE_MANAGER);
-			
+
+				Settings settings = (Settings) commonService.getAnObjectByAnyUniqueColumn("Settings", "auth_role",
+						AUTH_STORE_MANAGER);
+
 				requisitionHistory.setSettings(settings);
 				List<Settings> settingsList = commonService
-						.getObjectListByHqlQuery("from Settings where status=1 and stage>"+settings.getStage()+" order by stage ASC").stream()
-						.map(x -> (Settings) x).collect(Collectors.toList());
-				Employee employee=(Employee) commonService.getAnObjectByAnyUniqueColumn("Employee", "id", requisition.getEmployee_id().toString());
-				
+						.getObjectListByHqlQuery(
+								"from Settings where status=1 and stage>" + settings.getStage() + " order by stage ASC")
+						.stream().map(x -> (Settings) x).collect(Collectors.toList());
+				Employee employee = (Employee) commonService.getAnObjectByAnyUniqueColumn("Employee", "id",
+						requisition.getEmployee_id().toString());
+
 				requisition.setSettings(settingsList.get(0));
 				requisition.setEmployee(employee);
 				requisition.setIsVip(1);
 				requisition.setModifiedBy(loginEmployee);
 				requisition.setModifiedDate(new Date());
-				
-			}else {
+
+			} else {
 				List<Settings> settingsList = commonService
 						.getObjectListByHqlQuery("from Settings where status=1 order by stage ASC").stream()
 						.map(x -> (Settings) x).collect(Collectors.toList());
-				
-				
+
 				requisition.setSettings(settingsList.get(0));
 				requisition.setEmployee(loginEmployee);
 			}
-			Integer id=null;
+			Integer id = null;
 			try {
-				 id = commonService.saveWithReturnId(requisition);
+				id = commonService.saveWithReturnId(requisition);
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-			
-			
+
 			Requisition requisitionDB = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id",
 					id.toString());
 			createRequisitionItems(request, requisitionDB);
-			
-			if(roleName.trim().equals(AUTH_STORE_MANAGER)) {
+
+			if (roleName.trim().equals(AUTH_STORE_MANAGER)) {
 				requisitionHistory.setRequisition(requisitionDB);
 				requisitionHistory.setRemarks(requisition.getRemarks());
 				commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
 			}
-			
 
 		}
 
@@ -266,6 +277,7 @@ public class RequisitionController implements Constants {
 		return new ModelAndView("redirect:/");
 	}
 
+	@SuppressWarnings({ "unused", "unchecked" })
 	@RequestMapping(value = "/approveReq", method = RequestMethod.POST)
 	public @ResponseBody ModelAndView approveReq(HttpServletRequest request, ModelMap model,
 			RedirectAttributes redirectAttributes, Principal principal, HttpSession session) {
@@ -280,6 +292,45 @@ public class RequisitionController implements Constants {
 				.getObjectListByHqlQuery("from Settings where status=1 and  stage>"
 						+ requisitionDB.getSettings().getStage() + " order by stage ASC ")
 				.stream().map(x -> (Settings) x).collect(Collectors.toList());
+
+		// Get the first element from settings list
+
+		Settings settings = settingsList.get(settingsList.size() - settingsList.size());
+		String emailTo, eName, eId;
+		String requestedItem = "";
+		Double totalAmount = 0.0;
+
+		if (settings.getEmail() != null && settings.getEmail().length() > 0) {
+			emailTo = settings.getEmail();
+			eName = requisitionDB.getEmployee().getName();
+			eId = requisitionDB.getEmployee().getLxnId();
+
+			List<RequisitionItem> requisitionItems = (List<RequisitionItem>) (Object) commonService
+					.getObjectListByAnyColumn("RequisitionItem", "requisition_id", requisitionDB.getId().toString());
+
+			for (RequisitionItem singleRequisitionItem : requisitionItems) {
+				String pName = singleRequisitionItem.getProduct().getName();
+				Double individualAmount = getWeighttedAvgPrice(singleRequisitionItem.getProduct().getId());
+				int quantity = singleRequisitionItem.getQuantity();
+				requestedItem += pName + ", ";
+				totalAmount += (quantity * individualAmount);
+			}
+
+			SendEmail sendEmail = new SendEmail();
+			try {
+				
+				String mailtitle = "NEW REQUISTION REQUEST FROM " + eName;
+				String mailBody = "<h1>Requisition Details</h1>" +"<div><ul>" + "<li> Employee Name: " + eName +"</li>" + "<li> Employee Id: " + eId +"</li>" + "<li> Requested Items: " + requestedItem +"</li>" + "<li> Total Amount: " + NumberWordConverter.convertDoubleToCurrency(totalAmount) +" TK"+"</li>" + "</ul></div>";
+
+						sendEmail.sendmailToUser(mailSender, emailTo, mailtitle,
+								mailBody, "", ccEmailAddresss, "");
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
 		if (!settingsList.isEmpty()) {
 
 			// CREATE HISTORY
@@ -399,6 +450,44 @@ public class RequisitionController implements Constants {
 
 		commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
 		commonService.saveOrUpdateModelObjectToDB(requisitionDB);
+		
+		String rejectEmailTo =  requisitionDB.getEmployee().getEmail();
+		String requistionRejectedBy = loginEmployee.getName();
+		
+		SendEmail sendEmail = new SendEmail();
+		if(requisitionDB.getRejectionReason() != null && requisitionDB.getRejectionReason().length() > 0) {
+			String reasonForRejection = requisitionDB.getRejectionReason();
+			
+			try {
+				
+				String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
+				String mailBody = "<h1>Requisition Rejection Details</h1>" +"<div><ul>" + "<li> Rejected By Name: " + requistionRejectedBy +"</li>" + "<li> Reason : " + reasonForRejection +"</li>" + "</ul></div>";
+
+						sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle,
+								mailBody, "", ccEmailAddresss, "");
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+		}else {
+			
+			try {
+				
+				String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
+				String mailBody = "<h1>Requisition Rejection Details</h1>" +"<div><ul>" + "<li> Rejected By Name: " + requistionRejectedBy +"</li>"  + "</ul></div>";
+
+						sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle,
+								mailBody, "", ccEmailAddresss, "");
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
 
 		return new ModelAndView("redirect:/");
 	}
@@ -539,13 +628,12 @@ public class RequisitionController implements Constants {
 
 		if (quantityValue > stock.getQuantity()) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 
 	}
-	
-	
+
 	@RequestMapping(value = "/ajaxProductQuantityCheckForVIPRequisition", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean ajaxProductQuantityCheckForVIPRequisition(Principal principal, HttpServletRequest request) {
@@ -561,24 +649,25 @@ public class RequisitionController implements Constants {
 		}
 
 	}
-	
+
 	@RequestMapping(value = "/checkReqvalid", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean checkReqvalid(Principal principal) {
 
-		boolean flag=true;
-		RequisitionStatus requisitionStatus=(RequisitionStatus) commonService.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
-		
-		if(requisitionStatus!=null) {
-			if(requisitionStatus.getReqStatus().toString().equals("1")) {
-				flag=true;
-			}else {
-				flag=false;
+		boolean flag = true;
+		RequisitionStatus requisitionStatus = (RequisitionStatus) commonService
+				.getAnObjectByAnyUniqueColumn("RequisitionStatus", "id", "1");
+
+		if (requisitionStatus != null) {
+			if (requisitionStatus.getReqStatus().toString().equals("1")) {
+				flag = true;
+			} else {
+				flag = false;
 			}
 		}
-		
+
 		return flag;
 
 	}
-	
+
 }
