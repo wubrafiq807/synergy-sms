@@ -318,15 +318,42 @@ public class RequisitionController implements Constants {
 
 			SendEmail sendEmail = new SendEmail();
 			try {
-				
-				String mailtitle = "NEW REQUISTION REQUEST FROM " + eName;
-				String mailBody = "<h1>Requisition Details</h1>" +"<div><ul>" + "<li> Employee Name: " + eName +"</li>" + "<li> Employee Id: " + eId +"</li>" + "<li> Requested Items: " + requestedItem +"</li>" + "<li> Total Amount: " + NumberWordConverter.convertDoubleToCurrency(totalAmount) +" TK"+"</li>" + "</ul></div>";
 
-						sendEmail.sendmailToUser(mailSender, emailTo, mailtitle,
-								mailBody, "", ccEmailAddresss, "");
+				String mailtitle = "NEW REQUISTION REQUEST FROM " + eName;
+				String mailBody = "<h1>Requisition Details</h1>" + "<div><ul>" + "<li> Employee Name: " + eName
+						+ "</li>" + "<li> Employee Id: " + eId + "</li>" + "<li> Requested Items: " + requestedItem
+						+ "</li>" + "<li> Total Amount: " + NumberWordConverter.convertDoubleToCurrency(totalAmount)
+						+ " TK" + "</li>" + "</ul></div>";
+
+				sendEmail.sendmailToUser(mailSender, emailTo, mailtitle, mailBody, "", ccEmailAddresss, "");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+
+		}
+
+		// Sending Email For Final Stage
+
+		if (settingsList.size() == 1) {
+
+			if (requisitionDB.getEmployee().getEmail() != null && requisitionDB.getEmployee().getEmail().length() > 0) {
+
+				String email = requisitionDB.getEmployee().getEmail();
+				String name = requisitionDB.getEmployee().getName();
+
+				SendEmail sendEmail = new SendEmail();
+				try {
+
+					String mailtitle = name + " CONGRATULATION YOUR REQUISITION APPROBE";
+					String mailBody = "<h1>YOUR REQUISITION REQUEST APPROVED SUCCESSFULLY.COLLECT YOUR PRODUCT</h1>";
+
+					sendEmail.sendmailToUser(mailSender, email, mailtitle, mailBody, "", ccEmailAddresss, "");
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 
 		}
@@ -450,44 +477,42 @@ public class RequisitionController implements Constants {
 
 		commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
 		commonService.saveOrUpdateModelObjectToDB(requisitionDB);
-		
-		String rejectEmailTo =  requisitionDB.getEmployee().getEmail();
+
+		String rejectEmailTo = requisitionDB.getEmployee().getEmail();
 		String requistionRejectedBy = loginEmployee.getName();
-		
+
 		SendEmail sendEmail = new SendEmail();
-		if(requisitionDB.getRejectionReason() != null && requisitionDB.getRejectionReason().length() > 0) {
+		if (requisitionDB.getRejectionReason() != null && requisitionDB.getRejectionReason().length() > 0) {
 			String reasonForRejection = requisitionDB.getRejectionReason();
-			
-			try {
-				
-				String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
-				String mailBody = "<h1>Requisition Rejection Details</h1>" +"<div><ul>" + "<li> Rejected By Name: " + requistionRejectedBy +"</li>" + "<li> Reason : " + reasonForRejection +"</li>" + "</ul></div>";
 
-						sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle,
-								mailBody, "", ccEmailAddresss, "");
+			try {
+
+				String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
+				String mailBody = "<h1>Requisition Rejection Details</h1>" + "<div><ul>" + "<li> Rejected By Name: "
+						+ requistionRejectedBy + "</li>" + "<li> Reason : " + reasonForRejection + "</li>"
+						+ "</ul></div>";
+
+				sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle, mailBody, "", ccEmailAddresss, "");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
-			
-		}else {
-			
-			try {
-				
-				String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
-				String mailBody = "<h1>Requisition Rejection Details</h1>" +"<div><ul>" + "<li> Rejected By Name: " + requistionRejectedBy +"</li>"  + "</ul></div>";
 
-						sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle,
-								mailBody, "", ccEmailAddresss, "");
+		} else {
+
+			try {
+
+				String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
+				String mailBody = "<h1>Requisition Rejection Details</h1>" + "<div><ul>" + "<li> Rejected By Name: "
+						+ requistionRejectedBy + "</li>" + "</ul></div>";
+
+				sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle, mailBody, "", ccEmailAddresss, "");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-		
 
 		return new ModelAndView("redirect:/");
 	}
