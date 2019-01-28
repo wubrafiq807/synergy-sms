@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.nazdaq.sms.util.SendEmail;
+
 import com.nazdaq.sms.model.Category;
 import com.nazdaq.sms.model.Employee;
 import com.nazdaq.sms.model.Product;
@@ -172,6 +173,10 @@ public class RequisitionController implements Constants {
 				requisitionDB.setModifiedDate(new Date());
 
 				commonService.saveOrUpdateModelObjectToDB(requisitionDB);
+				
+				// Send Mail to Admin
+		
+				sendFirstMail(settingsList, requisitionDB);
 
 			} else {
 				requisitionDB.setModifiedBy(loginEmployee);
@@ -205,8 +210,10 @@ public class RequisitionController implements Constants {
 			requisition.setCreatedDate(new Date());
 			requisition.setStatus(Integer.parseInt(STATUS_ACTIVE));
 			RequisitionHistory requisitionHistory = new RequisitionHistory();
+			List<Settings> settingsList=new ArrayList<>();
 			if (roleName.trim().equals(AUTH_STORE_MANAGER)) {
-
+				
+				
 				requisitionHistory.setCreatedBy(loginEmployee);
 				requisitionHistory.setCreatedDate(new Date());
 
@@ -214,7 +221,7 @@ public class RequisitionController implements Constants {
 						AUTH_STORE_MANAGER);
 
 				requisitionHistory.setSettings(settings);
-				List<Settings> settingsList = commonService
+				 settingsList = commonService
 						.getObjectListByHqlQuery(
 								"from Settings where status=1 and stage>" + settings.getStage() + " order by stage ASC")
 						.stream().map(x -> (Settings) x).collect(Collectors.toList());
@@ -227,8 +234,9 @@ public class RequisitionController implements Constants {
 				requisition.setModifiedBy(loginEmployee);
 				requisition.setModifiedDate(new Date());
 
+
 			} else {
-				List<Settings> settingsList = commonService
+				 settingsList = commonService
 						.getObjectListByHqlQuery("from Settings where status=1 order by stage ASC").stream()
 						.map(x -> (Settings) x).collect(Collectors.toList());
 
@@ -250,6 +258,9 @@ public class RequisitionController implements Constants {
 				requisitionHistory.setRequisition(requisitionDB);
 				requisitionHistory.setRemarks(requisition.getRemarks());
 				commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
+				
+				// SEND MAIL TO ADMIN
+				sendFirstMail(settingsList, requisitionDB);
 			}
 
 		}
@@ -294,69 +305,73 @@ public class RequisitionController implements Constants {
 				.stream().map(x -> (Settings) x).collect(Collectors.toList());
 
 		// Get the first element from settings list
+		// Sending First Email When user press the submit button
 
-		Settings settings = settingsList.get(settingsList.size() - settingsList.size());
-		String emailTo, eName, eId;
-		String requestedItem = "";
-		Double totalAmount = 0.0;
+		/*
+		 * Settings settings = settingsList.get(settingsList.size() -
+		 * settingsList.size()); String emailTo, eName, eId; String requestedItem = "";
+		 * Double totalAmount = 0.0;
+		 * 
+		 * if (settings.getEmail() != null && settings.getEmail().length() > 0) {
+		 * emailTo = settings.getEmail(); eName = requisitionDB.getEmployee().getName();
+		 * eId = requisitionDB.getEmployee().getLxnId();
+		 * 
+		 * List<RequisitionItem> requisitionItems = (List<RequisitionItem>) (Object)
+		 * commonService .getObjectListByAnyColumn("RequisitionItem", "requisition_id",
+		 * requisitionDB.getId().toString());
+		 * 
+		 * for (RequisitionItem singleRequisitionItem : requisitionItems) { String pName
+		 * = singleRequisitionItem.getProduct().getName(); Double individualAmount =
+		 * getWeighttedAvgPrice(singleRequisitionItem.getProduct().getId()); int
+		 * quantity = singleRequisitionItem.getQuantity(); requestedItem += pName +
+		 * ", "; totalAmount += (quantity * individualAmount); }
+		 * 
+		 * SendEmail sendEmail = new SendEmail(); try {
+		 * 
+		 * String mailtitle = "NEW REQUISTION REQUEST FROM " + eName; String mailBody =
+		 * "<h1>Requisition Details</h1>" + "<div><ul>" + "<li> Employee Name: " + eName
+		 * + "</li>" + "<li> Employee Id: " + eId + "</li>" + "<li> Requested Items: " +
+		 * requestedItem + "</li>" + "<li> Total Amount: " +
+		 * NumberWordConverter.convertDoubleToCurrency(totalAmount) + " TK" + "</li>" +
+		 * "</ul></div>";
+		 * 
+		 * sendEmail.sendmailToUser(mailSender, emailTo, mailtitle, mailBody, "",
+		 * ccEmailAddresss, ""); } catch (MessagingException e) { // TODO Auto-generated
+		 * catch block e.printStackTrace(); }
+		 * 
+		 * }
+		 */
 
-		if (settings.getEmail() != null && settings.getEmail().length() > 0) {
-			emailTo = settings.getEmail();
-			eName = requisitionDB.getEmployee().getName();
-			eId = requisitionDB.getEmployee().getLxnId();
-
-			List<RequisitionItem> requisitionItems = (List<RequisitionItem>) (Object) commonService
-					.getObjectListByAnyColumn("RequisitionItem", "requisition_id", requisitionDB.getId().toString());
-
-			for (RequisitionItem singleRequisitionItem : requisitionItems) {
-				String pName = singleRequisitionItem.getProduct().getName();
-				Double individualAmount = getWeighttedAvgPrice(singleRequisitionItem.getProduct().getId());
-				int quantity = singleRequisitionItem.getQuantity();
-				requestedItem += pName + ", ";
-				totalAmount += (quantity * individualAmount);
-			}
-
-			SendEmail sendEmail = new SendEmail();
-			try {
-
-				String mailtitle = "NEW REQUISTION REQUEST FROM " + eName;
-				String mailBody = "<h1>Requisition Details</h1>" + "<div><ul>" + "<li> Employee Name: " + eName
-						+ "</li>" + "<li> Employee Id: " + eId + "</li>" + "<li> Requested Items: " + requestedItem
-						+ "</li>" + "<li> Total Amount: " + NumberWordConverter.convertDoubleToCurrency(totalAmount)
-						+ " TK" + "</li>" + "</ul></div>";
-
-				sendEmail.sendmailToUser(mailSender, emailTo, mailtitle, mailBody, "", ccEmailAddresss, "");
-			} catch (MessagingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
+		sendFirstMail(settingsList, requisitionDB);
 
 		// Sending Email For Final Stage
 
-		if (settingsList.size() == 1) {
+		sendFinalMail(settingsList, requisitionDB);
 
-			if (requisitionDB.getEmployee().getEmail() != null && requisitionDB.getEmployee().getEmail().length() > 0) {
-
-				String email = requisitionDB.getEmployee().getEmail();
-				String name = requisitionDB.getEmployee().getName();
-
-				SendEmail sendEmail = new SendEmail();
-				try {
-
-					String mailtitle = name + " CONGRATULATION YOUR REQUISITION APPROBE";
-					String mailBody = "<h1>YOUR REQUISITION REQUEST APPROVED SUCCESSFULLY.COLLECT YOUR PRODUCT</h1>";
-
-					sendEmail.sendmailToUser(mailSender, email, mailtitle, mailBody, "", ccEmailAddresss, "");
-				} catch (MessagingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-
-		}
+		/*
+		 * if (settingsList.size() == 1) {
+		 * 
+		 * if (requisitionDB.getEmployee().getEmail() != null &&
+		 * requisitionDB.getEmployee().getEmail().length() > 0) {
+		 * 
+		 * String email = requisitionDB.getEmployee().getEmail(); String name =
+		 * requisitionDB.getEmployee().getName();
+		 * 
+		 * SendEmail sendEmail = new SendEmail(); try {
+		 * 
+		 * String mailtitle = name + " CONGRATULATION YOUR REQUISITION APPROBED"; String
+		 * mailBody =
+		 * "<h1>YOUR REQUISITION REQUEST APPROVED SUCCESSFULLY.PLEASE COLLECT YOUR PRODUCTS</h1>"
+		 * ;
+		 * 
+		 * sendEmail.sendmailToUser(mailSender, email, mailtitle, mailBody, "",
+		 * ccEmailAddresss, ""); } catch (MessagingException e) { // TODO Auto-generated
+		 * catch block e.printStackTrace(); }
+		 * 
+		 * }
+		 * 
+		 * }
+		 */
 
 		if (!settingsList.isEmpty()) {
 
@@ -446,6 +461,75 @@ public class RequisitionController implements Constants {
 		return new ModelAndView("redirect:/");
 	}
 
+	@SuppressWarnings("unchecked")
+	public void sendFirstMail(List<Settings> settingsList, Requisition requisitionDB) {
+		Settings settings = settingsList.get(settingsList.size() - settingsList.size());
+		String emailTo, eName, eId;
+		String requestedItem = "";
+		Double totalAmount = 0.0;
+
+		if (settings.getEmail() != null && settings.getEmail().length() > 0) {
+			emailTo = settings.getEmail();
+			eName = requisitionDB.getEmployee().getName();
+			eId = requisitionDB.getEmployee().getLxnId();
+
+			List<RequisitionItem> requisitionItems = (List<RequisitionItem>) (Object) commonService
+					.getObjectListByAnyColumn("RequisitionItem", "requisition_id", requisitionDB.getId().toString());
+
+			for (RequisitionItem singleRequisitionItem : requisitionItems) {
+				String pName = singleRequisitionItem.getProduct().getName();
+				Double individualAmount = getWeighttedAvgPrice(singleRequisitionItem.getProduct().getId());
+				int quantity = singleRequisitionItem.getQuantity();
+				requestedItem += pName + ", ";
+				totalAmount += (quantity * individualAmount);
+			}
+
+			SendEmail sendEmail = new SendEmail();
+			try {
+
+				String mailtitle = "NEW REQUISTION REQUEST FROM " + eName;
+				String mailBody = "<h1>Requisition Details</h1>" + "<div><ul>" + "<li> Employee Name: " + eName
+						+ "</li>" + "<li> Employee Id: " + eId + "</li>" + "<li> Requested Items: " + requestedItem
+						+ "</li>" + "<li> Total Amount: " + NumberWordConverter.convertDoubleToCurrency(totalAmount)
+						+ " TK" + "</li>" + "</ul></div>";
+
+				sendEmail.sendmailToUser(mailSender, emailTo, mailtitle, mailBody, "facebook.com", ccEmailAddresss, "");
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	public void sendFinalMail(List<Settings> settingsList, Requisition requisitionDB) {
+
+		if (settingsList.size() == 1) {
+
+			if (requisitionDB.getEmployee().getEmail() != null && requisitionDB.getEmployee().getEmail().length() > 0) {
+
+				String email = requisitionDB.getEmployee().getEmail();
+				String name = requisitionDB.getEmployee().getName();
+
+				SendEmail sendEmail = new SendEmail();
+				try {
+
+					String mailtitle = name + " CONGRATULATION YOUR REQUISITION APPROBED";
+					String mailBody = "<h1>YOUR REQUISITION REQUEST APPROVED SUCCESSFULLY.PLEASE COLLECT YOUR PRODUCTS</h1>";
+
+					sendEmail.sendmailToUser(mailSender, email, mailtitle, mailBody, "", ccEmailAddresss, "");
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+		}
+
+	}
+
 	@RequestMapping(value = "/rejectReq", method = RequestMethod.POST)
 	public @ResponseBody ModelAndView rejectReq(HttpServletRequest request, ModelMap model,
 			RedirectAttributes redirectAttributes, Principal principal, HttpSession session) {
@@ -477,6 +561,49 @@ public class RequisitionController implements Constants {
 
 		commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
 		commonService.saveOrUpdateModelObjectToDB(requisitionDB);
+
+		// SENDING EMAIL TO THE INITIATOR WHEN REQUISTION REJECTED
+
+		sendRejectionMail(requisitionDB, loginEmployee);
+
+		/*
+		 * String rejectEmailTo = requisitionDB.getEmployee().getEmail(); String
+		 * requistionRejectedBy = loginEmployee.getName();
+		 * 
+		 * SendEmail sendEmail = new SendEmail(); if (requisitionDB.getRejectionReason()
+		 * != null && requisitionDB.getRejectionReason().length() > 0) { String
+		 * reasonForRejection = requisitionDB.getRejectionReason();
+		 * 
+		 * try {
+		 * 
+		 * String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
+		 * String mailBody = "<h1>Requisition Rejection Details</h1>" + "<div><ul>" +
+		 * "<li> Rejected By Name: " + requistionRejectedBy + "</li>" + "<li> Reason : "
+		 * + reasonForRejection + "</li>" + "</ul></div>";
+		 * 
+		 * sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle, mailBody, "",
+		 * ccEmailAddresss, ""); } catch (MessagingException e) { // TODO Auto-generated
+		 * catch block e.printStackTrace(); }
+		 * 
+		 * } else {
+		 * 
+		 * try {
+		 * 
+		 * String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
+		 * String mailBody = "<h1>Requisition Rejection Details</h1>" + "<div><ul>" +
+		 * "<li> Rejected By Name: " + requistionRejectedBy + "</li>" + "</ul></div>";
+		 * 
+		 * sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle, mailBody, "",
+		 * ccEmailAddresss, ""); } catch (MessagingException e) { // TODO Auto-generated
+		 * catch block e.printStackTrace(); }
+		 * 
+		 * }
+		 */
+
+		return new ModelAndView("redirect:/");
+	}
+
+	public void sendRejectionMail(Requisition requisitionDB, Employee loginEmployee) {
 
 		String rejectEmailTo = requisitionDB.getEmployee().getEmail();
 		String requistionRejectedBy = loginEmployee.getName();
@@ -513,8 +640,6 @@ public class RequisitionController implements Constants {
 			}
 
 		}
-
-		return new ModelAndView("redirect:/");
 	}
 
 	@RequestMapping(value = "/editReq/{id}", method = RequestMethod.GET)
