@@ -493,7 +493,7 @@ public class RequisitionController implements Constants {
 						+ "</li>" + "<li> Total Amount: " + NumberWordConverter.convertDoubleToCurrency(totalAmount)
 						+ " TK" + "</li>" + "</ul></div>";
 
-				sendEmail.sendmailToUser(mailSender, emailTo, mailtitle, mailBody, "facebook.com", ccEmailAddresss, "");
+				sendEmail.sendmailToUser(mailSender, emailTo, mailtitle, mailBody, "${pageContext.request.contextPath}", ccEmailAddresss, "");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
