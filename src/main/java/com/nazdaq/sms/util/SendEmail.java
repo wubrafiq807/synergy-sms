@@ -147,7 +147,7 @@ public class SendEmail implements Constants{
 				"			padding-bottom: 25px;\r\n" + 
 				"			color: #000000;\r\n" + 
 				"			font-family: sans-serif;\" class=\"paragraph\">\r\n" + 
-				"				For Support: Send Email to <a href=\"rafiqul.islam@dynamicsrv.com\" target=\"_blank\" style=\"color: #127DB3; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 160%;\">rafiqul.islam@dynamicsrv.com</a>\r\n" + 
+				"				For Support: Send Email to <a href=\"mahadi.hasan@dynamicsrv.com\" target=\"_blank\" style=\"color: #127DB3; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 160%;\">rafiqul.islam@dynamicsrv.com</a>\r\n" + 
 				"		</td>\r\n" + 
 				"	</tr>\r\n" + 
 				"\r\n" + 

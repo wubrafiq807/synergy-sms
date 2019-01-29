@@ -176,7 +176,7 @@ public class RequisitionController implements Constants {
 				
 				// Send Mail to Admin
 		
-				sendFirstMail(settingsList, requisitionDB);
+				sendFirstMail(settingsList, requisitionDB,request);
 
 			} else {
 				requisitionDB.setModifiedBy(loginEmployee);
@@ -260,7 +260,7 @@ public class RequisitionController implements Constants {
 				commonService.saveOrUpdateModelObjectToDB(requisitionHistory);
 				
 				// SEND MAIL TO ADMIN
-				sendFirstMail(settingsList, requisitionDB);
+				sendFirstMail(settingsList, requisitionDB, request);
 			}
 
 		}
@@ -307,71 +307,13 @@ public class RequisitionController implements Constants {
 		// Get the first element from settings list
 		// Sending First Email When user press the submit button
 
-		/*
-		 * Settings settings = settingsList.get(settingsList.size() -
-		 * settingsList.size()); String emailTo, eName, eId; String requestedItem = "";
-		 * Double totalAmount = 0.0;
-		 * 
-		 * if (settings.getEmail() != null && settings.getEmail().length() > 0) {
-		 * emailTo = settings.getEmail(); eName = requisitionDB.getEmployee().getName();
-		 * eId = requisitionDB.getEmployee().getLxnId();
-		 * 
-		 * List<RequisitionItem> requisitionItems = (List<RequisitionItem>) (Object)
-		 * commonService .getObjectListByAnyColumn("RequisitionItem", "requisition_id",
-		 * requisitionDB.getId().toString());
-		 * 
-		 * for (RequisitionItem singleRequisitionItem : requisitionItems) { String pName
-		 * = singleRequisitionItem.getProduct().getName(); Double individualAmount =
-		 * getWeighttedAvgPrice(singleRequisitionItem.getProduct().getId()); int
-		 * quantity = singleRequisitionItem.getQuantity(); requestedItem += pName +
-		 * ", "; totalAmount += (quantity * individualAmount); }
-		 * 
-		 * SendEmail sendEmail = new SendEmail(); try {
-		 * 
-		 * String mailtitle = "NEW REQUISTION REQUEST FROM " + eName; String mailBody =
-		 * "<h1>Requisition Details</h1>" + "<div><ul>" + "<li> Employee Name: " + eName
-		 * + "</li>" + "<li> Employee Id: " + eId + "</li>" + "<li> Requested Items: " +
-		 * requestedItem + "</li>" + "<li> Total Amount: " +
-		 * NumberWordConverter.convertDoubleToCurrency(totalAmount) + " TK" + "</li>" +
-		 * "</ul></div>";
-		 * 
-		 * sendEmail.sendmailToUser(mailSender, emailTo, mailtitle, mailBody, "",
-		 * ccEmailAddresss, ""); } catch (MessagingException e) { // TODO Auto-generated
-		 * catch block e.printStackTrace(); }
-		 * 
-		 * }
-		 */
-
-		sendFirstMail(settingsList, requisitionDB);
+		sendFirstMail(settingsList, requisitionDB, request);
 
 		// Sending Email For Final Stage
 
-		sendFinalMail(settingsList, requisitionDB);
+		sendFinalMail(settingsList, requisitionDB, request);
 
-		/*
-		 * if (settingsList.size() == 1) {
-		 * 
-		 * if (requisitionDB.getEmployee().getEmail() != null &&
-		 * requisitionDB.getEmployee().getEmail().length() > 0) {
-		 * 
-		 * String email = requisitionDB.getEmployee().getEmail(); String name =
-		 * requisitionDB.getEmployee().getName();
-		 * 
-		 * SendEmail sendEmail = new SendEmail(); try {
-		 * 
-		 * String mailtitle = name + " CONGRATULATION YOUR REQUISITION APPROBED"; String
-		 * mailBody =
-		 * "<h1>YOUR REQUISITION REQUEST APPROVED SUCCESSFULLY.PLEASE COLLECT YOUR PRODUCTS</h1>"
-		 * ;
-		 * 
-		 * sendEmail.sendmailToUser(mailSender, email, mailtitle, mailBody, "",
-		 * ccEmailAddresss, ""); } catch (MessagingException e) { // TODO Auto-generated
-		 * catch block e.printStackTrace(); }
-		 * 
-		 * }
-		 * 
-		 * }
-		 */
+
 
 		if (!settingsList.isEmpty()) {
 
@@ -462,7 +404,7 @@ public class RequisitionController implements Constants {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void sendFirstMail(List<Settings> settingsList, Requisition requisitionDB) {
+	public void sendFirstMail(List<Settings> settingsList, Requisition requisitionDB,HttpServletRequest request) {
 		Settings settings = settingsList.get(settingsList.size() - settingsList.size());
 		String emailTo, eName, eId;
 		String requestedItem = "";
@@ -488,12 +430,17 @@ public class RequisitionController implements Constants {
 			try {
 
 				String mailtitle = "NEW REQUISTION REQUEST FROM " + eName;
-				String mailBody = "<h1>Requisition Details</h1>" + "<div><ul>" + "<li> Employee Name: " + eName
+/*				String mailBody = "<h1>Requisition Details</h1>" + "<div><ul>" + "<li> Employee Name: " + eName
 						+ "</li>" + "<li> Employee Id: " + eId + "</li>" + "<li> Requested Items: " + requestedItem
 						+ "</li>" + "<li> Total Amount: " + NumberWordConverter.convertDoubleToCurrency(totalAmount)
+						+ " TK" + "</li>" + "</ul></div>";*/
+				
+				
+				String mailBody = "<h1>Requisition Details</h1>" + "<div><ul>" + "<li> Employee Name: " + eName
+						+ "</li>" + "<li> Employee Id: " + eId + "</li>" + "<li> Total Amount: " + NumberWordConverter.convertDoubleToCurrency(totalAmount)
 						+ " TK" + "</li>" + "</ul></div>";
 
-				sendEmail.sendmailToUser(mailSender, emailTo, mailtitle, mailBody, "${pageContext.request.contextPath}", ccEmailAddresss, "");
+				sendEmail.sendmailToUser(mailSender, emailTo, mailtitle, mailBody,"http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath(), ccEmailAddresss, "");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -503,7 +450,7 @@ public class RequisitionController implements Constants {
 
 	}
 
-	public void sendFinalMail(List<Settings> settingsList, Requisition requisitionDB) {
+	public void sendFinalMail(List<Settings> settingsList, Requisition requisitionDB,HttpServletRequest request) {
 
 		if (settingsList.size() == 1) {
 
@@ -518,7 +465,7 @@ public class RequisitionController implements Constants {
 					String mailtitle = name + " CONGRATULATION YOUR REQUISITION APPROBED";
 					String mailBody = "<h1>YOUR REQUISITION REQUEST APPROVED SUCCESSFULLY.PLEASE COLLECT YOUR PRODUCTS</h1>";
 
-					sendEmail.sendmailToUser(mailSender, email, mailtitle, mailBody, "", ccEmailAddresss, "");
+					sendEmail.sendmailToUser(mailSender, email, mailtitle, mailBody, "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath(), ccEmailAddresss, "");
 				} catch (MessagingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -564,46 +511,14 @@ public class RequisitionController implements Constants {
 
 		// SENDING EMAIL TO THE INITIATOR WHEN REQUISTION REJECTED
 
-		sendRejectionMail(requisitionDB, loginEmployee);
+		sendRejectionMail(requisitionDB, loginEmployee, request);
 
-		/*
-		 * String rejectEmailTo = requisitionDB.getEmployee().getEmail(); String
-		 * requistionRejectedBy = loginEmployee.getName();
-		 * 
-		 * SendEmail sendEmail = new SendEmail(); if (requisitionDB.getRejectionReason()
-		 * != null && requisitionDB.getRejectionReason().length() > 0) { String
-		 * reasonForRejection = requisitionDB.getRejectionReason();
-		 * 
-		 * try {
-		 * 
-		 * String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
-		 * String mailBody = "<h1>Requisition Rejection Details</h1>" + "<div><ul>" +
-		 * "<li> Rejected By Name: " + requistionRejectedBy + "</li>" + "<li> Reason : "
-		 * + reasonForRejection + "</li>" + "</ul></div>";
-		 * 
-		 * sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle, mailBody, "",
-		 * ccEmailAddresss, ""); } catch (MessagingException e) { // TODO Auto-generated
-		 * catch block e.printStackTrace(); }
-		 * 
-		 * } else {
-		 * 
-		 * try {
-		 * 
-		 * String mailtitle = "REQUISTION REQUEST REJECTED BY " + requistionRejectedBy;
-		 * String mailBody = "<h1>Requisition Rejection Details</h1>" + "<div><ul>" +
-		 * "<li> Rejected By Name: " + requistionRejectedBy + "</li>" + "</ul></div>";
-		 * 
-		 * sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle, mailBody, "",
-		 * ccEmailAddresss, ""); } catch (MessagingException e) { // TODO Auto-generated
-		 * catch block e.printStackTrace(); }
-		 * 
-		 * }
-		 */
+
 
 		return new ModelAndView("redirect:/");
 	}
 
-	public void sendRejectionMail(Requisition requisitionDB, Employee loginEmployee) {
+	public void sendRejectionMail(Requisition requisitionDB, Employee loginEmployee, HttpServletRequest request) {
 
 		String rejectEmailTo = requisitionDB.getEmployee().getEmail();
 		String requistionRejectedBy = loginEmployee.getName();
@@ -619,7 +534,7 @@ public class RequisitionController implements Constants {
 						+ requistionRejectedBy + "</li>" + "<li> Reason : " + reasonForRejection + "</li>"
 						+ "</ul></div>";
 
-				sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle, mailBody, "", ccEmailAddresss, "");
+				sendEmail.sendmailToUser(mailSender, rejectEmailTo, mailtitle, mailBody, "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath(), ccEmailAddresss, "");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
