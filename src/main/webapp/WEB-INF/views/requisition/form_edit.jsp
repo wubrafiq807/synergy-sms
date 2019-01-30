@@ -84,7 +84,12 @@
 						id="quantity${loop.index+1}" name="quantity_${loop.index+1}"
 						value="${item.quantity}" type="number"
 						onchange="totalPrice('${loop.index+1}')"> <br> <span
-						id="res${loop.index+1}" style="color: red;"></span></th>
+						id="res${loop.index+1}" style="color: red;"></span> <span
+						style="display: block; color: green; font-weight: bold; margin-top: 5px">Stock : <label
+							style="color: green; font-weight: bold;" id="stockQuantity${loop.index+1}"
+							name="stockQuantity_${loop.index+1}">${item.availableInStock}</label>
+
+					</span></th>
 
 					<th><label for="price" style="margin-left: 36px;">Price:</label>
 						<input id="price${loop.index+1}" class="price_com" name="price"
@@ -160,29 +165,9 @@
 
 						});
 
-		// 		$("form[name='form']").validate({
-
-		// 			rules : {
-
-		// 				purpose : "required",
-		// 				remarks : "required",
-
-		// 			},
-		// 			submitHandler : function(form) {
-		// 				form.submit();
-		// 			}
-		// 		});
 	});
 
-	
-
 	$(function() {
-
-		// 		var count = $
-		// 		{
-		// 			count + 1
-		// 		}
-		// 		;
 
 		var count = document.getElementById('listSize').value;
 
@@ -201,16 +186,20 @@
 									+ '" onchange="run('
 									+ count
 									+ ')"><option value="">Select One</option><c:forEach var="product" items="${productList}"><option value="${product.id}">${product.name}</option></c:forEach></select><br> <span id="selectRes'
-									+ count
-									+ '" style="color: red;"></span></th><th><label for="quantity">Quantity:</label> <input required id="quantity'
+							+ count
+							+ '" style="color: red;"></span></th><th><label for="quantity">Quantity:</label> <input required id="quantity'
 									+ count
 									+ '" name="quantity_'
 									+ count
 									+ '" value="" type="number" onblur="totalPrice('
 									+ count
 									+ ')"><br><span id="res'
-									+ count
-									+ '" style="color: red;"></span></th><th><label style="margin-left: 36px;" for="price">Price:</label> <input  id="price' + count + '" name="price" class="price_com" value="" type="number" step=0.01 readonly></th><th><button id="btnDelete-'
+							+ count
+							+ '" style="color: red;"></span><span style="display: block; color: green; font-weight: bold; margin-top: 5px">Stock : <label style="color: green; font-weight: bold;" id="stockQuantity'
+							+ count
+							+ '" name="stockQuantity_'
+							+ count
+							+ '">00</label></span></th><th><label style="margin-left: 36px;" for="price">Price:</label> <input  id="price' + count + '" name="price" class="price_com" value="" type="number" step=0.01 readonly></th><th><button id="btnDelete-'
 									+ count
 									+ '" class="btn btn-danger" onclick="myFunction(this)"><i class="fa fa-times" aria-hidden="true"></i></button></th></tr>'
 
@@ -232,6 +221,15 @@
 	console.log(selectedProductId);
 
 	function run(i) {
+
+		// GET THE SELECTED PRODUCT ID
+
+		var slectedProductId = document.getElementById("tempProductId" + i).options[document
+				.getElementById("tempProductId" + i).selectedIndex].value;
+
+		// CALLING THE AJAX FUNCTION FOR GETTING THE STOCK LIST
+
+		getProductQuantityFromStock(slectedProductId, i);
 
 		selectedProductId[i - 1] = Number(document
 				.getElementById("tempProductId" + i).value);
@@ -267,6 +265,23 @@
 		}
 
 		totalPrice(i);
+	}
+
+	function getProductQuantityFromStock(productId, id) {
+		$.ajax({
+			url : "${pageContext.request.contextPath}"
+					+ "/ajaxGetProductQuantityFromStock",
+			method : 'POST',
+			data : {
+				productId : productId
+			},
+			dataType : 'json',
+			success : function(data) {
+				document.getElementById('stockQuantity' + id).innerHTML = data;
+
+			}
+		})
+
 	}
 
 	var calculateDuplication = function(a) {

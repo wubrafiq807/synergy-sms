@@ -50,6 +50,19 @@ public class RequisitionItem implements Serializable {
 	@Transient
 	private Double totalPrice;
 	
+	@Transient
+	private Integer availableInStock;
+	
+	
+	
+
+	public Integer getAvailableInStock() {
+		return availableInStock;
+	}
+
+	public void setAvailableInStock(Integer availableInStock) {
+		this.availableInStock = availableInStock;
+	}
 
 	public Integer getTempProductId() {
 		return tempProductId;

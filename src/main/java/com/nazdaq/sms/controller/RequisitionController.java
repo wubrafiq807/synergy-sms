@@ -430,6 +430,7 @@ public class RequisitionController implements Constants {
 			try {
 
 				String mailtitle = "NEW REQUISTION REQUEST FROM " + eName;
+				
 /*				String mailBody = "<h1>Requisition Details</h1>" + "<div><ul>" + "<li> Employee Name: " + eName
 						+ "</li>" + "<li> Employee Id: " + eId + "</li>" + "<li> Requested Items: " + requestedItem
 						+ "</li>" + "<li> Total Amount: " + NumberWordConverter.convertDoubleToCurrency(totalAmount)
@@ -565,9 +566,29 @@ public class RequisitionController implements Constants {
 			return new ModelAndView("redirect:/login");
 		}
 		Requisition requisition = (Requisition) commonService.getAnObjectByAnyUniqueColumn("Requisition", "id", id);
+		
 		List<RequisitionItem> ItemList = commonService
 				.getObjectListByAnyColumn("RequisitionItem", "requisition_id", requisition.getId().toString()).stream()
 				.map(x -> (RequisitionItem) x).collect(Collectors.toList());
+		
+		
+		//Integer ids = ItemList.get(0).getProduct().getId();
+		
+		
+  /*   List<Integer> productsStockQuantityList = new ArrayList<>();
+				
+		for(int i = 0; i < ItemList.size(); i++) {
+			Integer productId = ItemList.get(i).getProduct().getId();
+			Stock productStock =((Stock)commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id", ItemList.get(i).getProduct().getId().toString()));			
+			productsStockQuantityList.add(productStock.getQuantity());
+			
+		}*/
+		
+		
+		
+		
+		//x.getProduct().getId()
+		
 
 		ItemList.forEach(x -> {
 			x.getProduct().setWeightedAvgPrice(this.getWeighttedAvgPrice(x.getProduct().getId()));
@@ -576,6 +597,8 @@ public class RequisitionController implements Constants {
 			x.setTotalPriceCurrency(NumberWordConverter
 					.convertDoubleToCurrency(x.getQuantity() * x.getProduct().getWeightedAvgPrice()));
 			x.setTotalPrice(NumberWordConverter.round(x.getQuantity() * x.getProduct().getWeightedAvgPrice(), 2));
+			
+			x.setAvailableInStock(((Stock)commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id", x.getProduct().getId().toString())).getQuantity());
 
 		});
 		Double totalPriceMain = ItemList.stream()
@@ -596,6 +619,7 @@ public class RequisitionController implements Constants {
 		model.put("ItemList", ItemList);
 		model.put("count", ItemList.size() - 1);
 		model.put("showStoreManSection", showStoreManSection);
+		
 
 		return new ModelAndView("editReq", model);
 	}
@@ -734,5 +758,31 @@ public class RequisitionController implements Constants {
 		return flag;
 
 	}
+	
+	
+	
+	// AJAX FOR GETTING THE STOCK LIST 
+    
+	@RequestMapping(value = "/ajaxGetProductQuantityFromStock", method = RequestMethod.POST)
+	@ResponseBody
+	public int ajaxGetProductQuantityFromStock(Principal principal, HttpServletRequest request) {
+
+		String productId = request.getParameter("productId");
+		Stock stock = (Stock) commonService.getAnObjectByAnyUniqueColumn("Stock", "product_id", productId);
+
+		return stock.getQuantity();
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

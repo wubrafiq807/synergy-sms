@@ -504,5 +504,13 @@ public class ProductController {
 		}
 
 	}
+	
+	
+	
+
+	
+	
+	
+	
 
 }
